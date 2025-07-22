@@ -1,0 +1,220 @@
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">Reports</h1>
+            <p class="description"></p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal validate" role="form" id='report_form' name="report_form">
+                        <div class="row adjust-row-padding">
+                            <div class="col-sm-4 element-align sm-flex-align">
+                            </div>
+                            <div class="col-sm-8">  
+                                <div class="row">
+                                    <div class="">
+                                        <div class="form-group sm-layout-align">
+                                            <label class="control-label col-sm-3">Report Type</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="reportType" ng-model='report.reportType' name="reportType"
+                                                        ng-change="report.typeChange()"
+                                                        data-validate="required" data-message-required="Please select Report Type."
+                                                        ng-options='report.id as (report.label) for report in report.reportTypeList'>
+                                                    <option value="">Select the report type</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-if="report.reportType == 'employeetimesheet'" style="margin-top: 10px;">
+                                    <div class="">
+                                        <div class="form-group sm-layout-align">
+                                            <label class="control-label col-sm-3">Employee</label>
+                                            <div class="col-sm-9">
+                                                <script type="text/javascript">
+                                                    jQuery(document).ready(function ($)
+                                                    {
+                                                        setTimeout(function () {
+                                                            $("#employeedropdownIds").select2({
+                                                                // minimumResultsForSearch: -1,
+                                                                placeholder: 'Search Employee...',
+                                                                // minimumInputLength: 1,
+                                                                // placeholder: 'Search',
+                                                            }).on('select2-open', function ()
+                                                            {
+                                                                // Adding Custom Scrollbar
+                                                                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                                            });
+                                                        }, 200);
+                                                    });</script>
+                                                <select class="form-control" name ="employeedropdownIds" id="employeedropdownIds" ng-model="report.searchParams.id" ng-options='emp.id as (emp.lName +   ", " +   emp.fName +   " " +   emp.middleInitial) for emp in report.employeeList'>
+                                                    <option value="" selected hidden>Select All</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-if="report.reportType == 'revenuereconciliationreport' || report.reportType == 'revenuereconciliationbycounty' || report.reportType == 'billingmonitorreport'
+                                                || report.reportType == 'detailagingreport' || report.reportType == 'claimhistoryandagingreport' || report.reportType == 'summaryagingreport' || report.reportType == 'claimrejectionreport'
+                                          || report.reportType == 'evvauditreport'" style="margin-top: 10px;">
+                                    <div class="">
+                                        <div class="form-group sm-layout-align">
+                                            <label class="control-label col-sm-3">Payer</label>
+                                            <div class="col-sm-9">
+                                                <script type="text/javascript">
+                                                    jQuery(document).ready(function ($)
+                                                    {
+                                                        setTimeout(function () {
+                                                            $("#insuranceIds").select2({
+                                                                // minimumResultsForSearch: -1,
+                                                                placeholder: 'Search Payer...',
+                                                                // minimumInputLength: 1,
+                                                                // placeholder: 'Search',
+                                                            }).on('select2-open', function ()
+                                                            {
+                                                                // Adding Custom Scrollbar
+                                                                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                                            });
+                                                        }, 200);
+                                                    });</script>
+                                                <select class="form-control" name ="insuranceIds" id="insuranceIds" ng-model="report.searchParams.id" ng-options='ip.id as (ip.insuranceName) for ip in report.insuranceProviderList'>
+                                                    <option value="" selected hidden>Select All</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-if="report.reportType == 'patienttimesheet'" style="margin-top: 10px;">
+                                    <div class="">
+                                        <div class="form-group sm-layout-align">
+                                            <label class="control-label col-sm-3">Patient</label>
+                                            <div class="col-sm-9">
+                                                <script type="text/javascript">
+                                                    jQuery(document).ready(function ($)
+                                                    {
+                                                        setTimeout(function () {
+                                                            $("#patientdropdownIds").select2({
+                                                                // minimumResultsForSearch: -1,
+                                                                placeholder: 'Search Patient...',
+                                                                // minimumInputLength: 1,
+                                                                // placeholder: 'Search',
+                                                            }).on('select2-open', function ()
+                                                            {
+                                                                // Adding Custom Scrollbar
+                                                                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                                            });
+                                                        }, 200);
+                                                    });</script>
+                                                <select class="form-control" name="patientdropdownIds" ng-model="report.searchParams.id" id="patientdropdownIds" ng-options='data.id as (data.lName +   ", " +   data.fName +   " " +   data.middleInitial) for data in report.patientList'>
+                                                    <option value="" selected hidden>Select All</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="report.reportType == 'employeeworkedhoursbycounty' || report.reportType == 'workedhours' || report.reportType == 'wppreport'
+                                        || report.reportType == 'patienttimesheet' || report.reportType == 'employeetimesheet' || report.reportType == 'evv-emedny-error-report'
+                                        || report.reportType == 'employeebenefits401k' || report.reportType == 'employeebenefitshealthcare'
+                                        || report.reportType == 'eventactivityreport' || report.reportType == 'loginactivityreport' || report.reportType == 'lossofhoursreport'
+                                        || report.reportType == 'applicationlistreport' || report.reportType == 'notesreport' || report.reportType == 'employeedeactivatereport'
+                                        || report.reportType == 'detailagingreport' || report.reportType == 'claimhistoryandagingreport' || report.reportType == 'summaryagingreport' || report.reportType == 'totalworkedhours'
+                                        || report.reportType == 'missedpunchreport' || report.reportType == 'employeeothours' || report.reportType == 'revenuereconciliationreport' || report.reportType == 'revenuereconciliationbycounty'
+                                        || report.reportType == 'billingmonitorreport' || report.reportType == 'claimrejectionreport' || report.reportType == 'weeklyotanalysis' || report.reportType == 'evvauditreport' || report.reportType == 'complaints' || report.reportType == 'satisfactionSurveyReport' || report.reportType == 'employeeSupervisionHistory'" style="margin-top: 10px;">
+                            <div class="">
+                                <div class="col-sm-7 pull-right wd_full">
+                                    <div class="col-sm-6 pad0 wd_full">
+                                        <div class="form-group sm-layout-align">
+                                            <label for="fromdate" class="col-sm-3 control-label">From</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input type="text" id="fromdate" name="fromdate" class="form-control datepicker" enabled='M' data-format="mm/dd/yyyy" ng-model="report.searchParams.fromDate" max-date="report.maxDate" data-validate="required" data-message-required="Please select From Date." ng-required="report.reportType == 'workedhours'"/>
+                                                    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 pad0">
+                                        <div class="form-group sm-layout-align">
+                                            <label for="todate" class="col-sm-3 control-label">To</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input type="text" id="todate" name="todate" class="form-control datepicker" enabled='S' data-format="mm/dd/yyyy" ng-model="report.searchParams.toDate" min-date="report.searchParams.fromDate" max-date='report.todayDate' ng-change="report.setMaxDate()" data-validate="required" data-message-required="Please select To Date." ng-required="report.reportType == 'workedhours'"/>
+                                                    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row adjust-row-padding" ng-show="report.reportType == 'detailagingreport' || report.reportType == 'claimhistoryandagingreport' || report.reportType == 'summaryagingreport'" style="margin-top: 10px;">
+                            <div class="col-sm-4 element-align sm-flex-align">
+                            </div>
+                            <div class="col-sm-8">  
+                                <div class="row">
+                                    <div class="form-group sm-layout-align">
+                                        <label for="date" class="col-sm-3 control-label">Aging Date</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <input type="text" id="date" name="date" class="form-control datepicker" enabled='M' data-format="mm/dd/yyyy" ng-model="report.searchParams.date" data-validate="required" data-message-required="Please select Date." 
+                                                       ng-required="report.reportType == 'detailagingreport' || report.reportType == 'claimhistoryandagingreport' || report.reportType == 'summaryagingreport'"/>
+                                                <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row adjust-row-padding">
+                            <div class="col-sm-4 element-align sm-flex-align">
+                            </div>
+                            <div class="col-sm-8">  
+                                <div class="row" ng-show="report.reportType == 'ptoreport'" style="margin-top: 10px;">
+                                    <div class="form-group sm-layout-align">
+                                        <label class="control-label col-sm-3">Year</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" id="year" ng-model='report.searchParams.year' name="year"
+                                                    data-validate="required" data-message-required="Please select year."
+                                                    ng-options='year as (year) for year in report.yearList'>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 pad0" style="margin-top: 10px;"></div>
+                            <div class="col-sm-12 text-right" style="margin-bottom:10px;">
+                                <button class="btn btn-single gray_bt clean-margin mar_rg0" type="button" ng-click="report.resetFilters()">Reset Filters</button>
+                                <button type="submit" ng-if="report.reportType && report.reportType != 'employeetimesheet' && report.reportType != 'patienttimesheet'" class="btn btn-single btn-info process_bt clean-margin" tooltip="Download Report in Excel" ng-click="report.downloadReport('xls')">Download xls</button>
+                                <button type="submit" ng-if="report.reportType && report.reportType != 'employeelastpunchin'
+                                                && report.reportType != 'patientcensus' && report.reportType != 'employeecensus' && report.reportType != 'eventactivityreport'
+                                                && report.reportType != 'employeewages' && report.reportType != 'revenuereconciliationreport' && report.reportType != 'revenuereconciliationbycounty'
+                                                && report.reportType != 'lossofhoursreport' && report.reportType != 'notesreport'
+                                                && report.reportType != 'detailagingreport' && report.reportType != 'claimhistoryandagingreport' && report.reportType != 'summaryagingreport'
+                                                && report.reportType != 'billingmonitorreport' && report.reportType != 'claimrejectionreport' && report.reportType != 'complaints' && report.reportType != 'satisfactionSurveyReport' && report.reportType != 'employeeSupervisionHistory'" class="btn btn-single btn-info clean-margin btn-block-xs" tooltip="Download Report in Pdf" ng-click="report.downloadReport('pdf')">Download pdf</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><script type="text/javascript">
+    // validate
+    customJqueryValidation();
+    jQuery(document).ready(function ($) {
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+    });
+</script>

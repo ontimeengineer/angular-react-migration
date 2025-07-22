@@ -1,0 +1,131 @@
+<script type="text/javascript">
+    jQuery(document).ready(function ($)
+    {
+        setTimeout(function () {
+            $('.RoleIds').select2({}).on('select2-open');
+        }, 1000);
+    });</script>
+<div class="page-title full-width"  title="Native Elements" description="Plain text boxes, select dropdowns and other basic form elements">
+    <div class="title-env" style="width:80%">
+        <h1 class="title ng-binding">Roles</h1>
+        <p class="description ng-binding">Listing of Roles</p>
+    </div>
+    <div class="title-env" style="width:20%" >
+        <a class="btn btn-secondary pull-right" ng-click="viewRole.addEditPopup()" ng-if="hasAccess('CREATE_ROLE')" style="margin-top: 10px;">Add New Role</a>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body table-responsive">
+        <table class="table table-bordered table-striped" id="example-2">
+            <thead>
+                <tr>
+                    <th width="15%">Title</th>
+                    <th width="60%">Feature Access</th>
+                    <th width="10%">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody class="middle-align">
+                <tr role="row" class="odd" ng-repeat="role in viewRole.roleList" 
+                    total-items="totalRecords">
+                    <td>{{role.name}}</td>                    
+                    <td>
+                        <select multiple class="form-control RoleIds"
+                                ng-model="role.featuresArray" ng-options='feature as feature for feature in role.featuresArray'
+                                ng-disabled="true">                          
+                        </select>
+                    </td>
+                    <td>
+                        <div class="center">
+                            <a class="btn icon-left fa fa-pencil edit_button ng-scope" ng-if="hasAccess('EDIT_ROLE')" ng-click="viewRole.addEditPopup(role);" tooltip="Edit"><span class="ed_b"></span></a>
+                            <a class="btn icon-left fa fa-ban deactivate_bt" href="" ng-if="hasAccess('ACTIVATE_ROLE') && role.status == 'a'" ng-click="viewRole.activateDeactivatePopup(role, 'roleActivateModal', 'deactivate')" tooltip="Deactivate"><span class="ed_b"></span></a>
+                            <a class="btn icon-left fa fa-check edit_button" href="" ng-if="hasAccess('ACTIVATE_ROLE') && role.status == 'i'" ng-click="viewRole.activateDeactivatePopup(role, 'roleActivateModal', 'activate')" tooltip="Activate"><span class="ed_b"></span></a> 
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="roleModel">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="roleModel.closePopup();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" > {{roleModel.title }}</h4>
+    </div>
+
+    <div class="modal-body">
+    <div class="row">
+    <div class="col-md-12">
+    <!-- <form role="form" class="form-horizontal ng-pristine ng-valid col-md-12"> -->
+    <form class="form-horizontal validate col-md-12" id="role_form" name="roleModel.role_form" role="form"  ng-submit="roleModel.save()">
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="field-1">Title</label>
+
+    <div class="col-sm-10">
+    <input type="text" class="form-control" id="role" name="role" placeholder="Enter Title" ng-required='true' ng-model="roleModel.role.name" data-validate="required" data-message-required="Please enter Title.">
+    </div>
+    </div>
+
+    <!--                    <div class="form-group-separator"></div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" >
+    Admin Panel Access
+    </label>
+    <div class="col-sm-10">
+    <div class="input-group">
+    <label class="cbr-inline">
+    <input class="cbr cbr-primary" name="adminAccess" value="true" type="radio" ng-model="roleModel.role.adminAccess">
+    Yes
+    </label>
+    <label class="cbr-inline">
+    <input name="adminAccess" class="cbr cbr-primary" value="false" type="radio" ng-model="roleModel.role.adminAccess">
+    No
+    </label>
+    </div>
+    </div>                    
+    </div>-->
+
+    <div class="form-group-separator"></div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tagsinput-1">Feature Access</label>
+
+    <div class="col-sm-10">      
+    <select class="form-control" ng-model="roleModel.role.featureIds" multiple="multiple" id="multi-select" name="my-select[]" style="width:100%"
+    ng-options="feature.id as feature.label for feature in roleModel.featureList">
+    </select>
+    </div>
+    </div>                    
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="roleModel.closePopup();">Close</button>
+    <button type="submit" class="btn btn-info" >Save changes</button>
+    </div>
+
+
+    </form>
+    </div>
+    </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="roleActivateModal">
+    <div class="modal-header">      
+    <h4 class="modal-title"> {{ roleActivateModal.title }}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to {{roleActivateModal.action}} this Role?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="roleActivateModal.confirm(roleActivateModal.role);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="roleActivateModal.dismiss();">No</button>
+    </div>
+</script>
+

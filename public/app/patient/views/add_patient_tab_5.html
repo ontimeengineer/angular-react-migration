@@ -1,0 +1,233 @@
+<div class="row" ng-init="addPatient.tab5DataInit()">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal validate" id="add_patient_form" novalidate="" name="add_patient_form" role="form" ng-submit="addPatient.savePatient()">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" type="submit" ng-disabled="addPatient.disableSaveButton">Save Changes</button>
+                            <button class="btn btn-info btn-single gray_bt pull-right" type="reset">Reset To Default</button>
+
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label for="field-48" class="col-sm-3 control-label">First Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="field-48" class="form-control" name="FirstName" maxlength="50"
+                                   ng-model="addPatient.patient.subscriberInfo[0].fName" data-validate="required" data-message-required="Please enter First Name." />
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label for="field-49" class="col-sm-3 control-label">Middle Initial</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="field-49" class="form-control" name="MiddleInitial" maxlength="50"
+                                   ng-model="addPatient.patient.subscriberInfo[0].middleInitial"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label for="field-50" class="col-sm-3 control-label">Last Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="field-50" class="form-control" name="LastName" maxlength="50"
+                                   ng-model="addPatient.patient.subscriberInfo[0].lName" data-validate="required" data-message-required='Please enter Last Name.'/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label for="field-51" class="col-sm-3 control-label">Name Suffix</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="field-51" class="form-control" name="NameSuffix" maxlength="10"
+                                   ng-model="addPatient.patient.subscriberInfo[0].nameSuffix"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label for="field-52" class="col-sm-3 control-label">Date of Birth</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input type="text" id="field-52" class="form-control datepicker" max-date="addPatient.currentDate" data-format="mm/dd/yyyy" name="DateofBirth" ng-model="addPatient.patient.subscriberInfo[0].dateOfBirth" 
+                                       data-validate="required,date" data-message-required="Please enter Date of Birth."/>
+                                <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Gender</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <label class="cbr-inline">
+                                    <input value="M" name="Gender" type="radio" class="cbr cbr-primary" ng-model="addPatient.patient.subscriberInfo[0].gender" />
+                                    Male
+                                </label>
+                                <label class="cbr-inline">
+                                    <input name="Gender" value="F" type="radio" class="cbr cbr-primary" ng-model="addPatient.patient.subscriberInfo[0].gender"/>
+                                    Female
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-33">
+                            Phone
+                        </label>
+                        <div class="col-sm-9">
+                            <input numbers-only="true" maxlength="10" class="form-control" id="field-33" name="Phone" type="text" ng-model="addPatient.patient.phone" 
+                                   data-validate="required,number,minlength[10],maxlength[10]"
+                                   data-message-required="Please enter Phone Number." data-message-minlength="Phone Number must contain 10 digits" data-message-maxlength="Phone Number must contain 10 digits"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label for="field-53" class="col-sm-3 control-label">Relationship With Patient</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="RelationshipWithPatient" name="RelationshipWithPatient" ng-model="addPatient.patient.subscriberInfo[0].relationshipWithPatient"
+                                    data-validate="required" data-message-required="Please enter Relationship With Patient.">
+                                <option value="I">Self</option>
+                                <option value="S">Spouse</option>
+                                <option value="P">Parents</option>
+                                <option value="O">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Is Billing Address Same As Patient?</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <label class="cbr-inline" ng-click="addPatient.setBillingAddress(true)">
+                                    <input type="radio" class="cbr cbr-primary" name="IsBillingAddressSameAsPatient" value="Yes" ng-model="addPatient.isBillingAddressSameAsPatient">
+                                    Yes </label>
+                                <label class="cbr-inline" ng-click="addPatient.setBillingAddress(false)">
+                                    <input type="radio" class="cbr cbr-primary" name="IsBillingAddressSameAsPatient" value="No" ng-model="addPatient.isBillingAddressSameAsPatient">
+                                    No </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label for="Address1" class="col-sm-3 control-label">Address 1</label>
+                        <div class="col-sm-9">
+                            <input id="Address1" class="form-control" name="Address1" maxlength="255" ng-disabled="addPatient.isBillingAddressSameAsPatient==='Yes'"
+                                   ng-model="addPatient.patient.subscriberInfo[0].subscriberAddressCollection[0].address1" type="text"
+                                   data-validate="required" data-message-required="Please enter Address 1."/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label for="Address2" class="col-sm-3 control-label">Address 2</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="Address2" class="form-control" name="Address2" maxlength="255" ng-disabled="addPatient.isBillingAddressSameAsPatient==='Yes'"
+                                   ng-model="addPatient.patient.subscriberInfo[0].subscriberAddressCollection[0].address2"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label for="City" class="col-sm-3 control-label">City</label>
+                        <div class="col-sm-9">
+                            <input id="City" class="form-control" name="City" maxlength="50" ng-disabled="addPatient.isBillingAddressSameAsPatient==='Yes'"
+                                   ng-model="addPatient.patient.subscriberInfo[0].subscriberAddressCollection[0].city" type="text"
+                                   data-validate="required" data-message-required="Please enter City."/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">{{terminologyBank.state}}</label>
+                        <div class="col-sm-9"> 
+                            <select class="form-control" id="State" name="State" ng-disabled="addPatient.isBillingAddressSameAsPatient==='Yes'"
+                                    ng-model="addPatient.patient.subscriberInfo[0].subscriberAddressCollection[0].state"
+                                    data-validate="required" data-message-required="Please select the state."
+                                    ng-options="state.abbreviation as state.name for state in states">
+                                <option value="">
+                                    Select the {{terminologyBank.state}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">County</label>
+                        <div class="col-sm-9"> 
+                            <select class="form-control" id="State" name="County" ng-disabled="addPatient.isBillingAddressSameAsPatient==='Yes'"
+                                    ng-model="addPatient.patient.subscriberInfo[0].subscriberAddressCollection[0].county"
+                                    ng-options="county as county for county in addPatient.stateCountyList[addPatient.patient.subscriberInfo[0].subscriberAddressCollection[0].state]">
+                                <option value="">
+                                    Select the county
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="ZipCode" class="col-sm-3 control-label">{{terminologyBank.zipCode}}</label>
+                        <div class="col-sm-9">
+                            <input id="ZipCode" class="form-control" name="ZipCode" maxlength="10" ng-disabled="addPatient.isBillingAddressSameAsPatient==='Yes'"
+                                   ng-model="addPatient.patient.subscriberInfo[0].subscriberAddressCollection[0].zipcode" type="text"
+                                   data-validate="required" data-message-required="Please enter Zip Code."/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button style="width:auto;" class="btn btn-info green_bt pull-right" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // validate
+    customJqueryValidation();
+    jQuery(document).ready(function($) {
+        
+        setTimeout(function() {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+
+
+
+        // Validation
+//        $("#add_patient_tab_5_form").validate({
+//            rules: {City: {required: true},
+//                FirstName: {required: true},
+//// NameSuffix: {required: true},
+//                LastName: {required: true},
+//                Address2: {required: true},
+//// MiddleInitial: {required: true},
+//                ZipCode: {required: true},
+//                DateofBirth: {required: true, ontimedate: true},
+//                State: {required: true},
+//                RelationshipWithPatient: {required: true},
+//                Address1: {required: true},
+//            },
+//            messages: {City: {required: 'Please enter City.'},
+//                FirstName: {required: 'Please enter First Name.'},
+//                NameSuffix: {required: 'Please enter Name Suffix.'},
+//                LastName: {required: 'Please enter Last Name.'},
+//                Address2: {required: 'Please enter Address 2.'},
+//                MiddleInitial: {required: 'Please enter Middle Initial.'},
+//                ZipCode: {required: 'Please enter Zip Code.'},
+//                DateofBirth: {required: 'Please enter Date of Birth.'},
+//                State: {required: 'Please select the state.'},
+//                RelationshipWithPatient: {required: 'Please enter Relationship With Patient.'},
+//                Address1: {required: 'Please enter Address 1.'},
+//            },
+//            errorPlacement: function(error, element) {
+//                if (element.attr("name") == "DateofBirth") {
+//                    error.insertAfter($(element).parent());
+//                } else {
+//                    error.insertAfter(element);
+//                }
+//            },
+//        }); // validate
+
+    });
+</script>

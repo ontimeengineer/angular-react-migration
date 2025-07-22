@@ -1,0 +1,24 @@
+<div>
+    <div class="modal-header">	
+        <h4 class="modal-title"></h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form" name="dispatchConfirmForm" id="dispatchConfirmForm" >
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Care</label>
+
+                <div class="col-sm-6">
+                    <select class='form-control' ng-model='dispatchConfirm.careType' ng-change="dispatchConfirm.careTypeChange()" ng-options="care.id as care.careTypeTitle for care in dispatchConfirm.careTypes">
+                    </select> 
+                </div>
+            </div>
+            <div class='form-group-separator'></div>
+            Are you sure you want to send dispatch message to filtered employees?  <b>{{dispatchConfirm.totalRecords}}</b> Employees will receive this dispatch.                                   
+            <div ng-if="dispatchConfirm.noFilters" class="red text-bold">This will send notifications to all employees as no filter is selected.</div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" ng-click="dispatchConfirm.ok();">Yes</button>
+        <button type="button" class="btn btn-red" ng-click="dispatchConfirm.cancel();">No</button>
+    </div>
+</div>

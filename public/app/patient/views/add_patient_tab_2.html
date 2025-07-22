@@ -1,0 +1,211 @@
+<div class="row"  ng-init="addPatient.tab2DataInit()">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal validate" id="add_patient_form" novalidate="" name="add_patient_form" role="form" ng-submit="addPatient.savePatient()">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" type="submit" ng-disabled="addPatient.disableSaveButton" ng-click="addPatient.setFromNext('tab2')">
+                                Save Changes
+                            </button>
+                            <button class="btn btn-info btn-single gray_bt pull-right" type="reset">
+                                Reset To Default
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Map
+                        </label>
+                        <div class="col-sm-9">
+                            <div id="map-1" class="map_panel"></div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-35">
+                            Search
+                        </label>
+                        <div class="col-sm-9" >
+                            <input class="form-control width100 form-focus-info" id="Search" name="Search" type="text"/>
+                            <!-- <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type="button" id="address-search">
+                                        Go!
+                                    </button>
+                                </span>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-36">
+                            Primary GPS Location
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" readonly id="GPSLocation" name="GPSLocation" placeholder="Primary GPS Location" type="text"
+                                   data-validate="required" data-message-required="Please search patient's address to establish GPS coordinates."/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-35">
+                            Search
+                        </label>
+                        <div class="col-sm-9" >
+                            <input class="form-control width100 form-focus-info" id="SearchSecondary" name="Search" type="text"/>
+                            <!-- <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type="button" id="address-search-secondary">
+                                        Go!
+                                    </button>
+                                </span>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-36">
+                            Secondary GPS Location
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" readonly id="GPSLocationSecondary" name="GPSLocation" placeholder="Secondary GPS Location" type="text"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-37">
+                            Address 1
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-37" name="Address1"  maxlength="255"
+                                   ng-model="addPatient.patient.patientAddress.address1" type="text"
+                                   data-validate="required" data-message-required="Please enter Address 1."/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-38">
+                            Address 2
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-38" name="Address2" maxlength="255"
+                                   ng-model="addPatient.patient.patientAddress.address2" type="text"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-39">
+                            City
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-39" name="City" maxlength="50"
+                                   ng-model="addPatient.patient.patientAddress.city" type="text"
+                                   data-validate="required" data-message-required="Please enter City."/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            {{terminologyBank.state}}
+                        </label>
+                        <div class="col-sm-9">
+                            <script type="text/javascript">
+                                // jQuery(document).ready(function($) {
+                                //             $("#sboxit-1").selectBoxIt().on('open', function() {
+                                //               // Adding Custom Scrollbar
+                                //               $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+                                //             });
+                                //           });
+                            </script>
+                            <select class="form-control" id="sboxit-1" name="State" ng-model="addPatient.patient.patientAddress.state"
+                                    data-validate="required" data-message-required="Please select the state."
+                                    ng-options="state.abbreviation as state.name for state in states">
+                                <option value="">
+                                    Select the {{terminologyBank.state}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            County
+                        </label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="sboxit-2" name="County" ng-model="addPatient.patient.patientAddress.county"
+                                    ng-options="county as county for county in addPatient.stateCountyList[addPatient.patient.patientAddress.state]">
+                                <option value="">
+                                    Select the county
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-40">
+                            {{terminologyBank.zipCode}}
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-40" name="ZipCode" ng-model="addPatient.patient.patientAddress.zipcode" type="text" maxlength="10"
+                                   data-validate="required" data-message-required="Please enter Zip Code."/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-41">
+                            TimeZone
+                        </label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="field-41" name="TomeZone" ng-model="addPatient.patient.patientAddress.timezone"
+                                    data-validate="required" data-message-required="Please select the timezone."
+                                    ng-options="tz.googleTimezone as tz.displayValue for tz in addPatient.usTimezones">
+                                    <option value="" selected disabled>
+                                        Select TimeZone
+                                    </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addPatient.setFromNext('tab3')">
+                                Next »
+                            </button>
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addPatient.setFromNext('tab1')">
+                                « Previous
+                            </button>
+                        </div>
+                    </div>
+                    <!--                    <input name="patientId" type="hidden" value="{{addPatient.patient.id}}">
+                                        </input>-->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // validate
+    customJqueryValidation();
+    jQuery(document).ready(function ($) {
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+    });
+</script>

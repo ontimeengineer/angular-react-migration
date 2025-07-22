@@ -1,8 +1,6 @@
-const AUTHOR_URI = 'http://localhost:3004/authors'
+const AUTHOR_URI = 'http://localhost:3004/authors';
 
-export default class AuthorService {
-
-    static $inject = ['$http'];
+class AuthorService {
     constructor($http) {
         this.$http = $http;
         this.authors = {};
@@ -16,7 +14,7 @@ export default class AuthorService {
 
     setAuthors(authors) {
         this.authors = authors.reduce((authorMap, author) => {
-            authorMap[author.id] = author
+            authorMap[author.id] = author;
             return authorMap;
         }, this.authors);
         return authors;
@@ -26,3 +24,7 @@ export default class AuthorService {
         return this.authors[id];
     }
 }
+
+AuthorService.$inject = ['$http']; // ✅ Explicitly assign after class definition
+
+export default AuthorService;

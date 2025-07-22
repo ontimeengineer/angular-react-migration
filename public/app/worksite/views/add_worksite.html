@@ -1,0 +1,78 @@
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">
+                {{addWorksite.editMode?'Update Worksite':'Add Worksite'}}
+            </h1>
+            <p class="description">
+                {{addWorksite.editMode?'Edit A Worksite Record By Entering Worksite Information':'Create A Worksite Record By Entering Worksite Information'}}
+
+            </p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <!-- FORM WIZARD WITH VALIDATION START HERE-->
+    <script type="text/javascript">
+        jQuery(document).ready(function($)
+        {
+            $(".multi-select").multiSelect({
+                afterInit: function()
+                {
+                    // Add alternative scrollbar to list
+                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                },
+                afterSelect: function()
+                {
+                    // Update scrollbar size
+                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                }
+            });
+
+            $(".selectboxit").selectBoxIt().on('open', function()
+            {
+                // Adding Custom Scrollbar
+                $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+            });
+        });
+
+    </script>
+    <form class="form-wizard custom-form" dirty="addWorksite.formDirty" selectedtab="tabNo" novalidate="" role="form">
+        <ul class="tabs">
+            <li class="{{tabNo==1?'active':''}}">
+                <a data-toggle="tab" href="" ng-click="addWorksite.navigateToTab($event, 'tab1')" style="{{!addWorksite.editMode?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa fa-user"></i></div> 
+                    <div class="hidden-xs">Worksite Information</div>
+                    <span>
+                        1
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==2?'active':''}}">
+                <a data-toggle="tab" href="" ng-click="addWorksite.navigateToTab($event, 'tab2')" style="{{!addWorksite.editMode?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa fa-location-arrow"></i></div> 
+                    <div class="hidden-xs">Location Information</div>
+                    <span>
+                        2
+                    </span>
+                </a>
+            </li>            
+        </ul>
+        <div class="progress-indicator">
+            <span>
+            </span>
+        </div>
+        <div ui-view></div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    customJqueryValidation();
+
+    jQuery(document).ready(function($) {
+        setTimeout(function() {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+    });
+</script>

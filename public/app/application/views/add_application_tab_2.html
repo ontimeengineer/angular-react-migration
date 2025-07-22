@@ -1,0 +1,180 @@
+<div class="row"  ng-init="addEmployee.tab2DataInit()">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal validate" id="add_employee_form" novalidate="" name="add_employee_form" role="form" ng-submit="addEmployee.saveEmployee()">
+                    <fieldset ng-disabled="addEmployee.viewOnly">
+                        <div class="row"  ng-if="!addEmployee.viewOnly">
+                            <div class="col-sm-12">
+                                <button class="btn btn-success mar_rg5 mar_lf5 mar_rg5 pull-right" type="submit" ng-click="addEmployee.setFromNext('tab2')">
+                                    Save Changes
+                                </button>
+                                <button class="btn btn-white mar_rg5 pull-right" type="submit" ng-click="addEmployee.setFromNext('close')">
+                                    Save & Close
+                                </button>
+                                <button class="btn btn-black mar_rg5 pull-right" type="submit" ng-if="addEmployee.employee.status != null && addEmployee.employee.status !== 'submitted'" ng-click="addEmployee.setFromNext('submit')">
+                                    Submit Application
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group" ng-if="addEmployee.adminLogin">
+                            <label class="col-sm-3 control-label">
+                                Map
+                            </label>
+                            <div class="col-sm-9">
+                                <div id="map-1" class="map_panel"></div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator"  ng-if="addEmployee.adminLogin">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-35">
+                                Search
+                            </label>
+                            <div class="col-sm-9" >
+                                <input class="form-control" id="autocomplete" name="autocomplete" placeholder="Search for your location"
+                                       ng-model="addEmployee.autocomplete" type="text"/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-36">
+                                GPS Location
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" readonly id="GPSLocation" name="GPSLocation" placeholder="GPS Location" type="text"
+                                       data-validate="required" data-message-required="Please search employee's address to establish GPS coordinates."/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-37">
+                                Address 1
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-37" name="Address1"  maxlength="255"
+                                       ng-model="addEmployee.employee.address1" type="text"
+                                       data-validate="required" data-message-required="Please enter Address 1."/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-38">
+                                Address 2
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-38" name="Address2" maxlength="255"
+                                       ng-model="addEmployee.employee.address2" type="text"/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-39">
+                                City
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-39" name="City" maxlength="50"
+                                       ng-model="addEmployee.employee.city" type="text"
+                                       data-validate="required" data-message-required="Please enter City."/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                {{terminologyBank.state}}
+                            </label>
+                            <div class="col-sm-9">
+                                <script type="text/javascript">
+                                    // jQuery(document).ready(function($) {
+                                    //             $("#sboxit-1").selectBoxIt().on('open', function() {
+                                    //               // Adding Custom Scrollbar
+                                    //               $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+                                    //             });
+                                    //           });
+                                </script>
+                                <select class="form-control" id="sboxit-1" name="State" ng-model="addEmployee.employee.state"
+                                        data-validate="required" data-message-required="Please select the state."
+                                        ng-options="state.abbreviation as state.name for state in states">
+                                    <option value="">
+                                        Select the {{terminologyBank.state}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-40">
+                                {{terminologyBank.zipCode}}
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-40" name="ZipCode" ng-model="addEmployee.employee.zipcode" type="text" maxlength="10"
+                                       data-validate="required" data-message-required="Please enter Zip Code."/>
+                            </div>
+                        </div>
+<!--                        <div class="form-group-separator"  ng-if="addEmployee.adminLogin">
+                        </div>
+                        <div class="form-group"  ng-if="addEmployee.adminLogin">
+                            <label class="col-sm-3 control-label" for="PreferredCounties">
+                                Preferred Counties
+                            </label>
+                            <div class="col-sm-9">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        setTimeout(function () {
+                                            $("#PreferredCounties").select2({
+                                                // minimumResultsForSearch: -1,
+                                                placeholder: 'Select Preferred Counties...',
+                                                // minimumInputLength: 1,
+                                                // placeholder: 'Search',
+                                            }).on('select2-open', function ()
+                                            {
+                                                // Adding Custom Scrollbar
+                                                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                            });
+                                        }, 200);
+                                    });</script>
+                                <select multiple class="form-control" name ="PreferredCounties" id="PreferredCounties" 
+                                        ng-model="addEmployee.employee.preferredCounties" ng-options='county as county for county in nyStateCountyList'>
+                                    <option value="" selected hidden />
+                                </select>
+                            </div>
+                        </div>-->
+                        <div class="form-group-separator">
+                        </div>
+                    </fieldset>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addEmployee.setFromNext('tab3')">
+                                Next »
+                            </button>
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addEmployee.setFromNext('tab1')">
+                                « Previous
+                            </button>
+                        </div>
+                    </div>
+                    <!--                    <input name="employeeId" type="hidden" value="{{addEmployee.employee.id}}">
+                                        </input>-->
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // validate
+    customJqueryValidation();
+    jQuery(document).ready(function ($) {
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+    });
+</script>

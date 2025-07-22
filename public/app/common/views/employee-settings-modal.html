@@ -1,0 +1,176 @@
+
+    <div class="modal-header">		
+        <h4 class="modal-title">Employee Benefit Adjustment</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row" ng-if="employeeSettings.settings && employeeSettings.settings.sickTimeEarned != null">
+            <div class="col-sm-12"><b>Sick Time</b></div>
+            <div class="col-sm-12">&nbsp;</div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label"></label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Earned</label>
+                    <label class="form-control" ng-disabled="true"> 
+                        {{employeeSettings.settings.sickTimeEarned}}</label>
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label">-</label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Used</label>
+                    <label class="form-control" ng-disabled="true"> 
+                        {{employeeSettings.settings.sickTimeUsed}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label">+</label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Offset</label>
+                    <input class="form-control" id="sickOffsetTime" name="sickOffsetTime" type="text" 
+                           ng-model="employeeSettings.settings.sickTimeOffset"> 
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label">=</label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Total Time</label>
+                    <label class="form-control" ng-disabled="true">
+                        {{employeeSettings.calculateHours(employeeSettings.settings.sickTimeEarned, employeeSettings.settings.sickTimeUsed, employeeSettings.settings.sickTimeOffset)}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-12">&nbsp;</div>
+        </div>
+        <div class="row" ng-if="employeeSettings.settings && employeeSettings.settings.personalTimeEarned != null">
+            <div class="col-sm-12"><b>Personal Time</b></div>
+            <div class="col-sm-12">&nbsp;</div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label"></label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Earned</label>
+                    <label class="form-control" ng-disabled="true"> 
+                        {{employeeSettings.settings.personalTimeEarned}}</label>
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label">-</label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Used</label>
+                    <label class="form-control" ng-disabled="true"> 
+                        {{employeeSettings.settings.personalTimeUsed}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label">+</label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Offset</label>
+                    <input class="form-control" name="personalTimeEarned" type="text" 
+                           ng-model="employeeSettings.settings.personalTimeOffset"> 
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label">=</label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Total Time</label>
+                    <label class="form-control" ng-disabled="true">
+                        {{employeeSettings.calculateHours(employeeSettings.settings.personalTimeEarned, employeeSettings.settings.personalTimeUsed, employeeSettings.settings.personalTimeOffset)}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-12">&nbsp;</div>
+        </div>
+        <div class="row" ng-if="employeeSettings.settings && employeeSettings.settings.vacationTimeEarned != null">
+            <div class="col-sm-12"><b>Vacation Time</b></div>
+            <div class="col-sm-12">&nbsp;</div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label"></label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Earned</label>
+                    <label class="form-control" ng-disabled="true"> 
+                        {{employeeSettings.settings.vacationTimeEarned}}</label>
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label">-</label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Used</label>
+                    <label class="form-control" ng-disabled="true"> 
+                        {{employeeSettings.settings.vacationTimeUsed}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label">+</label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Offset</label>
+                    <input class="form-control" name="vacationTimeEarned" type="text" 
+                           ng-model="employeeSettings.settings.vacationTimeOffset"> 
+                </div>
+            </div>
+            <div class="col-sm-1">
+                <div class="form-group text-center">
+                    <label class="control-label">=</label>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label class="control-label">Total Time</label>
+                    <label class="form-control" ng-disabled="true">
+                        {{employeeSettings.calculateHours(employeeSettings.settings.vacationTimeEarned, employeeSettings.settings.vacationTimeUsed, employeeSettings.settings.vacationTimeOffset)}}
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-12">&nbsp;</div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="employeeSettings.close();">Cancel</button>
+        <button type="submit" class="btn btn-success" ng-click="employeeSettings.save();">Save changes</button>
+    </div>

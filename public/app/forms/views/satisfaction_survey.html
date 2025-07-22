@@ -1,0 +1,277 @@
+<div class="page-body">
+
+    <div>
+
+        <!-- ADD COMPLAINTS TITLE START -->
+        <div class="page-title">
+            <div class="title-env">
+                <h1 class="title">Add Survey</h1>
+                <p class="description">Submit a new survey by completing the form</p>
+            </div>
+        </div>
+
+        <!-- ADD COMPLAINTS TITLE END -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h2 class="visible-print-block">Add Survey</h2>
+                        <form class="form-horizontal validate" id="add_satisfaction_survey_form" novalidate=""
+                            name="add_satisfaction_survey_form" role="form"
+                            ng-submit="satisfactionSurveyCtrl.saveForm()">
+                            <div class="row hidden-print">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-info btn-single gray_bt pull-right"
+                                        ng-click="satisfactionSurveyCtrl.resetForm()" type="button">
+                                        Reset To Default
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group-separator"></div>
+
+
+                            <div class="form-group">
+                                <label for="surveyType" class="control-label col-sm-3">Survey Type</label>
+                                <div class="col-sm-9">
+                                    <select name="surveyType" id="surveyType" class="form-control"
+                                        data-validate="required" data-message-required="Please select survey type"
+                                        ng-change="satisfactionSurveyCtrl.onSurveyTypeChange()"
+                                        ng-model="satisfactionSurveyCtrl.surveyMainForm.type">
+                                        <option value="" hidden selected>Select Survey Type</option>
+                                        <option value="client_survey">Client Satisfaction Survey</option>
+                                        <option value="employee_survey">Employee Satisfaction Survey</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group hidden-print"
+                                ng-if="satisfactionSurveyCtrl.surveyMainForm.type === 'client_survey' || satisfactionSurveyCtrl.surveyMainForm.type === 'employee_survey'">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-info green_bt btn-single pull-right"
+                                        ng-click="satisfactionSurveyCtrl.conductSurvey(satisfactionSurveyCtrl.surveyMainForm.type)"
+                                        ng-disabled="satisfactionSurveyCtrl.isSurveyStarted"
+                                        type="button">
+                                        Conduct Survey
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-show="satisfactionSurveyCtrl.surveyTypeSelected">
+                                <label class="col-sm-3 control-label">Date of Survey</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input class="form-control datepicker"
+                                            max-date="satisfactionSurveyCtrl.currentDate" data-format="mm/dd/yyyy"
+                                            id="surveyDate" name="surveyDate" type="text"
+                                            ng-model="satisfactionSurveyCtrl.surveyMainForm.surveyDate"
+                                            data-validate="required,date"
+                                            data-message-required="Please enter survey date"/>
+                                        <div class="input-group-addon">
+                                            <a href="#">
+                                                <i class="linecons-calendar">
+                                                </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-show="satisfactionSurveyCtrl.surveyTypeSelected === 'client_survey'">
+                            
+                                <div class="form-group-separator" id="clienteDropdownSeparator"></div>
+                                <div class="form-group" ng-if="!satisfactionSurveyCtrl.print">
+                                    <label class="col-sm-3 control-label">Client Name</label>
+                                    <div class="col-sm-9">
+                                        <script type="text/javascript">
+                                            jQuery(document).ready(function ($) {
+                                                setTimeout(function () {
+                                                    $('#patientdropdown').select2({
+                                                        placeholder: 'Select Client',
+                                                    }).on('select2-open', function () {
+                                                        // Adding Custom Scrollbar
+                                                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                                    });
+                                                }, 200);
+                                            });</script>
+                                        <select class="form-control" name="clientdropdown"
+                                            ng-model="satisfactionSurveyCtrl.surveyMainForm.patientId"
+                                            id="patientdropdown" data-validate="required"
+                                            data-message-required="Please select a Client/Patient"
+                                            ng-options='patient.id as patient.label for patient in satisfactionSurveyCtrl.patientList'>
+                                            <option value="" selected hidden>
+                                        </select>
+                                        <div ng-show='satisfactionSurveyCtrl.surveyMainForm.patientId == null && satisfactionSurveyCtrl.formSubmitted' id="">
+                                            <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>Please select Client.</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group-separator"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Services Received</label>
+                                    <div class="col-sm-9">
+                                        <div>
+                                            <label class="checkbox col-sm-3 pad_lf20"
+                                                ng-repeat="service in satisfactionSurveyCtrl.servicesKeyValue">
+                                                <input class="d-check" 
+                                                       id="service{{$index}}" 
+                                                       name="{{service.key}}"
+                                                       type="checkbox" 
+                                                       ng-model="satisfactionSurveyCtrl.surveyForm.services[service.key]"
+                                                       ng-change="satisfactionSurveyCtrl.checkIfOtherServiceSelected(service.value)" />
+                                                {{service.value}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group" ng-if="satisfactionSurveyCtrl.surveyForm.services['others']">
+                                    <label class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-9">
+                                        <input type="text"
+                                               name="serviceOther"
+                                               ng-model="satisfactionSurveyCtrl.surveyForm.serviceOther" 
+                                               class="form-control"
+                                               placeholder="Service Other">
+                                    </div>
+                                </div>                                
+
+                                <!-- QUESTION ANSWER SECTION -->
+                                <div ng-repeat="question in satisfactionSurveyCtrl.clientSurveyQuestions">
+                                    <div class="form-group-separator"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-9 form-control-static">
+                                            <p class="color-secondary mar_bt10">{{question.title}}</p>
+                                            <div class="d-flex">
+                                                <div class="radio-flex-box mar_rg10"
+                                                    ng-repeat="option in question.options">
+                                                    <input type="radio" class="d-radio"
+                                                        ng-model="satisfactionSurveyCtrl.surveyForm[question.name]"
+                                                        value="{{option}}" id="{{question.name + $index}}"
+                                                        name="{{question.name}}">
+                                                    <label for="{{question.name + $index}}">{{option}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="satisfactionSurveyCtrl.surveyForm[question.name] === 'No' && question.reasonBox">
+                                        <label class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="{{question.name + 'Reason'}}"
+                                                ng-model="satisfactionSurveyCtrl.surveyForm[question.name + 'Reason']" class="form-control"
+                                                placeholder="Please add details">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-show="satisfactionSurveyCtrl.surveyTypeSelected === 'employee_survey'">
+
+                                <div class="form-group-separator" id="employeeDropdownSeparator"></div>
+                                <div class="form-group" ng-if="!satisfactionSurveyCtrl.print">
+                                    <label class="col-sm-3 control-label">Employee Name</label>
+                                    <div class="col-sm-9">
+                                        <script type="text/javascript">
+                                            jQuery(document).ready(function ($) {
+                                                setTimeout(function () {
+                                                    $('#employeedropdown').select2({
+                                                        placeholder: 'Select Employee',
+                                                    }).on('select2-open', function () {
+                                                        // Adding Custom Scrollbar
+                                                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                                    });
+                                                }, 200);
+                                            });</script>
+                                        <select class="form-control" name="employeedropdown"
+                                            ng-model="satisfactionSurveyCtrl.surveyMainForm.employeeId"
+                                            id="employeedropdown" data-validate="required"
+                                            data-message-required="Please select an Employee"
+                                            ng-options='employee.id as employee.label for employee in satisfactionSurveyCtrl.employeeList'
+                                            ng-disabled="satisfactionSurveyCtrl.print">
+                                            <option value="" selected hidden>
+                                        </select>
+                                        <div ng-show='satisfactionSurveyCtrl.surveyMainForm.employeeId == null && satisfactionSurveyCtrl.formSubmitted' id="">
+                                            <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>Please select Employee Name.</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- QUESTION ANSWER SECTION -->
+                                <div ng-repeat="question in satisfactionSurveyCtrl.employeeSurveyQuestions">
+                                    <div class="form-group-separator"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-9 form-control-static">
+                                            <p class="color-secondary mar_bt10">{{question.title}}</p>
+                                            <div class="d-flex">
+                                                <div class="radio-flex-box mar_rg10"
+                                                    ng-repeat="option in question.options">
+                                                    <input type="radio" class="d-radio"
+                                                        ng-model="satisfactionSurveyCtrl.surveyForm[question.name]"
+                                                        value="{{option}}" id="{{question.name + $index}}"
+                                                        name="{{question.name}}">
+                                                    <label for="{{question.name + $index}}">{{option}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group"
+                                        ng-if="satisfactionSurveyCtrl.surveyForm[question.name] === 'no' && question.reasonBox">
+                                        <label class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-9">
+                                            <input type="text" name="serviceOther"
+                                                ng-model="satisfactionSurveyCtrl.serviceOther" class="form-control"
+                                                placeholder="Please add details">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-show="satisfactionSurveyCtrl.surveyTypeSelected">
+                                <div class="form-group-separator"></div>
+                                <div class="form-group">
+                                    <label for="" class="col-sm-3 d-flex"></label>
+                                    <div class="col-sm-9 form-control-static">
+                                        <p class="color-secondary mar_bt10">Do you have any suggestions for our
+                                            company’s improvement?</p>
+                                        <div class="">
+                                            <textarea name="suggestions" ng-model="satisfactionSurveyCtrl.surveyForm.suggestions"
+                                                class="form-control" rows="5" maxlength="1000" id=""
+                                                placeholder="Please enter suggestions"></textarea>
+                                            <p class="length-message hidden-print" style="text-align: end; margin-top: 3px;">
+                                                {{satisfactionSurveyCtrl.surveyForm.suggestions.length || 0}}/1000
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-if="satisfactionSurveyCtrl.surveyTypeSelected"
+                                ng-hide="satisfactionSurveyCtrl.print">
+                                <div class="form-group-separator">
+                                </div>
+                                <div class="row hidden-print">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-info green_bt pull-right" style="width:auto;"
+                                            type="submit">
+                                            Submit Survey
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>

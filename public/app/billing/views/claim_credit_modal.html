@@ -1,0 +1,74 @@
+<style>
+    .text-allign-left{
+        text-align: left!important;
+    }
+    .has-error .input-group-addon {
+        color: #a94442;
+        border-color: #a94442;
+        background-color: #f2dede;
+    }
+    .has-error .form-control , .has-error .form-control:focus{
+        border-color: #a94442;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    }
+    #available-credits_filter{
+        display: none
+    }
+</style>
+<div class="modal-header">      
+    <h4 class="modal-title"> Apply Credit</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal validate" id="claim_credit_form" novalidate="" name="claim_credit_form" role="form">
+        <div class="row">
+            <div class="col-md-12 form-group">
+                <div class="border0 table-responsive scroll" ng-show="claimCredit.creditsAvailable.length">
+                    <table id="available-credits" 
+                           class="table table-striped table-bordered  table table-small-font table-bordered table-striped" 
+                           cellspacing="0" datatable-setup display-print="false">
+                        <thead>
+                            <tr>
+                                <th nowrap></th>
+                                <th nowrap><span class="">Claim Number</span></th>
+                                <th nowrap><span class="">Patient Name</span></th>
+                                <th nowrap><span class="">Total Cost</span></th>
+                                <th nowrap><span class="">Paid Amount</span></th>
+                                <th nowrap><span class="">Apply Credit</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>                            
+                            <tr style="cursor: pointer" ng-repeat="credit in claimCredit.creditsAvailable" ng-if="claimCredit.creditsAvailable.length > 0">                                
+                                <td>
+                                    <input type="checkbox" 
+                                           ng-model="claimCredit.selectedCredits[credit.claimId]" ng-change="claimCredit.updateCreditSelection()">
+                                </td>
+                                <td>{{credit.claimId}}</td>
+                                <td>{{credit.patientName}}</td>                                       
+                                <td>{{credit.totalCosts| currency:'$':2}}</td>
+                                <td>{{credit.paidAmount| currency:'$':2}}</td>
+                                <td>
+                                    <div class="input-group" ng-class="{'has-error':(credit.usedAmount > credit.availableCredit)}">
+                                        <input ng-model="credit.usedAmount" ng-disabled="!claimCredit.selectedCredits[credit.claimId]" 
+                                               numbers-only="true" maxlength="10" class="form-control" decimalallowed
+                                               id="paymentAmount" name="totalCosts" type="text"/>
+                                        <span class="input-group-addon">/${{credit.availableCredit| number : 2}}</span>
+                                    </div>       
+                                </td>
+                            </tr>
+                            <tr ng-if="claimCredit.creditsAvailable.length === 0">
+                                <td colspan="6" style="text-align: center;">
+                                    No records found
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>    
+                </div>
+            </div>	
+        </div>
+    </form>            
+</div>   
+<div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="claimCredit.close();">Close</button>
+    <button type="button" class="btn btn-success" ng-click="claimCredit.save();">Save</button>
+</div>

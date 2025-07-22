@@ -1,0 +1,151 @@
+<style>
+    .consent-title-section {
+        font-size: 18px;
+        text-align: end;
+        margin-top: 0;
+    }
+
+    .consent-html h1,
+    .consent-html h2,
+    .consent-html h3,
+    .consent-html h4,
+    .consent-html h5,
+    .consent-html h6 {
+        margin-top: 0;
+    }
+
+    .consents-description {
+        color: #979898;
+    }
+
+    @media print {
+        .consent-title-section {
+            text-align: start;
+        }
+        .consent-header-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-direction: row-reverse;
+            width: max-content;
+        }
+        .confirm-check {
+            height: 30px;
+            margin-bottom: 5px;
+        }
+
+    }
+</style>
+
+<!--================== HEADER ====================-->
+<div class="row">
+    <div class="col-sm-12">
+        <patient-breadcrumb patient="patientConsents.patient" record-name="Patient Record - Patient Consents"></patient-breadcrumb>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+
+                <form class="form-horizontal validate" id="patient_consents_form" name="patient_consents_form"
+                    role="form" ng-submit="patientConsents.submitForm()">
+                    <div class="row hidden-print">
+                        <div class="col-sm-12 pull-right">
+                            <button class="btn btn-info btn-single gray_bt pull-right" type="reset"
+                                ng-click="patientConsents.resetForm()">
+                                Reset To Default
+                            </button>
+                            <button class="btn btn-info gray_bt pull-right" type="button"
+                                ng-click="patientConsents.submitDraft()"
+                                ng-if="patientConsents.patientConsentsForm.isDraft">
+                                Save to Draft
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- Consents -->
+                    <div class="form-group" ng-repeat="consents in patientConsents.patientConsentsForm.consentsSet">
+                        <div class="form-group-separator"></div>
+                        <div class="col-sm-3">
+                            <header class="consent-header-container">
+                                <h4 for="consents" class="consent-title-section">{{consents.title}}</h4>
+                                <div class="confirm-check">
+                                    <input id="consents{{$index}}" class="pull-right d-check"
+                                    name="consents{{$index}}" type="checkbox" ng-model="consents.value" value="true" />
+                                </div>
+                            </header>
+                        </div>
+                        <div class="col-sm-6 consents-description">
+                            <span class="consent-html" ng-bind-html="sanitizeHtml(consents.consentsDescription)"></span>
+                            
+                            <div ng-if="consents.inputType === 'TEXT_INPUT'">
+                                <textarea class="form-control "  ng-disabled="!consents.value" name="additional_consent{{$index}}" style="resize: none;"
+                                    ng-model="consents.value_input" id="text_input" cols="30" maxlength="160"
+                                    rows="5" placeholder="Enter additional terms and conditions..."></textarea>
+                            
+                                <p class="length-message " style="text-align: end; margin-top: 3px;">
+                                    {{consents.value_input.length}}/160</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Patient/Proxy Signature -->
+                    <div class="form-group">
+                        <label for="patientProxySignature" class="col-sm-3 control-label">Patient/Proxy
+                            Signature</label>
+                        <div class="col-sm-9">
+                            <signature-pad width="550" height="175" style="border: 1px solid #B0B0B0"
+                                dataurl="patientConsents.patientConsentsForm.patientProxySignature"
+                                accept="patientConsents.acceptPatientProxySignature"
+                                clear="patientConsents.clearPatientProxySignature"
+                                ng-model="patientConsents.patientConsentsForm.patientProxySignature"
+                                class="form-control" data-validate="required"
+                                data-message-required="Patient/Proxy Signature required."></signature-pad>
+                            <button type="button" class="btn btn-default mar_top7 btn-default-bootstrap hidden-print"
+                                ng-click="patientConsents.clearPatientProxySignature(); patientConsents.clearPatientProxySignatureCall()">Clear
+                                signature</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Nurse Signature -->
+                    <div class="form-group">
+                        <label for="nurseSignature" class="col-sm-3 control-label">Nurse Signature</label>
+                        <div class="col-sm-9">
+                            <signature-pad width="550" height="175" style="border: 1px solid #B0B0B0"
+                                dataurl="patientConsents.patientConsentsForm.nurseSignature"
+                                accept="patientConsents.acceptNurseSignature"
+                                clear="patientConsents.clearNurseSignature"
+                                ng-model="patientConsents.patientConsentsForm.nurseSignature" class="form-control"
+                                data-validate="required"
+                                data-message-required="Nurse Signature required."></signature-pad>
+                            <button type="button" class="btn btn-default mar_top7 btn-default-bootstrap hidden-print"
+                                ng-click="patientConsents.clearNurseSignature(); patientConsents.clearNurseSignatureCall()">Clear
+                                signature</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+
+                    <!-- Save Button -->
+                    <div class="row hidden-print">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" type="submit">Save</button>
+                            <button class="btn btn-info gray_bt pull-right" type="button"
+                                ng-click="patientConsents.submitDraft()"
+                                ng-if="patientConsents.patientConsentsForm.isDraft">
+                                Save to Draft
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

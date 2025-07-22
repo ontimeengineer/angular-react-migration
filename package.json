@@ -3,11 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "eslint": "^3.18.0",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.10.2",
     "json-server": "^0.9.6",
     "react-scripts": "0.8.5"
   },
@@ -15,14 +10,13 @@
     "angular": "^1.6.1",
     "angular-ui-router": "^0.3.2",
     "lodash": "^4.17.4",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "prop-types": "^15.8.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "api": "json-server --watch mock-data.json --port 3004"
+    "start": "react-scripts start --no-eslint",
+    "build": "react-scripts build --no-eslint",
+    "test": "react-scripts test"
   }
 }

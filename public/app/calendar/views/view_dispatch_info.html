@@ -1,0 +1,93 @@
+
+<div class="page-body"> 
+
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">Dispatch Details</h1>
+            <p class="description">View Dispatch Details</p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div>
+                    <form class="form-horizontal validate" role="form">
+                        <div class="row adjust-row-padding">
+                            <div class="col-sm-12 element-align sm-flex-align">
+                                <div class="element-align user-info">
+                                    <span style="color: #16191e"><span style="cursor: pointer" class='h3 text-bold' ng-click="viewDispatchInfo.openPatientInfoModal(viewDispatchInfo.dispatchInfo.patientId)">{{viewDispatchInfo.dispatchInfo.patientName}} </span>&nbsp; {{viewDispatchInfo.dispatchInfo.careType}}&nbsp; <i class='fa fa-info-circle' style="cursor: pointer" ng-show="viewDispatchInfo.dispatchInfo.patientId" ng-click="viewDispatchInfo.openDispatchInfoModal()"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class='form-group-separator'></div>
+                        <div class="panel-body pad_top0">
+                            
+                            <div>
+
+                                <div class="dataTables_wrapper form-inline dt-bootstrap">
+                                    <div class="table-responsive scroll" >
+                                    <table id="example-1" class="table table-striped table-bordered  table table-small-font" cellspacing="0" ng-if="viewDispatchInfo.employees.length" datatable-setup datatable-sorting="false" datatable-obj="viewDispatchInfo.datatableObj">
+                                        <thead>
+                                            <tr>
+                                                <th width="25%">Name & Role
+                                                </th>
+                                                <th width="24%" >Location
+                                                </th>
+                                                <th width="11%" style="word-break: break-word">Approx Distance</th>
+                                                <th width="25%">Response</th>
+                                                <th width="15%" ng-if="viewDispatchInfo.dispatchInfo.status === 'active'">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr style="cursor: pointer" ng-repeat="emp in viewDispatchInfo.employees">
+                                                <th> 
+                                                    <div class="user_panel" ng-click="viewDispatchInfo.openEditModal(emp.employeeId)" style="cursor: pointer">
+                                                        <div ng-if="emp.profileImage != null && emp.profileImage != ''" class="user_img"> 
+                                                            <img alt="user" class="img-cirlce img-responsive" imageonload="hideDefaultImage" src="assets/images/user-5.png" ng-src="{{(emp.profileImage != null && emp.profileImage != '') ? (amazonPublicUrl + viewDispatchInfo.companyCode + '/' + emp.profileImage) : ('assets/images/user-5.png')}}"> 
+                                                            <img alt="user" class="img-cirlce img-responsive" ng-hide="hideDefaultImage" src="assets/images/loading.gif"/>
+                                                        </div>
+                                                        <div ng-if="emp.profileImage == null || emp.profileImage == ''" class="user_img"> 
+                                                            <img alt="user" class="img-cirlce img-responsive" src="assets/images/user-5.png"> 
+                                                        </div>
+                                                        <div class="emp_user_hd">
+                                                            <div class="emp_user_name">{{emp.employeeName}}</div>
+                                                            <p>{{positions[emp.companyPositionId]}}</p>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td>
+                                                    <div>{{emp.address1}}</div> <div ng-if="emp.address2 != null">{{emp.address2}}</div> {{emp.city}}, {{emp.state}}, {{emp.zipcode}}
+                                                </td>
+                                                <td>
+                                                    <div>{{emp.distanceInMiles}}</div>
+                                                </td>
+                                                <td>
+                                                    <div class="center">
+                                                        <b>{{emp.responseStatus?viewDispatchInfo.employeeDispatchResponses[emp.responseStatus]:''}}</b>
+                                                        {{emp.responseMessage?': '+emp.responseMessage:''}}
+                                                    </div>
+                                                </td>
+                                                <td ng-if="viewDispatchInfo.dispatchInfo.status === 'active'">
+                                                    <a class="btn icon-left fa fa-check edit_button" ng-click="viewDispatchInfo.assignCase(emp)" tooltip="Assign Case"><span class="ed_b"></span></a>
+                                                    <a class="btn icon-left fa fa-reply edit_button ng-scope" href="" ng-click="viewDispatchInfo.openDispatchResponseModel($index, emp, 'responseModal')" tooltip="Response"><span class="ed_b"></span></a>
+                                                    <a class="btn icon-left fa fa-calendar edit_button" href="" ui-sref='app.employee-calendar({id:emp.employeeId})' ng-if="hasAccess('VIEW_EMPLOYEE_SCHEDULE')" tooltip="Calendar"><span class="ed_b"></span></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div>&nbsp;</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

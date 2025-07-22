@@ -1,0 +1,701 @@
+/**
+ *
+ * Apply your custom CSS here
+ *
+*/
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+body {	
+}
+
+a {
+}
+
+.fa-umbrella:before {
+    margin: 0 0.2em 0 0.2em;
+}
+.green_bt{ background-color:#72a230; border:1px solid#72a230; margin-right:5px; width:120px !important;}
+.green_bt:hover{ background-color:#82b240; border:1px solid#5f8628;}
+
+.gray_bt{ background-color:#fff; color:#000; border:1px solid#dddddd; margin-right:5px; margin-bottom:10px !important; width:120px !important; }
+.gray_bt:hover{ background-color:#dddddd; color:#000; border:1px solid#dddddd;}
+
+.purple_bt{ background-color:#7c50bb; color:#fff; border:1px solid#3c0f7b; margin-right:5px; margin-bottom:10px !important; width:120px !important; }
+.purple_bt:hover{ background-color:#6c40ab; color:#fff; border:1px solid#3c0f7b;}
+
+.edit_bt{ background-color:#e4a347; color:#fff; border:1px solid#e4a347; /*margin-right:5px;*/ margin-bottom:10px !important; width:120px !important; }
+.edit_bt:hover{ background-color:#f0ad4e; color:#fff; border:1px solid#c18a3c;}
+
+.delet_bt{ background-color:#d9534f; color:#fff; border:1px solid#d9534f; margin-right:5px; margin-bottom:10px !important; width:120px !important; }
+.delet_bt:hover{ background-color:#c84a46; color:#fff; border:1px solid#aa3d3a;}
+
+.process_bt{width:120px !important; margin-bottom:10px !important;}
+
+
+
+.map_panel{ width:100%; float:left; margin-bottom:10px; height:440px;}
+.map_panel img{ width:100%; float:left; }
+
+.map_s_input{ width:100%; float:left;}
+.width100{ width:100%;}
+
+.time_to{ min-width:220px;}
+
+
+.user_p{ width:60px; height:60px; float:left; border-radius:50px; margin-right:20px; margin-bottom:10px;}
+.user_p img{ width:100%; height:100%;}
+.user_p_hd{ width:75%; font-size:22px; float:left;}
+.user_p_hd h1{ width:100%; font-size:22px; float:left; margin-top:5px; margin-bottom:5px;}
+.user_p_hd p{ width:100%; font-size:15px; float:left; margin-top:0px;}
+
+
+
+/*UPDATES ON 17-3-2015*/
+.insurance_p{ max-width:300px; float:right;}
+.pad0{ padding:0px !important;}
+.pad_top0{ padding-top:0px !important;}
+
+.lf_panel{ float:left;}
+
+
+.ed_b{ padding-left:5px; font-family:Arial, Helvetica, sans-serif;}
+.icon_size{ font-size:14px;}
+
+.edit_button{ color:#62ba27; font-size:14px; padding:5px 0 0px 0px;}
+.edit_button:hover{ color:#428118;}
+.reset_password_button{font-size:14px; padding:5px 0 0px 0px;}
+.reset_password_button:hover{ color:#2c2e2f;}
+
+.delete_button{ color:#f00; font-size:14px; padding:5px 0 0px 0px;}
+.delete_button:hover{color:#a71010;}
+.view_task_button{ color:#7084e7; font-size:14px; padding:5px 0 0px 0px;}
+.view_task_button:hover{ color:#0e44a7;}
+
+.download_bt{ color:#525252; font-size:14px; padding:5px 0 0px 0px;}
+.download_bt:hover{ color:#000000;}
+
+.deactivate_bt{ color:#2c41ac; font-size:14px; padding:5px 0 0px 0px;}
+.deactivate_bt:hover{ color:#1b2c80;}
+
+
+/*UPDATES ON 19-3-2015*/
+@media screen and (min-width:768px) {
+    .insurance_pd{ padding-left:9px !important;}
+    .pad-lf-sm-0 {padding-left: 0 !important;}
+    .pad-rg-sm-0 {padding-right: 0 !important;}
+}
+
+/* NO WRAP FOR SMALL SCREENS */
+.nowrap {
+    text-wrap: nowrap !important;
+}
+
+.user_panel{ min-width:250px; float:left;}
+.user_img{ width:40px; float:left; border-radius:100px;}
+
+.emp_user_hd{ width:80%; font-size:22px; float:left; margin-left:10px;}
+.emp_user_name{ width:100%; font-size:15px; /* float:left; */ font-weight:bold; margin-top:3px; margin-bottom:2px;}
+
+.emp_user_hd h1{ width:100%; font-size:15px; float:left; font-weight:bold; margin-top:3px; margin-bottom:2px;}
+.emp_user_hd p{ width: 100%; font-size:12px; float:left; margin-top:0px; font-weight:normal;}
+
+
+
+/*UPDATES ON 20-3-2015*/
+.green_dot{ width:7px; height:7px; background-color:#82b240; float:left; border-radius:100px; margin:5px 5px  0 0;}
+.red_dot{ width:7px; height:7px; background-color:#F00; float:left; border-radius:100px; margin:5px 5px  0 0;}
+.black_dot{ width:7px; height:7px; background-color:#474747; float:left; border-radius:100px; margin:5px 5px  0 0;}
+
+.gps_green{ width:15px; height:7px; float:left; background-color:#72a230; border-radius:5px; margin-right:5px; margin-top:5px;}
+.gps_red{ width:15px; height:7px; float:left; background-color:#F00; border-radius:5px; margin-right:5px; margin-top:5px;}
+.gps_black{ width:15px; height:7px; float:left; background-color:#474747; border-radius:5px; margin-right:5px; margin-top:5px;}
+
+.d_act_user{background-color:#f6f7fb !important;}
+
+.total{ color:#4c4e4f; font-weight:bold; font-size:12px;}
+.border0{ border:0px !important;}
+.bottom_nav_panel{ width:170px; margin:auto;}
+.discharge_user{background-color:#fff6f6 !important;}
+.time_sh_bt_buttons{ width:260px; margin:auto;}
+
+.file{ font-size:15px; padding:0px !important;}
+.green_dot{ width:7px; height:7px; background-color:#82b240; float:left; border-radius:100px; margin:5px 5px  0 0;}
+
+.input30{ width:30px !important; padding: 6px 5px !important;}
+
+.width800{ width:800px !important;}
+
+@media screen and (max-width:768px) {
+    .wd_full{ width:100% !important;}
+    .width800{ width:auto!important;}
+    .xs-text-right {text-align: right !important;}
+    .pad-rg-xs-0 {padding-right: 0 !important;}
+    .pad-lf-xs-0 {padding-left: 0 !important;}
+    .pad-rg-xs-15 {padding-right: 15px !important;}
+    .nav.nav-tabs+.tab-content{padding: 10px !important;}
+    .panel {padding: 12px 16px !important;}
+}
+
+@media screen and (min-width:1300px) {
+    .scroll{ overflow:hidden !important; border:0px !important;}
+}
+
+
+div.dataTables_filter label{ float:right;}
+
+div.dataTables_paginate { float:right;}
+.pagination{ margin:0px; padding:0px;}
+
+.timesheet_pg{}
+.timesheet_pg .pagination, .dataTables_info{ display:none !important;}
+.pad_bt0{ padding-bottom:0px;}
+
+
+/*#example-1_wrapper .col-xs-6{ width:100%;}
+div.dataTables_length label{ width:100% !important;}
+*/
+.pad_rg0{ padding-right:0px !important;}
+
+
+
+
+/*NEW CSS ON 20-4-2015*/
+.p_bt_margin{ margin-right:53px;}
+.mar_rg5{ margin-right:5px !important;}
+.mar_lf5{ margin-left:5px !important;}
+.mar_bt5{ margin-bottom:5px !important;}
+
+.mar_top7{ margin-top:7px !important;}
+.mar_top2{ margin-top:2px !important;}
+
+.pad_top7{ padding-top: 7px !important;}
+.pad_lf20{ padding-left: 20px !important;}
+
+.mar_top10{margin-top: 10px !important;}
+.mar_lf10{margin-left: 10px !important;}
+.mar_rg10{margin-right: 10px !important;}
+.mar_bt10{margin-bottom: 10px !important;}
+
+.p-0{padding: 0 !important;}
+.m-0{margin: 0 !important;}
+
+.user_av_hd{ width:auto; font-size:22px; float:left;}
+.user_av_hd h1{ width:100%; font-size:22px; margin-top:10px; margin-bottom:0px !important;}
+.user_av_hd p{ width:100%; font-size:15px; float:left; margin-top:0px;}
+.pad_lf0{ padding-left:0px !important;}
+
+.border0{border:0px !important;}
+.mar_bt0{ margin-bottom:5px !important;}
+.mar_top0{ margin-top:0px !important;}
+.mar_rg0{ margin-right:0px !important;}
+.mar_lf0{ margin-left:0px !important;}
+
+.add_med_btn{
+    width:100% !important; 
+    padding: 8px; 
+}
+
+.color-secondary {
+    color: black;
+}
+
+.radio-flex-box {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.radio-flex-box input, .radio-flex-box label {
+    margin: 0 !important;
+}
+
+.search_hide .dataTables_length{display:none !important;}
+.search_hide #example-1_filter{display:none !important;}
+.search_only_hide #example-1_filter{display:none !important;}
+.dataTables_length_hide .dataTables_length{display:none !important;}
+
+.pad_lf0{ padding-left:0px !important;}
+
+
+
+/*CSS CREATED ON 24-4-2015*/
+.tb_width{float:left; width:70px; margin-top:-16px;}
+.wd98{float:left; width:98px; margin-top:-16px;}
+.wd130{float:left; width:130px; margin-top:-16px;}
+.wd110{float:left; width:110px; margin-top:-16px;}
+.wd60{float:left; width:60px; margin-top:-16px;}
+.wd50{float:left; width:50px; margin-top:-16px;}
+.wd80{float:left; width:80px; margin-top:-16px;}
+.wd250{float:left; width:300px; margin-top:-16px;}
+
+
+.wdtd80{float:left; width:80px;}
+/*
+.dataTables_wrapper .table thead>tr .sorting_desc:before{   content: '\f0dd';
+  float: le; width:10px;}
+*/
+
+/* form input and label */
+.form-group label {color: #4C4D4C;}
+.form-group input {color: #4C4D4C;}
+.form-group select {color: #4C4D4C;}
+.form-group textarea {color: #4C4D4C;}
+.cbr-replaced.cbr-radio.cbr-checked .cbr-state span{ background-color: #4C4D4C;}
+input[type="checkbox"].d-check {
+    accent-color: #2C2E2F;
+    width: 13px !important;
+    height: 13px !important;
+    opacity: 1;
+}
+input[type="radio"].d-radio {
+    accent-color: #2C2E2F;
+    width: 15px !important;
+    height: 15px !important;
+    opacity: 1;
+}
+
+/*Start By Saurabh Agrawal 20150417 */
+span.validate-has-error { color: #cc3f44; display: block; font-size: 12px; padding-top: 5px; }
+/*End By Saurabh Agrawal 20150417 */
+
+/* JQuery validation style */
+input.error { border: 1px solid #CC3F44; }
+select.error { border: 1px solid #CC3F44; }
+select.error option{ color: #CC3F44;}
+label.error { color: #CC3F44; display: block; font-size: 12px; padding-top: 5px;  }
+
+/* valign center */
+.table > tbody > tr > td, .table > tbody > tr > th {vertical-align: middle;}
+.red{
+    font-size: 12px;
+    color: #cc3f44;
+}
+
+.dataTables_wrapper table thead th{
+    vertical-align: top;
+}
+.dataTables_wrapper .table thead>tr .nosorting:before{
+    content:'' !important; 
+    pointer-events: none;
+}
+.nosorting{
+    pointer-events: none;
+}
+
+/*
+ * Custom CSS
+ * Used to adjust show dropdown and search bar in every view files
+ */
+
+/* Space around dropdown and Searchbar*/
+.dataTables_wrapper .row {
+    padding: 10px 10px 4px 10px;
+}
+/*Danger-border*/
+.border-danger{
+    border-color: #cc3f44 !important;
+}
+.border-danger-1{
+    border: 1px solid #cc3f44 !important;
+}
+/*Medium compatibility i.e. Tablets*/
+@media screen and (max-width:767px) {
+    .dataTables_wrapper .dataTables_filter .form-control {
+        margin-left: 0 !important;
+    }
+    div.dataTables_filter input {
+        width: 8em !important;
+    }
+    .mar_sm_bt7 {
+        margin-bottom: 7px;
+    }
+    .sm-width-100 {
+        width: 100% !important;
+    }
+}
+/*Small Screen compatibility i.e. Mobile phones*/
+@media screen and (max-width: 380px) {
+    div.dataTables_filter input {
+        width: 5em !important;
+    }
+}
+/*Remove Border overlapping issue in view files*/
+.dataTables_wrapper table {
+    border-left: 0;
+    border-right: 0;
+}
+
+/* Adding min-width for responsiveness wrapping */
+.table-responsive table {
+    min-width: 1000px !important;
+}
+
+table.responsive-md {
+    min-width: 767px !important;
+}
+
+table.responsive-sm {
+    min-width: 576px !important;
+}
+
+/*To solve marginal issue in other language textbox*/
+.other-language .bootstrap-tagsinput {
+    margin-top: 7px;
+}
+.red-label{
+    color: #CC3F44 !important;;
+}
+.no-padding-left{
+    padding-left: 0px;
+}
+
+.element-align {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* adjust width by overwriting it for two rate boxes*/
+#ms-rate1,
+#ms-rate2 {
+    width: auto;
+}
+
+/* For Mobile and Tablets*/
+@media only screen and (max-width : 768px) {
+    .largebox-align {
+        padding-left: 0;
+        padding-right: 0;
+        margin-top: 15px;       
+    }
+}
+
+/* Format Punch time textbox addon */
+.punch-time-input {
+    border: 1px solid #B0B0B0 !important;
+}
+.input-group-addon {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #B0B0B0;
+}
+
+.custom-input-group-modal {
+    float: left !important;
+    padding-right: 30px !important;
+    padding-left: 15px !important;
+}
+
+.custom-input-group-modal .input-group-addon {
+    border: 1px solid #B0B0B0;
+}
+
+.custom-input-group-modal input {
+    padding: 5px !important;
+}
+
+@media only screen and (max-width : 768px) {
+    .add-padding-modal {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+}
+
+/* Top buttons alignment in Billing session tabs*/
+@media only screen and (max-width: 380px) {
+    .btn-process {
+        padding: 10px 5px;
+    }
+    .btn-block-xs {
+        margin-bottom: 5px !important;
+        display: block;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+}
+
+.sm-layout-align {
+    margin-bottom: 0;
+}
+
+.user-info h3{
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.adjust-row-padding {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+@media only screen and (max-width: 380px), only screen and (max-width : 768px) {
+    .sm-layout-align {
+        margin-top: 10px;
+        margin-bottom:15px;
+    }
+    .sm-flex-align {
+        display: flex;
+    }
+    .clean-margin {
+        margin: 0;
+    }
+}
+@media only screen and (max-width: 380px) and (orientation:portrait) {
+    .sm-radio-btn-align {
+        width: 50%;
+    }
+}
+@media only screen and (min-width: 970px) {
+    .lg-layout-align-right {
+        padding-right: 5px;
+    }
+    .lg-layout-align-left {
+        padding-left: 5px;
+    }
+    .clean-margin {
+        margin: 0 !important;
+    }
+}
+
+.collapsed .main-menu li:hover > ul {
+    display: block !important;
+}
+.action-td {
+    width: 85px;
+    padding: 5px !important;
+}
+.action-btn {
+    min-width: 70px !important;
+    display: inline-block;
+}
+
+/*Patient Authorization
+*/
+.table.table-attachments>thead>tr>td:after, .table.table-attachments>thead>tr>th:after{
+    display: none;
+}
+.btn-default-bootstrap{
+    color: #333;background-color: #fff;border-color: #ccc;
+}
+.image-preview-input {
+    position: relative;
+    overflow: hidden;
+    margin: 0px;    
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;    
+}
+.image-preview-input input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.image-preview-input-title {
+    margin-left:2px;
+}
+.lg-device-width {
+    width: 37.5%;
+}
+@media only screen and (max-device-width : 640px) {
+    .lg-device-width {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media only screen and (max-device-width: 768px) {
+    .lg-device-width {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+.panel-table .panel-body{
+    padding:0;
+}
+
+.panel-table .panel-body .table-bordered{
+    border-style: none;
+    margin:0;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
+    text-align:center;
+    width: 100px;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
+.panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
+    border-right: 0px;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
+.panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
+    border-left: 0px;
+}
+
+.panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td{
+    border-bottom: 0px;
+}
+
+.panel-table .panel-body .table-bordered > thead > tr:first-of-type > th{
+    border-top: 0px;
+}
+
+.panel-table .panel-footer .pagination{
+    margin:0; 
+}
+
+/*
+used to vertically center elements, may need modification if you're not using default sizes.
+*/
+.panel-table .panel-footer .col{
+    line-height: 34px;
+    height: 34px;
+}
+
+.panel-table .panel-heading .col h3{
+    line-height: 30px;
+    height: 30px;
+}
+
+.panel-table .panel-body .table-bordered > tbody > tr > td{
+    line-height: 34px;
+}
+
+/* Auto Width for adjusted elements in UI */
+.w-auto {
+    width: auto !important;
+}
+
+/* Used for instruction section in patient form in score listing section i.e Environmental Risk */
+.risk-caution-box {
+    padding: 30px;
+    background: #2c2e2f;
+    color: white;
+}
+
+/* Used for custom grid making in the patient-forms for radios or checkboxes, due to unexpected of bootstrap grid */
+.options-grid {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.75em;
+    column-gap: 0.5em;
+}
+
+.option-field {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.d-flex {display: flex;}
+
+.option-field input[type="checkbox"] {
+    flex-basis: 13px !important;
+}
+
+.options-grid .subfield {
+    margin-block: 0.5em;
+    border: none;
+    border-bottom: thin solid #B0B0B0;
+    outline: none;
+    width: min(100%, 250px);
+}
+
+.options-grid .subfield:focus {
+    border-color: #68b828;
+}
+
+.options-grid.alert {
+    background-color: #cc3f4469;
+    padding: 1em !important;
+}
+
+.options-grid.alert label{
+    margin: 0;
+}
+
+.options-grid .option-parent {
+    flex-basis: 24%;
+}
+
+.page-count-selector {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.gap-5 {
+    gap: 5px !important;
+}
+
+.block-sm-20 {
+    width: 20% !important;
+}
+.block-sm-40 {
+    width: 40% !important;
+}
+.block-sm-60 {
+    width: 60% !important;
+}
+.block-sm-80 {
+    width: 80% !important;
+}
+@media screen and (max-width: 767px) {
+    .block-sm-20, .block-sm-40, .block-sm-60, .block-sm-80 {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .control-label {
+        text-align: left;
+    }
+    .page-count-selector {
+        width: 100%;
+        justify-content: end;
+        padding-right: 0;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 1350px) {
+    .options-grid .option-parent {
+        flex-basis: 32%;
+    }
+}
+
+@media (max-width: 1100px) {
+    .options-grid .option-parent {
+        flex-basis: 49%;
+    }
+}
+
+@media (max-width: 475px) {
+    .options-grid .option-parent {
+        flex-basis: 100%;
+    }
+}
+
+@media screen and (max-width:320px) {
+    .green_bt{ width:100%; margin-right:0px !important; }
+    .process_bt{ width:100%; margin-right:0px !important; }
+    .gray_bt{ width:100%; margin-left:0px !important; margin-right:0px !important;}
+    .time_sh_bt_buttons{ width:auto !important; float:left !important;}
+    .mar-rg0-xxs { margin-right: 0px !important;}
+    .w-btn-xxs {width: 120px !important;}
+}

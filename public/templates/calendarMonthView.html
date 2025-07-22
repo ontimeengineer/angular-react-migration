@@ -1,0 +1,23 @@
+<div class="cal-row-fluid cal-row-head">
+  <div class="cal-cell1" 
+       ng-repeat="day in weekDays track by $index" 
+       ng-bind="day">
+  </div>
+</div>
+<div class="cal-month-box">
+  <div ng-repeat="rowOffset in monthOffsets track by rowOffset">
+    <div class="cal-row-fluid cal-before-eventlist">
+      <div
+        ng-repeat="day in view | calendarLimitTo:7:rowOffset track by $index"
+        ng-init="dayIndex = view.indexOf(day)"
+        class="cal-cell1 cal-cell"
+        ng-click="dayClicked(day, false, $event)"
+        ng-class="{pointer: day.events.length > 0}">
+        <ng-include src="'templates/calendarMonthCell.html'"></ng-include>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>

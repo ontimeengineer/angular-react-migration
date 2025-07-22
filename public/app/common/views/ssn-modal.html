@@ -1,0 +1,28 @@
+<div class="modal-header">		
+    <h4 class="modal-title">{{terminologyBank.ssn}} #</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <form role="form" name="SSNData" id="SSNData"  novalidate>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    {{terminologyBank.ssn}} #
+                </label>
+                <div class="col-sm-9">
+                    <input id="SocialSecurity" numbers-only="true" class="form-control" 
+                           ng-class="{'border-danger':managessn.ssn.exists}" name="SocialSecurity" type="text" 
+                           ng-model="managessn.employee.ssn"
+                           maxlength="9" 
+                           ng-change="managessn.ssn.exists = false;"
+                           required="true"/>
+                    <span ng-if="managessn.ssn.exists" class="validate-has-error">{{terminologyBank.ssn}} number already exists.</span>
+                </div>
+            </div>
+        </form>                
+    </div>   
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="managessn.saveSSN();">Submit</button>
+    <button type="button" class="btn btn-white" ng-click="managessn.close();">Cancel</button>
+</div>

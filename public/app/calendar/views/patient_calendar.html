@@ -1,0 +1,252 @@
+<div class="page-title full-width" ng-if="layoutOptions.pageTitles" title="Calendar" description="Events management calendar">
+    <div class="title-env">
+        <h1 class="title">Patient Calendar</h1>
+        <p class="description">Events management calendar</p>
+    </div>
+</div>
+
+<div style="background:white;">
+
+    <div class="mwl-toolbar">
+        <div class="mwl-left input-group btn-date-group" style="padding-top:5px;">
+            <button type="button" class="btn btn-default btn-sm btn-date"  ng-click="patientcalendar.showDatepicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            <h2>{{ patientcalendar.calendarTitle}}</h2>
+            <datepicker ng-model="patientcalendar.calendarDay" show-weeks="true" class="well well-sm overly-datepicker" ng-click="patientcalendar.selectDate($event)" ng-class="{'show':patientcalendar.isOpen,'hide':!patientcalendar.isOpen}"></datepicker>
+        </div>
+        <div class="mwl-right">
+            <span ng-if="patientcalendar.viewPatient && patientcalendar.viewPatient.status != 'd' && hasAccess('ADD_SCHEDULE')">
+                <a href="" ng-click="openModalCalendar(null, 'calendar-modal', 'lg', 'static');" class="btn btn-primary btn-single btn-sm">Add New Event</a>
+            </span>
+            <div class="mwl-button-group">
+                <button type="button" class="mwl-month-button mwl-button mwl-state-default" ng-click="patientcalendar.changeToMonth()" ng-class="{'mwl-state-active': patientcalendar.calendarView == 'month'}">month</button>
+                <button type="button" class="mwl-agendaWeek-button mwl-button mwl-state-default" ng-click="patientcalendar.changeToWeek()" ng-class="{'mwl-state-active': patientcalendar.calendarView == 'week'}">week</button>
+            </div>
+            <div class="mwl-button-group">
+                <button type="button" class="mwl-prev-button mwl-button mwl-state-default mwl-corner-left" mwl-date-modifier date="patientcalendar.calendarDay" decrement="patientcalendar.calendarView"><span class="mwl-icon mwl-icon-prev fa-angle-left" ></span></button>
+                <button type="button" class="mwl-next-button mwl-button mwl-state-default mwl-corner-right" mwl-date-modifier date="patientcalendar.calendarDay" increment="patientcalendar.calendarView"><span class="mwl-icon mwl-icon-next fa-angle-right"></span></button>
+            </div>
+        </div>
+        <div class="mwl-center"></div>
+        <div class="mwl-clear"></div>
+    </div>
+
+    <div class="mwl-panel-filter" style='background-color: transparent' ng-click="patientcalendar.showDatepicker($event)">
+
+        <div class="mwl-panel-search" ng-if="patientcalendar.calendarView == 'month'">
+            <div class="row">
+                <div class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                    <div class="col-md-7">
+                        <h2 ng-if="patientcalendar.viewPatient" style="margin:0;">{{patientcalendar.viewPatient.lName}}, {{patientcalendar.viewPatient.fName}}</h2>
+                    </div>
+                    <div class="col-md-5" style="padding-right:0px;">
+                        <div class="pull-right col-md-12" style="padding:0;">
+                            <script type="text/javascript">
+                                jQuery(document).ready(function ($)
+                                {
+                                    setTimeout(function () {
+                                        $("#patientdropdownIds").select2({
+                                            // minimumResultsForSearch: -1,
+                                            placeholder: 'Search Patient...',
+                                            // minimumInputLength: 1,
+                                            // placeholder: 'Search',
+                                        }).on('select2-open', function ()
+                                        {
+                                            // Adding Custom Scrollbar
+                                            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                        });
+                                    }, 200);
+                                });</script>
+                            <select class="form-control" name="patientdropdownIds" ng-model="patientcalendar.monthPatient" id="patientdropdownIds" ng-options='data as (data.lName + ", " + data.fName + " " + data.middleInitial) for data in patientcalendar.patientList' ng-change="navigateToMonthPage(patientcalendar.monthPatient)">
+                                <option value="" selected hidden />
+                            </select>
+                        </div>
+                    </div>           
+                </div>
+            </div>
+        </div>
+        <div class="mwl-panel-filter row" style='background-color: transparent;padding-left: 23px' ng-if="patientcalendar.calendarView == 'week'">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Patients</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                            setTimeout(function () {
+                                $("#patientIds").select2({
+                                    // minimumResultsForSearch: -1,
+                                    placeholder: 'Select Patient...',
+                                    // minimumInputLength: 1,
+                                    // placeholder: 'Search',
+                                }).on('select2-open', function ()
+                                {
+                                    // Adding Custom Scrollbar
+                                    $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                });
+                            }, 200);
+                        });</script>
+                    <select multiple class="form-control" name ="patientIds" id="patientIds" ng-model="patientcalendar.searchParams.patientIds" ng-options='patient.id as (patient.lName + ", " + patient.fName + " " + patient.middleInitial) for patient in patientcalendar.patientList'>
+                        <option value="" selected hidden />
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Care Coordinators</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                            setTimeout(function () {
+                                $("#coordinatorIds").select2({
+                                    //                                                        minimumResultsForSearch: -1,
+                                    placeholder: 'Select Coordinator...',
+                                    //                                                        minimumInputLength: 1,
+                                    //                                                        placeholder: 'Search',
+                                }).on('select2-open', function ()
+                                {
+                                    // Adding Custom Scrollbar
+                                    $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                });
+                            }, 200);
+
+                        });
+                    </script>
+                    <select class="form-control" name ="coordinatorIds" id="coordinatorIds" ng-model="patientcalendar.searchParams.coordinatorIds" ng-options='emp.id as (emp.label) for emp in patientcalendar.employeeCoordinateList track by emp.id'>
+                        <option value="" selected hidden />
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Languages</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                            setTimeout(function () {
+                                $("#languages").select2({
+                                    placeholder: 'Select Language...',
+                                }).on('select2-open', function ()
+                                {
+                                    // Adding Custom Scrollbar
+                                    $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                });
+                            }, 200);
+                        });</script>
+                    <select multiple name ="languages" id="languages" class="form-control" ng-model="patientcalendar.searchParams.languages" ng-options="key as value for (key,value) in languages">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Open From</label>
+                    <div class="input-group">
+                        <input type="text" id="field-68" name='fromDate' class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="patientcalendar.searchParams.openCaseStartDate" max-date="patientcalendar.searchParams.openCaseEndDate">
+                        <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label>Open To</label>
+                    <div class="input-group">
+                        <input type="text" id="field-69" class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="patientcalendar.searchParams.openCaseEndDate" min-date="patientcalendar.searchParams.openCaseStartDate">
+                        <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 filter-checkbox" style="margin-top: 25px;">
+                    <div class="col-md-4" style="padding-left:0;">
+                        <label>Live In Care</label>
+                        <input type="checkbox" name="livein" 
+                               ng-model="patientcalendar.searchParams.forLiveIn"
+                               ng-change="patientcalendar.checkLiveIn()">
+                    </div>
+                    <div class="col-md-4" style="padding-left:0;">
+                        <label>Open Cases</label>
+                        <input type="checkbox" name="opencase" 
+                               ng-model="patientcalendar.searchParams.openCase" 
+                               ng-change="patientcalendar.checkOpenCase()">
+                    </div>
+                    <div class="col-md-4" style="padding-left:0;">
+                        <label>New Patients</label>
+                        <input type="checkbox" name="newPatientsOnly" 
+                               ng-model="patientcalendar.searchParams.newPatientsOnly">
+                    </div>
+                </div>
+                <!--                <div class="col-md-3 filter-checkbox row pull-right">
+                                    <div class="col-md-4 col-md-offset-2" style="padding-top:25px;">
+                                        <button class="btn btn-single btn-white btn-block-xs pull-right" type="button" ng-click="patientcalendar.resetFilters()">Reset Filters</button>
+                                    </div>
+                                    <div class="col-md-4" style="padding-top:25px;">
+                                        <button type="button" class="btn btn-success pull-right" ng-click="patientcalendar.applySearch()">Submit</button>
+                                    </div>
+                                </div>-->
+                <div class="col-md-12 pad-rg-sm-0 row" style="margin-top: 30px;">
+                    <div class="page-count-selector col-md-4 pull-left pad-rg-xs-15">
+                        <label class="control-label nowrap"><span>Show Entries</span></label>
+                        <div style="width:70px;">
+                            <select class="form-control input-sm" ng-model="patientcalendar.searchParams.limit" ng-change="patientcalendar.applySearch()">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="padding-top: 7px;">
+                        <label>Show Time</label>
+                        <input type="checkbox" name="livein" ng-model="patientcalendar.forShowTime">
+                    </div>
+                    <div class="col-lg-12 pull-right">                    
+                        <!--<div class="col-md-12 pad_lf0 pad_rg0">-->
+                        <button type="button" class="btn btn-info green_bt pull-right " ng-click="patientcalendar.applySearch()">Submit</button>
+                        <button class="btn btn-info btn-single gray_bt pull-right" type="button"  ng-click="patientcalendar.resetFilters()">
+                            Reset Filters
+                        </button>                        
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <mwl-calendar
+        events="patientcalendar.events"
+        view="patientcalendar.calendarView"
+        view-title="patientcalendar.calendarTitle"
+        current-day="patientcalendar.calendarDay"
+        on-event-click="eventClicked(calendarEvent)"
+        type-id="patientcalendar.patientId"
+        type="patient"
+        show-time="patientcalendar.forShowTime"
+        list="patientcalendar.patient_list"
+        event-click-callback='patientcalendar.eventClicked'>
+    </mwl-calendar>
+    <div ng-if="patientcalendar.calendarView == 'week' && patientcalendar.patient_list.length > 0">
+        <div pagination-id="patientPagination" dir-paginate="e in patientcalendar.patient_list | itemsPerPage: patientcalendar.searchParams.limit" total-items="patientcalendar.count" current-page="patientcalendar.pageNo">
+        </div>
+        <div id="paginationButtons" class="text-right" style="padding-right: 10px">
+            <dir-pagination-controls boundary-links="true" 
+                                     max-size="9"
+                                     template-url="app/tpls/dirPagination.tpl.html" pagination-id="patientPagination" on-page-change="patientcalendar.pageChanged(newPageNumber)"></dir-pagination-controls>
+
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="password-modal">
+    <form class="validate form-horizontal" name="popuppassword" id="popuppassword" >
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="passwordPopup.closePopup();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Authorization</h4>
+    </div>
+
+    <div class="modal-body">
+
+    <div class="row">
+    <label class="col-sm-4 control-label add-padding-modal" for="password">
+    Authorized Password
+    </label>
+    <div class="col-sm-8 add-padding-modal">
+    <input class="form-control" name="password" type="password" ng-model="passwordPopup.password" data-validate="required" data-message-required="Please enter Authorized Password." ng-required='true'> 
+    </div>
+    </div>
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="passwordPopup.closePopup();">Close</button>
+    <button type="submit" class="btn btn-success" ng-click="passwordPopup.save();">Save changes</button>
+    </div>
+    </form>
+</script>

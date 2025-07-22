@@ -1,0 +1,185 @@
+<div class="page-body">
+
+    <div>
+
+        <!-- COMPLAINTS TITLE START -->
+        <div class="page-title">
+            <div class="title-env">
+                <h1 class="title">Complaints</h1>
+                <p class="description">View All Complaints</p>
+            </div>
+        </div>
+        <!-- COMPLAINTS TITLE END -->
+
+        <!-- ADD BUTTON -->
+        <div class="row justify-content-end">
+            <div class="col-md-12">
+                <button ui-sref="app.add-complaint" class="btn btn-primary btn-single btn-sm pull-right">Add New
+                    Complaint</button>
+            </div>
+        </div>
+
+
+        <!-- TABLE START -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li ui-sref="app.complaints({status:'open'})"
+                        class="{{compCtrl.complaintType=='open'?'active':''}}">
+                        <a href="" data-toggle="tab">
+                            <span class="visible-xs"><i class="fa-feed">+</i></span> <span class="hidden-xs">Open
+                                Complaints</span>
+                        </a>
+                    </li>
+                    <li ui-sref="app.complaints({status:'close'})"
+                        class="{{compCtrl.complaintType=='close'?'active':''}}">
+                        <a href="" data-toggle="tab">
+                            <span class="visible-xs"><i class="fa-feed">x</i></span> <span class="hidden-xs">Closed
+                                Complaints</span>
+                        </a>
+                    </li>
+                </ul>
+
+
+                <div class="tab-content" style="padding-bottom:0px;">
+                    <div id="home" class="tab-pane active">
+                        <form class="form-horizontal">
+
+                            <div class="panel-body">
+                                <div class="panel-body pad_top0 pad0">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="page-count-selector col-md-4 pull-left">
+                                                <label class="control-label nowrap"><span>Show Entries</span></label>
+                                                <div style="width:70px;">
+                                                    <select class="form-control input-sm" ng-model="compCtrl.searchParams.pageSize">
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                            </div> 
+                                            <div class="form-group col-md-6 col-sm-6 col-xs-12 pull-right">
+                                                <input type="search" class="form-control input-sm"
+                                                    ng-model="compCtrl.searchParams.search"
+                                                    placeholder="Search by [Complainant Name]"
+                                                    ng-change="compCtrl.applySearch()">
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row"> </div>
+
+                                    <div id="example-1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                        <div class="table-responsive">
+                                            <table id="example-4"
+                                                class="table table-striped table-bordered  table-small-font"
+                                                cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th ng-class="compCtrl.applySortingClass('lName')">Name of
+                                                            Complainant</th>
+                                                        <th>Type</th>
+                                                        <th>Method</th>
+                                                        <th>Contact Info</th>
+                                                        <th>Received Date</th>
+                                                        <th ng-if="compCtrl.complaintType == 'close'">Resolution Date</th>
+                                                        <th>Received By</th>
+                                                        <th ng-if="compCtrl.complaintType == 'open'">Remaining Days</th>
+                                                        <th ng-if="compCtrl.complaintType == 'close'">Closed By</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr pagination-id="viewComplaintPagination"
+                                                        dir-paginate="complaint in compCtrl.complaintsList| itemsPerPage: compCtrl.searchParams.pageSize"
+                                                        total-items="totalRecords"
+                                                        current-page="compCtrl.searchParams.pageNumber">
+                                                        <td>
+                                                            <div ng-click="compCtrl.openViewModal(complaint, 'modal-5', 'lg')"
+                                                                style="cursor: pointer">
+                                                                <div class="emp_user_hd">
+                                                                    <div class="emp_user_name">
+                                                                        {{complaint.complainantName}}</div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{compCtrl.getTitleByValue(complaint.complaintType, 'complaintTypes')}}</td>
+                                                        <td>{{compCtrl.getTitleByValue(complaint.complaintMethod, 'complaintMethods')}}</td>
+                                                        <td>{{complaint.complainantContact | tel}}</td>
+                                                        <td>{{complaint.complaintDate | dateOnly}}</td>
+                                                        <td ng-if="compCtrl.complaintType == 'close'">{{complaint.dateResolvedOn | dateOnly}}</td>
+                                                        <td>{{complaint.complaintReceiver.fName + ' ' + complaint.complaintReceiver.lName | titleCase}}</td>
+                                                        <td ng-if="compCtrl.complaintType == 'open'"
+                                                            ng-bind-html="compCtrl.sanitizeHtml(compCtrl.getRemainingDaysForClosing(complaint))">
+                                                        </td>
+                                                        <td ng-if="compCtrl.complaintType == 'close'">{{complaint.resolvedBy == null? '':complaint.resolvedBy.fullName}}</td>
+                                                        <td>
+                                                            <div class="center">
+                                                                <a ng-if="compCtrl.complaintType == 'open'" ui-sref="app.add-complaint({id: complaint.id})"
+                                                                    ng-click="compCtrl.setComplaint(complaint)"
+                                                                    class="btn icon-left fa fa-pencil edit_button"
+                                                                    href="" tooltip="Edit"><span
+                                                                        class="ed_b"></span></a>
+                                                                <a class="btn icon-left fa fa-trash-o delete_button"
+                                                                    ng-if="hasAccess('VIEW_ALL_COMPLAINTS') && compCtrl.complaintType == 'open'"
+                                                                    ng-click="compCtrl.openDeleteModal(complaint, 'deleteModel')"
+                                                                    tooltip="Delete"><span class="ed_b"></span></a>
+                                                                <a ng-if="compCtrl.complaintType == 'close'" class="btn icon-left fa fa-search deactivate_bt"
+                                                                    ui-sref="app.add-complaint({id: complaint.id, print: true})"
+                                                                    ng-click="compCtrl.setComplaint(complaint); "
+                                                                    tooltip="View Details"><span class="ed_b"></span></a>
+                                                                    <!-- compCtrl.navigateToComplaintDetails(complaint)  -->
+                                                            </div>
+                                                        </td>
+                                                     
+                                                    </tr>
+                                                    <tr ng-if="compCtrl.complaintsList.length === 0">
+                                                        <td colspan="8" style="text-align: center;">
+                                                            No records found
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div ng-show="compCtrl.complaintsList.length">
+                                        <div id="paginationButtons" class="text-right">
+                                            <dir-pagination-controls boundary-links="true" max-size="9"
+                                                template-url="app/tpls/dirPagination.tpl.html"
+                                                pagination-id="viewComplaintPagination"
+                                                on-page-change="compCtrl.pageChanged(newPageNumber)"></dir-pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- TABLE END -->
+
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="deleteModel">
+    <div class="modal-header">
+    <h4 class="modal-title">{{deleteComplaintModel.complaint.complainantName}} - {{deleteComplaintModel.complaint.complaintType}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to delete this Complaint?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="deleteComplaintModel.delete(deleteComplaintModel.complaint);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="deleteComplaintModel.dismiss();">No</button>
+    </div>
+</script>

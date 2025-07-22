@@ -1,0 +1,267 @@
+<style>
+    html .select2-container .select2-choice {
+        height: 30px;
+        font-size: 12px;
+    }
+</style>
+<div class="page-body"> 
+    <!--PAGE TITLE START -->
+    <div class="page-title full-width">
+        <div class="title-env block-sm-60">
+            <h1 class="title">Billing EDI Reader</h1>
+            <p class="description" >Upload 835 EDI to initiate Billing reconciliation for it</p>            
+        </div>
+        <div class="title-env block-sm-40">
+            <a class="btn btn-secondary pull-right" ng-click="ediReader.uploadPopup()" style="margin-top: 10px;">Upload EDI</a>
+            <a class="btn btn-red pull-right" ng-click="ediReader.deletePopup()" style="margin-right: 15px;margin-top: 10px;">Delete EDI</a>
+        </div>
+    </div>    
+
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Search Saved EDI Data</h3>
+                    <div style="color:#2c2e2f" ng-form='ediSearchForm'>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Payer Name</label>
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        setTimeout(function () {
+                                            $("#insuranceProviderId").select2({
+                                                placeholder: 'Select Payer...',
+                                            }).on('select2-open', function ()
+                                            {
+                                                // Adding Custom Scrollbar
+                                                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                            });
+                                        }, 200);
+                                    });</script>
+                                <select class="form-control" id="insuranceProviderId" name="insuranceProviderId" ng-model="ediReader.searchParams.insuranceProviderId"
+                                        ng-options='ins.id as (ins.insuranceName) for ins in ediReader.insuranceProviderList'>
+                                    <option value="">
+                                        Select the Payer
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Batch Number</label>
+                                <input numbers-only="true" ng-model="ediReader.searchParams.ediDataSequenceId" type="text" class="form-control"/>
+                            </div>
+                            <div class="col-md-4">
+                                <label>File Name</label>
+                                <input ng-model="ediReader.searchParams.fileName" type="text" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 filter-checkbox pull-right">
+                                <div class="col-md-12" style="padding-top:20px;">
+                                    <button type="button" class="btn btn-info green_bt pull-right mar_lf5 mar_bt5" ng-click="ediReader.filterEdiDatas()" style="width:auto; margin: 0px">Submit</button>
+                                    <button class="btn btn-info btn-single gray_bt pull-right mar_rg0" type="button" ng-click="ediReader.resetFilters()">
+                                        Reset Filters
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body pad_top0">
+                    <div class="page-count-selector col-md-4 pull-left" ng-if="ediReader.ediData.length">
+                        <label class="control-label nowrap"><span>Show Entries</span></label>
+                        <div style="width:70px;">
+                            <select class="form-control input-sm" ng-model="ediReader.searchParams.limit">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div> 
+                    <div class="clearfix"></div>
+                    <div>
+                        <div class="border0 table-responsive">
+                            <table id="example-1" class="table table-striped table-bordered  
+                                   table table-small-font table-bordered table-striped" cellspacing="0" ng-if="ediReader.ediData.length">
+                                <thead>
+                                    <tr>
+                                        <th nowrap><span class="">Batch Number</span></th>
+                                        <th nowrap><span class="">Payer Name</span></th>
+                                        <th nowrap><span class="">File Name</span></th>
+                                        <th nowrap><span class="">Payment Date</span></th>
+                                        <th nowrap><span class="">Mapped<br>Claim<br>Count</span></th>
+                                        <th nowrap><span class="">Total Amount<br>Paid</span></th>
+                                        <th nowrap class='nosorting text-center'>
+                                            <span class="">Actions</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr pagination-id="drinksPagination" dir-paginate="data in ediReader.ediData| itemsPerPage: ediReader.searchParams.limit" 
+                                        total-items="totalRecords"
+                                        current-page="ediReader.searchParams.pageNo" >
+                                        <td ><b>{{data.ediDataSequenceId}}</b></td>
+                                        <td ><b>{{ediReader.insuranceProviderMap[data.insuranceProviderId]}}</b></td>
+                                        <td>{{data.fileName}}</td>                                        
+                                        <td>{{data.paymentDate}}</td>
+                                        <td>{{data.claimCount}}</td>
+                                        <td>${{data.totalAmount ? (data.totalAmount | number:2): 0}}</td>
+                                        <td class="text-center">
+                                            <div class="center">
+                                                <a class="btn icon-left fa fa-pencil edit_button" 
+                                                   ng-if="hasAccess('MANAGE_BILLING_RECONCILIATION') && data.status == 'MAPPED'" 
+                                                   ui-sref="app.billing_reconciliation_edi_read({dataId: data.ediDataGuid})" tooltip="Initiate reconciliation"><span class="ed_b"></span></a> 
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div ng-if="(ediReader.ediData == null || ediReader.ediData.length == 0) && ediReader.dataRetrieved && ediReader.criteriaSelected === true">
+                                No claims are available for selected filters.
+                            </div>
+                            <div ng-if="ediReader.criteriaSelected == false">
+                                Please select atleast one filter to load claims.
+                            </div>                            
+                            <div class="clearfix"></div>                                                       
+                        </div>                                                
+                    </div>
+                    <div ng-show="ediReader.ediData.length">
+                        <div id="paginationButtons" class="text-right">
+                            <dir-pagination-controls boundary-links="true" 
+                                                     max-size="9"
+                                                     template-url="app/tpls/dirPagination.tpl.html" pagination-id="drinksPagination" on-page-change="ediReader.pageChanged(newPageNumber)"></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="uploadEDIModel">
+    <form class="validate form-horizontal" name="uploadEDIModel.uploadEDIForm" id="uploadEDIForm" >
+    <div class="modal-header">      
+        <h4 class="modal-title"> Upload EDI</h4>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="form-group">
+            <label class="col-sm-4 control-label">
+                Payer
+            </label>
+            <div class="col-sm-8">
+                <select class="form-control" id="insuranceProviderId1" name="insuranceProviderId1" ng-model="uploadEDIModel.ediUploadData.insuranceProviderId"
+                        ng-options='ins.id as (ins.insuranceName) for ins in uploadEDIModel.insuranceProviderList' required>
+                    <option value="">
+                        Select the Payer
+                    </option>
+                </select>
+            </div>
+        </div>     
+
+        <div class="form-group-separator" ng-if="uploadEDIModel.ediUploadData.insuranceProviderId">
+        </div>
+        <div class="form-group" ng-if="uploadEDIModel.ediUploadData.insuranceProviderId" style="margin-bottom: 0px;">
+            <label class="col-sm-4 control-label add-padding-modal">
+                Upload EDI
+            </label>
+            <div class="col-sm-8 add-padding-modal">
+                <div flow-init="uploadEDIModel.uploadFile" flow-file-added="uploadEDIModel.fileAdded($file, $flow)" flow-file-success="uploadEDIModel.fileUploaded($message,$file,$flow)" flow-files-submitted="uploadEDIModel.fileSelected($file,$flow)" flow-file-error="uploadEDIModel.fileError( $file, $message, $flow )">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type='button' class='btn btn-single gray_bt' id="upload" ng-model="uploadEDIModel.data.filePath" 
+                                style="margin-bottom:0px !important" flow-btn name="upload">Choose File</button>
+                        </div>
+                        <div class="col-sm-12" ng-show="uploadEDIModel.ediUploadData.fileName" >
+                            <label class="control-label" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+                                title="{{uploadEDIModel.ediUploadData.fileName}}">
+                                {{uploadEDIModel.ediUploadData.fileName}}
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <div ng-show="uploadEDIModel.fileObj.errorMsg != null && uploadEDIModel.fileObj.errorMsg != ''">
+                            <span class="red">{{uploadEDIModel.fileObj.errorMsg}}</span>
+                        </div> 
+                    </div>
+                    <div flow-transfers class="form-control-static" ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+                        <div ng-repeat="file in transfers">
+                            <div id="docFileprogress" class="progress" ng-show="file.progress() < 1 && uploadEDIModel.showfileProgress">
+                                <div  class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{file.progress() * 100}}%;">
+                                    <!--{{file.progress() * 100 | number : 0}} %-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="uploadEDIModel.closePopup();">Close</button>
+        <button type="submit" class="btn btn-info" ng-disabled="!uploadEDIModel.ediUploadData.sequenceId" ng-click="uploadEDIModel.saveEDIData();">Save EDI Data</button>
+    </div>
+    </form>
+</script>
+
+
+
+<script type="text/ng-template" id="deleteEDIModel">
+    <form class="validate form-horizontal" name="deleteEDIModel.deleteEDIForm" id="deleteEDIForm" >
+    <div class="modal-header">      
+        <h4 class="modal-title"> Delete EDI</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="field-1" style="margin-top:15px;">Delete by</label>
+            <div style="margin-top:15px;">
+                <div class="col-sm-3">
+                    <label class="cbr-inline">
+                        <input type="radio" name="radio-3" class="cbr cbr-primary" ng-model="deleteEDIModel.data.type" value="Batch"
+                            ng-click="deleteEDIModel.deleteData.fileName = null">
+                        Batch ID
+                    </label>
+                </div>
+                <div class="col-sm-3">
+                    <label class="cbr-inline">
+                        <input type="radio" name="radio-3" class="cbr cbr-primary" ng-model="deleteEDIModel.data.type" value="File"
+                            ng-click="deleteEDIModel.deleteData.batchId = null">
+                        File Name
+                    </label>
+                </div>
+            </div>
+        </div>  
+        <div class="form-group-separator" ng-if="deleteEDIModel.data.type">
+        </div>
+        <div class="form-group" ng-if="deleteEDIModel.data.type==='Batch'">
+            <label class="col-sm-2 control-label">
+                Batch Id
+            </label>
+            <div class="col-sm-10">
+                <input numbers-only="true" ng-model="deleteEDIModel.deleteData.batchId" type="text" class="form-control"/>
+            </div>
+        </div>
+        
+        <div class="form-group" ng-if="deleteEDIModel.data.type==='File'">
+            <label class="col-sm-2 control-label">
+                File Name
+            </label>
+            <div class="col-sm-10">
+                <input class="form-control" ng-model='deleteEDIModel.deleteData.fileName'/>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="deleteEDIModel.closePopup();">Close</button>
+        <button type="submit" class="btn btn-info" ng-disabled="!(deleteEDIModel.deleteData.fileName || deleteEDIModel.deleteData.batchId)" 
+            ng-click="deleteEDIModel.deleteEDIData();">Delete EDI Data</button>
+    </div>
+    </form>
+</script>

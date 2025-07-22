@@ -1,0 +1,316 @@
+
+<div class="page-body"> 
+  
+  <div> 
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+      <div class="title-env">
+        <h1 class="title">Add Patient</h1>
+        <p class="description">Create A Patient Record By Entering Patient Information</p>
+      </div>
+    </div>
+    <!--PAGE TITLE END --> 
+    
+    <!-- FORM WIZARD WITH VALIDATION START HERE--> 
+    
+    <script type="text/javascript">
+		jQuery(document).ready(function($){
+			$(".multi-select").multiSelect({
+				afterInit: function(){
+					// Add alternative scrollbar to list
+					this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+				},
+				afterSelect: function(){
+					// Update scrollbar size
+					this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+				}
+			});
+			
+			$(".selectboxit").selectBoxIt().on('open', function(){
+				// Adding Custom Scrollbar
+				$(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+			});
+		});
+
+        // validate
+   customJqueryValidation();
+        jQuery(document).ready(function($) {
+          setTimeout(function() {
+            $(".fade-in-effect").addClass('in');
+          }, 1);
+
+          // Validation
+          $("#addPatientTab5CtrlForm-E").validate({
+            rules: {
+              FName: {
+                required: true
+              },
+              LName: {
+                required: true
+              },
+              dateOfBirth: {
+                required: true
+              },
+              gender: {
+                required: true
+              },
+              relationshipWithPatient: {
+                required: true
+              },
+              address1: {
+                required: true
+              },
+              city: {
+                required: true
+              },
+              state: {
+                required: true
+              },
+              zipcode: {
+                required: true
+              },
+            },
+
+            messages: {
+              FName: {
+                required: 'Please enter First Name.'
+              },
+              LName: {
+                required: 'Please enter Last Name.'
+              },
+              dateOfBirth: {
+                required: 'Please enter Date of Birth.'
+              },
+              gender: {
+                required: 'Please enter Gender.'
+              },
+              relationshipWithPatient: {
+                required: 'Please enter Relationship With Patient.'
+              },
+              address1: {
+                required: 'Please enter Address 1.'
+              },
+              city: {
+                required: 'Please enter City.'
+              },
+              state: {
+                required: 'Please select the state.'
+              },
+              zipcode: {
+                required: 'Please enter Zip Code.'
+              },
+            },
+
+          });
+
+          // Set Form focus
+          $("#addPatientTab5CtrlForm-E .form-group:has(.form-control):first .form-control").focus();
+        });
+			</script>
+    <form role="forl" id="rootwizard" class="form-wizard validate" novalidate>
+      <ul class="tabs">
+       <li> <a href="#/app/add_patient_tab_1" data-toggle="tab"> Patient Information <span>1</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_2" data-toggle="tab"> Location Information <span>2</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_3" data-toggle="tab"> Insurance Information <span>3</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_4" data-toggle="tab"> Authorization Info <span>4</span> </a> </li>
+        <li class="active"> <a href="#/app/add_patient_tab_5" data-toggle="tab"> Insurance Subscriber Information <span>5</span> </a> </li>
+      </ul>
+      <div class="progress-indicator"> <span></span> </div>
+    </form>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form class="form-horizontal validate" role="form"  name='addPatientTab5CtrlForm' id='addPatientTab5CtrlForm'  ng-controller='addPatientTab5Ctrl' ng-submit='submitHandler();'>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button class="btn btn-info green_bt pull-right" type="submit">Save Changes</button>
+                  <button class="btn btn-info btn-single gray_bt pull-right" type="reset">Reset To Default</button>
+                  
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-48" class="col-sm-3 control-label">First Name</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-48" class="form-control" name="FName" data-validate="required" data-message-required="Please enter First Name." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-49" class="col-sm-3 control-label">Middle Initial</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-49" class="form-control" name="middleInitial" />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-50" class="col-sm-3 control-label">Last Name</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-50" class="form-control" name="LName" data-validate="required" data-message-required="Please enter Last Name." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-51" class="col-sm-3 control-label">Name Suffix</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-51" class="form-control" name="nameSuffix" />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-52" class="col-sm-3 control-label">Date of Birth</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input type="text" id="field-52" class="form-control datepicker" data-format="D, dd MM yyyy" name="dateOfBirth" data-validate="required" data-message-required="Please enter Date of Birth." />
+                    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Gender</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <label class="cbr-inline">
+                      <input type="radio"  name="gender" class="cbr" checked value="M">
+                      Male </label>
+                    <label class="cbr-inline">
+                      <input type="radio"  name="gender" class="cbr" value="F">
+                      Female </label>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-53" class="col-sm-3 control-label">Relationship With Patient</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-53" class="form-control" name="relationshipWithPatient" data-validate="required" data-message-required="Please enter Relationship With Patient." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Is Billing Address Same As Patient?</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <label class="cbr-inline">
+                      <input type="radio" name="isSameBillingAddressWithPatient" class="cbr" checked>
+                      Yes </label>
+                    <label class="cbr-inline">
+                      <input type="radio"  name="isSameBillingAddressWithPatient" class="cbr">
+                      No </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-54" class="col-sm-3 control-label">Address 1</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-54" class="form-control" name="address1" data-validate="required" data-message-required="Please enter Address 1." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-55" class="col-sm-3 control-label">Address 2</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-55" class="form-control" name="address2">
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-56" class="col-sm-3 control-label">City</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-56" class="form-control" name="city" data-validate="required" data-message-required="Please enter City." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{terminologyBank.state}}</label>
+                <div class="col-sm-9"> 
+                  	<!--<script type="text/javascript">
+					jQuery(document).ready(function($){
+						$("#sboxit-1").selectBoxIt().on('open', function(){
+							// Adding Custom Scrollbar
+							$(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+						});
+					});
+					</script>-->
+                  <select class="form-control" id="sboxit-1" name="state" data-validate="required" data-message-required="Please select State.">
+                    <option value="">Select</option>
+                    <option value="1">1</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              
+              <div class="form-group">
+                <label for="field-57" class="col-sm-3 control-label">{{terminologyBank.zipCode}}</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-57" class="form-control" name="zipcode" inputmask data-mask="zip" data-validate="required" data-message-required="Please enter Zip Code." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button style="width:auto;" class="btn btn-info green_bt pull-right" type="submit">Submit</button>
+                </div>
+              </div>
+
+              <input type="hidden" name="patientId" value="{{patient.patientInfo.id}}">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- FORM WIZARD WITH VALIDATION END HERE-->
+    
+    
+  </div>
+</div>
+
+<script>
+function addPatientTab5Ctrl($scope, $rootScope, $http) {
+
+  $scope.submitHandler = function() {
+    if ($('#addPatientTab5CtrlForm').valid()) {
+      showLoadingBar(70); // Fill progress bar to 70% (just a given value)
+
+      var jsonObject = $('#addPatientTab5CtrlForm').serializeObject();
+      var jsonStr = JSON.stringify(jsonObject);
+      $http({
+        url: "/OnTime/api/patient/savePatientSubscriber",
+        method: 'POST',
+        data: {},
+        headers: {
+          // 'Content-Type': 'application/json',
+          'payload': jsonStr,
+          'requestToken': appData.authResult.token,
+          'userName': appData.authResult.un,
+        },
+        // transformRequest: function(data) {
+        //   return $.param(data); // jquery util
+        // }
+      }).success(function(data, status, headers, config) {
+        showLoadingBar({
+          delay: .5,
+          pct: 100,
+          finish: function() {
+            if (data.id) {
+              $rootScope.patient.patientSubscriber = data;
+
+              window.location.hash = '#/app/add_patient_tab_5';
+            }
+          }
+        }); // showLoadingBar
+
+      }).error(function(data, status, headers, config) {
+
+      }); // http
+
+    } // isValid
+  }; // end of submitHandler
+
+}; // end of addPatientTab5Ctrl
+</script>

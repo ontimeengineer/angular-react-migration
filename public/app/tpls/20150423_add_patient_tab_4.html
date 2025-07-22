@@ -1,0 +1,232 @@
+
+<div class="page-body"> 
+  
+  <div> 
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+      <div class="title-env">
+        <h1 class="title">Add Patient</h1>
+        <p class="description">Create A Patient Record By Entering Patient Information</p>
+      </div>
+    </div>
+    <!--PAGE TITLE END --> 
+    
+    <!-- FORM WIZARD WITH VALIDATION START HERE-->
+    
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+          $(".multi-select").multiSelect({
+            afterInit: function() {
+              // Add alternative scrollbar to list
+              this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+            },
+            afterSelect: function() {
+              // Update scrollbar size
+              this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+            }
+          });
+
+          $(".selectboxit").selectBoxIt().on('open', function() {
+            // Adding Custom Scrollbar
+            $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+          });
+        });
+
+        // validate
+   customJqueryValidation();
+        jQuery(document).ready(function($) {
+          setTimeout(function() {
+            $(".fade-in-effect").addClass('in');
+          }, 1);
+
+          // Validation
+          $("#addPatientTab4CtrlForm-E").validate({
+            rules: {
+              authorizationStartDate: {
+                required: true
+              },
+              authorizationEndDate: {
+                required: true
+              },
+            },
+
+            messages: {
+              authorizationStartDate: {
+                required: 'Please enter authorizationStartDate.'
+              },
+              authorizationEndDate: {
+                required: 'Please enter authorizationEndDate.'
+              },
+            },
+
+          });
+
+          // Set Form focus
+          $("#addPatientTab4CtrlForm-E .form-group:has(.form-control):first .form-control").focus();
+        });
+			</script>
+    <form role="forl" id="rootwizard" class="form-wizard validate" novalidate>
+      <ul class="tabs">
+         <li> <a href="#/app/add_patient_tab_1" data-toggle="tab"> Patient Information <span>1</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_2" data-toggle="tab"> Location Information <span>2</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_3" data-toggle="tab"> Insurance Information <span>3</span> </a> </li>
+        <li class="active"> <a href="#/app/add_patient_tab_4" data-toggle="tab"> Authorization Info <span>4</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_5" data-toggle="tab"> Insurance Subscriber Information <span>5</span> </a> </li>
+      </ul>
+      <div class="progress-indicator"> <span></span> </div>
+    </form>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form class="form-horizontal validate" role="form"  name='addPatientTab4CtrlForm' id='addPatientTab4CtrlForm'  ng-controller='addPatientTab4Ctrl' ng-submit='submitHandler();'>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button class="btn btn-info green_bt pull-right" type="submit">Save Changes</button>
+                  <button class="btn btn-info btn-single gray_bt pull-right" type="reset">Reset To Default</button>
+                  
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Care Type</label>
+                <div class="col-sm-9"> 
+                  <script type="text/javascript">
+					jQuery(document).ready(function($){
+						$("#multi-select").multiSelect({
+							afterInit: function(){
+								// Add alternative scrollbar to list
+								this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+							},
+							afterSelect: function(){
+								// Update scrollbar size
+								this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+							}
+						});
+					});
+				</script>
+                  <select class="form-control" multiple="multiple" id="multi-select" name="authorization">
+                    <option value="1">Silky Door</option>
+                    <option value="2">The Absent Twilight</option>
+                    <option value="3">Tales of Flames</option>
+                    <option value="4">The Princess's Dream</option>
+                    <option value="5">The Fairy of the Wind</option>
+                    <option value="6">Children in the Boy</option>
+                    <option value="7">Frozen Savior</option>
+                    <option value="8">The Missing Thorns</option>
+                    <option value="9">Healing of Serpent</option>
+                    <option value="10">The Voyagers's Girlfriend</option>
+                    <option value="11">The Nothing of the Gate</option>
+                    <option value="12">Healing in the Scent</option>
+                    <option value="13">Final Twins</option>
+                    <option value="14">The Willing Rose</option>
+                    <option value="15">Thorn of Emperor</option>
+                    <option value="16" selected>The Predator's Pirates</option>
+                    <option value="17">The Lord of the Girl</option>
+                    <option value="18" selected>Flowers in the Spirit</option>
+                    <option value="19" selected>Healing in the Silence</option>
+                    <option value="20">Planet of Bridges</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              
+              	<!--<div class="form-group">
+                    <label for="field-500" class="col-sm-3 control-label">Authorization</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <input type="file" id="field-500" class="form-control" name="doc-upload-to" data-validate="required" data-message-required="Please upload Authorization Document." style="display:none;" />
+                            <label for="field-500" class="form-control"></label>
+                            <div class="input-group-addon"> <i class="linecons-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group-separator"></div>-->
+                
+              <div class="form-group">
+                <label for="field-45" class="col-sm-3 control-label">Authorization</label>
+                <div class="col-sm-9">
+                  <input type="file" id="field-45" class="form-control" name="doc-upload" data-validate="required" data-message-required="Please upload Authorization Document." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-46" class="col-sm-3 control-label">Start Date</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input type="text" id="field-46" class="form-control datepicker" data-format="D, dd MM yyyy" name="authorizationStartDate" data-validate="required" data-message-required="Please enter Start Date." />
+                    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-47" class="col-sm-3 control-label">End Date</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input type="text" id="field-47" class="form-control datepicker" data-format="D, dd MM yyyy" name="authorizationEndDate"  data-validate="required" data-message-required="Please enter End Date." />
+                    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button style="width:auto;" class="btn btn-info green_bt pull-right" type="submit">Next &raquo;</button>
+                  <a style="width:auto;" class="btn btn-info green_bt pull-right" type="button" href='#/app/add_patient_tab_3'>&laquo; Previous</a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- FORM WIZARD WITH VALIDATION END HERE-->
+    
+    
+  </div>
+</div>
+
+<script>
+function addPatientTab4Ctrl($scope, $rootScope, $http) {
+
+  $scope.submitHandler = function() {
+    if ($('#addPatientTab4CtrlForm').valid()) {
+      showLoadingBar(70); // Fill progress bar to 70% (just a given value)
+
+      var jsonObject = $('#addPatientTab4CtrlForm').serializeObject();
+      $.extend(jsonObject, $rootScope.patient.patientInfo);
+      var jsonStr = JSON.stringify(jsonObject);
+      $http({
+        url: "/OnTime/api/patient/savePatientAuthorization",
+        method: 'POST',
+        data: {},
+        headers: {
+          // 'Content-Type': 'application/json',
+          'payload': jsonStr,
+          'requestToken': appData.authResult.token,
+          'userName': appData.authResult.un,
+        },
+      }).success(function(data, status, headers, config) {
+        showLoadingBar({
+          delay: .5,
+          pct: 100,
+          finish: function() {
+            if (data.id) {
+              $rootScope.patient.patientInfo = data;
+
+              window.location.hash = '#/app/add_patient_tab_5';
+            }
+          }
+        }); // showLoadingBar
+
+      }).error(function(data, status, headers, config) {
+
+      }); // http
+
+    } // isValid
+  }; // end of submitHandler
+
+}; // end of addPatientTab4Ctrl
+</script>

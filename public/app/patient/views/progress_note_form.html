@@ -1,0 +1,102 @@
+<!--================== HEADER ====================-->
+<div class="row" ng-init="progressNote.dataInit()">
+    <div class="col-sm-12">
+        <patient-breadcrumb patient="progressNote.patient" record-name="Patient Record - Progress Note"></patient-breadcrumb>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <form name="myForm" class="form-horizontal validate" id="progress_note_form"
+                    ng-submit="progressNote.submitForm()" role="form" novalidate="">
+                    <div class="row hidden-print">
+                        <div class="col-sm-12">
+                           
+                            <button class="btn btn-info btn-single gray_bt pull-right" 
+                                ng-click="progressNote.resetForm()" type="reset">
+                                Reset To Default
+                            </button>
+                            <button class="btn btn-info btn-single gray_bt pull-right"
+                            ng-click="progressNote.submitDraft()" ng-if="progressNote.progressNoteForm.isDraft" type="button">
+                            Save to Draft
+                        </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="field-1" class="control-label col-sm-3">Progress Note Type</label>
+                        <div class="col-sm-9">
+                            <select name="assessmentType" id="field-1" class="form-control" required
+                            data-validate="required" data-message-required="Please select progress note type"
+                            ng-model="progressNote.progressNoteForm.assessmentType"
+                            ng-options="type.value as type.title for type in progressNote.progressNoteTypes">
+                            <option value="" hidden selected>Please select progress note type</option>
+                            </select>
+                         
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Mode of Assessment
+                        </label>
+                        <div class="col-sm-9 form-control-static">
+                            <div>
+                                <label>
+                                    <input value="field" name="modeOfAssessment" type="radio" class="cbr cbr-primary"
+                                        ng-model="progressNote.progressNoteForm.assessmentMode" />
+                                    Field
+                                </label>
+                                <label>
+                                    <input name="modeOfAssessment" value="telephonic" type="radio"
+                                        class="cbr cbr-primary"
+                                        ng-model="progressNote.progressNoteForm.assessmentMode" />
+                                    Telephonic
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group" ng-if="false">
+                        <label class="control-label col-sm-3">Post Hospitalization Visit</label>
+                        <div class="col-sm-9">
+                            <!-- From Date -->
+                            <div class="input-group">
+                                <input class="form-control datepicker" placeholder="mm/dd/yyyy" data-format="mm/dd/yyyy"
+                                    id="postHospitalizeVisit" name="postHospitalizeVisit" type="text"
+                                    ng-model="progressNote.progressNoteForm.postHospitalizeVisit"
+                                    data-validate="required" data-message-required="Please Enter Date" />
+                                <div class="input-group-addon">
+                                    <a href="#">
+                                        <i class="linecons-calendar">
+                                        </i>
+                                    </a>
+                                </div>
+                            </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Progress Note</label>
+                        <div class="col-sm-9">
+                            <textarea name="medicationNote" id="medicationNote" required data-validate="required"
+                                data-message-required="Please enter note" class="form-control" id="medicationNote"
+                                cols="30" rows="10" ng-model="progressNote.progressNoteForm.progressNote"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" type="submit">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

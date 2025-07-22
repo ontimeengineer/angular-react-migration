@@ -1,0 +1,172 @@
+<div class="cal-week-box" ng-class="{'cal-day-box': showTimes}">
+
+    <!--Printing Labels on Top -->
+    <div id="sticky-anchor"></div>
+    <div class="cal-row-fluid cal-row-head-week row-heading" id="sticky">
+        <div class="cal-cell1weekempl col-heading" style="width:16%;height:20%;text-align: center" ng-if="type == 'employee'">Employees</div>
+        <div class="cal-cell1weekempl col-heading" style="width:16%;height:20%;text-align: center" ng-if="type == 'patient'">Patients</div>
+        <div class="cal-cell1week" ng-repeat="day in view.days track by $index" style="width:12%;height:20%;text-align: center">
+            <span ng-bind="day.weekDayLabel" class="col-heading"></span><br>
+        </div>
+    </div>
+    <!--Printing events -->
+    <div ng-if="type == 'employee'" class="cal-row-fluid cal-row-head-week row-data" ng-repeat="map in view.list">
+        <div class="cal-cell1weekempl col-data col-data-empl" style="width:16%;height:14vh;text-align:left;" ng-style="{'color':(map.status!=='a'?'red':'#000')}">
+            <span style="display:block;padding-top:35px;vertical-align:middle;padding-left:10px;cursor:pointer;" ng-click="onViewInfoClick(map, 'modal-5')"><i class="glyphicon glyphicon-calendar" style="cursor:pointer;color:#000;" ng-click="onLinkClick(map)"></i>
+                {{map.lName + ', ' + map.fName| limitTo: 18}}</span>
+        </div>
+
+        <div class="cal-cell1week col-data" ng-repeat="temp_day in map.days track by $index" style="width:12%;height:14vh;" ng-click="onEventClick(null, map, temp_day)">
+            <div 
+                ng-repeat="temp_event in temp_day.events| calendarLimitTo: 2:0"
+                ng-if="temp_day.events.length"
+                style="margin-bottom: 2px;"
+                ng-click="onEventClick(temp_event, false, $event)"
+                ng-style="{'width': temp_event.daySpan == 1 ? (96 * temp_event.daySpan) + '%' : (100 * temp_event.daySpan) + '%', position:'relative', 'margin-left': '2' + 'px', 'color':'white','background':(temp_event.eventType == 'S' ? temp_event.colorCode: temp_event.eventType == 'A' ? '#7D7D7D':'#000') }">
+
+                <i class="glyphicon glyphicon-list-alt pull-right" ng-if="temp_event.note != undefined" tooltip-html-unsafe="<div>Note:<br>{{temp_event.note}}" tooltip-placement="left" style="margin-right:5px;padding-top:1.49px;"></i>
+                <span 
+                    ng-if="temp_event.eventType == 'S'" 
+                    class="event-pointer event-style" 
+                    tooltip-html-unsafe="{{getToolTipToDisplay(temp_event)}}">    
+                    <span ng-if="temp_event.worksiteSchedule">{{temp_event.workSite.name| limitTo: 9}}</span>
+                    <span ng-if="!temp_event.worksiteSchedule"> {{temp_event.patient.lName| limitTo: 9}}</span>
+                    <br>
+                    <span style="margin-left:5px;" ng-if="showTime">{{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}</span>
+                </span>
+
+                <span ng-if="temp_event.eventType == 'A'" class="event-pointer event-style">    
+                    {{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}
+                </span>
+
+                <span ng-if="temp_event.eventType == 'U'" class="event-pointer event-style">
+                    {{temp_event.reasonDisplay}}
+                </span>                
+            </div>
+            <div ng-if="temp_day.events.length - 2 > 0" ng-click="toggleEvent($event)" data-placement="bottom" class="event-pointer event-style">+ {{temp_day.events.length - 2}} more</div>
+
+            <div class="eventstoload">
+                <div 
+                    ng-repeat="temp_event in temp_day.events| calendarLimitTo: temp_day.events.length - 1 : 2" 
+                    ng-if="temp_day.events.length"
+                    style="margin-bottom: 2px;" 
+                    ng-click="onEventClick(temp_event, false, $event)"
+                    ng-style="{'width': temp_event.daySpan == 1 ? (96 * temp_event.daySpan) + '%' : (100 * temp_event.daySpan) + '%', position:'relative', 'margin-left': '2' + 'px', 'color':'white','background': (temp_event.eventType == 'S' ? temp_event.colorCode: temp_event.eventType == 'A' ? '#7D7D7D':'#000') }">
+
+                    <i class="glyphicon glyphicon-list-alt pull-right" ng-if="temp_event.note != undefined" tooltip-html-unsafe="<div>Note:<br>{{temp_event.note}}" tooltip-placement="left" style="margin-right:5px;padding-top:1.49px;"></i>
+
+                    <span 
+                        ng-if="temp_event.eventType == 'S'" 
+                        class="event-pointer event-style" 
+                        tooltip-html-unsafe="{{getToolTipToDisplay(temp_event)}}">   
+                        <span ng-if="temp_event.worksiteSchedule">{{temp_event.workSite.name| limitTo: 9}}</span>
+                        <span ng-if="!temp_event.worksiteSchedule"> {{temp_event.patient.lName| limitTo: 9}}</span>
+                        <br>
+                        <span style="margin-left:5px;" ng-if="showTime">{{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}</span>
+                    </span>
+
+                    <span ng-if="temp_event.eventType == 'A'" class="event-pointer event-style">    
+                        {{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}
+                    </span>
+
+                    <span ng-if="temp_event.eventType == 'U'" class="event-pointer event-style">
+                        {{temp_event.reasonDisplay}}
+                    </span>                
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Patient View -->
+    <div ng-if="type == 'patient'" class="cal-row-fluid cal-row-head-week row-data" ng-repeat="map in view.list">
+        <div class="cal-cell1weekempl col-data col-data-empl" style="width:16%;height:14vh;text-align:left;">
+            <span style="display:block;padding-top:35px;vertical-align:middle;padding-left:10px;cursor:pointer;color:#000;" ng-click="onViewInfoClick(map, 'modal-5')">
+                <i class="glyphicon glyphicon-calendar" style="cursor:pointer;" ng-style="{'color':(map.isNewPatient===true?'green':'#000')}" ng-click="onLinkClick(map)"></i>
+                {{map.lName + ', ' + map.fName| limitTo: 18}}</span>
+        </div>
+
+        <div class="cal-cell1week col-data" ng-repeat="temp_day in map.days track by $index" style="width:12%;height:14vh;" colspan="{{temp_day.eventSize}}" ng-click="onEventClick(null, map, temp_day)">
+            <div 
+                ng-repeat="temp_event in temp_day.events| calendarLimitTo: 2:0" 
+                ng-if="temp_day.events.length"
+                style="margin-bottom: 2px;"
+                ng-click="onEventClick(temp_event, false, $event)"
+                ng-style="{'width': temp_event.daySpan == 1 ? (96 * temp_event.daySpan) + '%' : (100 * temp_event.daySpan) + '%', position:'relative', 'margin-left': '2' + 'px', 'color':'white','background': temp_event.eventType == 'S' ? temp_event.colorCode: temp_event.eventType == 'A' ? '#7D7D7D':'#000' }">
+                <i ng-if="temp_event.dispatchId != null" class="fa fa-wifi pull-right" style="margin-right:5px;padding-top:1.49px;"></i>
+                <i class="glyphicon glyphicon-list-alt pull-right" ng-if="temp_event.note != undefined" tooltip-html-unsafe="<div>Note:<br>{{temp_event.note}}" tooltip-placement="left" style="margin-right:5px;padding-top:1.49px;"></i>
+                <span 
+                    ng-if="temp_event.eventType == 'S' && (temp_event.employeeId == undefined ? false: true) && (temp_event.employee.address2 == undefined ? false: true)" 
+                    class="event-pointer event-style" 
+                    tooltip-html-unsafe="{{getToolTipToDisplay(temp_event)}}">    
+                    {{temp_event.employee.lName| limitTo: 9}} <br>
+                    <span style="margin-left:5px;" ng-if="showTime">{{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}</span>
+                </span>
+                <span 
+                    ng-if="temp_event.eventType == 'S' && (temp_event.employeeId == undefined ? false: true) && (temp_event.employee.address2 == undefined ? true: false)" 
+                    class="event-pointer event-style" 
+                    tooltip-html-unsafe="{{getToolTipToDisplay(temp_event)}}">    
+                    {{temp_event.employee.lName| limitTo: 9}} <br>
+                    <span style="margin-left:5px;" ng-if="showTime">{{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}</span>
+                </span>
+
+                <span 
+                    ng-if="temp_event.eventType == 'S' && temp_event.employeeId == undefined ? true: false" 
+                    class="event-pointer event-style">    
+                    {{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}
+                </span>
+
+                <span ng-if="temp_event.eventType == 'A'" class="event-pointer event-style">    
+                    {{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}
+                </span>
+
+                <span ng-if="temp_event.eventType == 'U'" class="event-pointer event-style">
+                    {{temp_event.reasonDisplay}}
+                </span>                
+            </div>
+            <div ng-if="temp_day.events.length - 2 > 0" ng-click="toggleEvent($event)" data-placement="bottom" class="event-pointer event-style">+ {{temp_day.events.length - 2}} more</div>
+
+            <div class="eventstoload">
+                <div 
+                    ng-repeat="temp_event in temp_day.events| calendarLimitTo: temp_day.events.length - 1 : 2" 
+                    ng-if="temp_day.events.length"
+                    style="margin-bottom: 2px;"
+                    ng-click="onEventClick(temp_event, false, $event)"
+                    ng-style="{'width': temp_event.daySpan == 1 ? (96 * temp_event.daySpan) + '%' : (100 * temp_event.daySpan) + '%', position:'relative', 'margin-left': '2' + 'px', 'color':'white','background': temp_event.eventType == 'S' ? temp_event.colorCode: temp_event.eventType == 'A' ? '#7D7D7D':'#000' }">
+                    <i ng-if="temp_event.dispatchId != null" class="fa fa-wifi pull-right" style="margin-right:5px;padding-top:1.49px;"></i>
+                    <i class="glyphicon glyphicon-list-alt pull-right" ng-if="temp_event.note != undefined" tooltip-html-unsafe="<div>Note:<br>{{temp_event.note}}" style="margin-right:5px;padding-top:1.49px;"></i>
+                    <span 
+                        ng-if="temp_event.eventType == 'S' && (temp_event.employeeId == undefined ? false: true) && (temp_event.employee.address2 == undefined ? false: true)" 
+                        class="event-pointer event-style" 
+                        tooltip-html-unsafe="{{getToolTipToDisplay(temp_event)}}">    
+                        {{temp_event.employee.lName| limitTo: 9}} <br>
+                        <span style="margin-left:5px;" ng-if="showTime">{{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}</span>
+                    </span>
+
+                    <span 
+                        ng-if="temp_event.eventType == 'S' && (temp_event.employeeId == undefined ? false: true) && (temp_event.employee.address2 == undefined ? true: false)" 
+                        class="event-pointer event-style" 
+                        tooltip-html-unsafe="{{getToolTipToDisplay(temp_event)}}">    
+                        {{temp_event.employee.lName| limitTo: 9}} <br>
+                        <span style="margin-left:5px;" ng-if="showTime">{{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}</span>
+                    </span>
+
+                    <span 
+                        ng-if="temp_event.eventType == 'S' && temp_event.employeeId == undefined ? true: false" 
+                        class="event-pointer event-style">    
+                        {{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}
+                    </span>
+
+                    <span ng-if="temp_event.eventType == 'A'" class="event-pointer event-style"> 
+                        {{temp_event.startTime| ampmshort}}{{" - "}}{{temp_event.endTime| ampmshort}}
+                    </span>
+
+                    <span ng-if="temp_event.eventType == 'U'" class="event-pointer event-style">
+                        {{temp_event.reasonDisplay}}
+                    </span>                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

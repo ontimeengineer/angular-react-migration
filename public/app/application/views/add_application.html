@@ -1,0 +1,114 @@
+<div class="page-body" ng-init="addEmployee.pageInitCall()">
+    <!--PAGE TITLE START -->
+    <div class="page-title" style="background-color: black !important; color: white;
+                 z-index: 100; position: sticky; top: 0px; width: 100%">
+        <div class="title-env">
+            <div class="row" style="background-color: black !important; color: white; padding: 5px;"> 
+            <div class="col-md-6 pull-right">
+                <img src="assets/images/logo@2x.png" alt="" width="130" style="
+                     align-content: right;
+                     float: right;
+                     padding: 10px;
+                     ">
+            </div>
+            <div class="col-md-6 pull-left">
+                <h3>
+                    Application Details
+                </h3>
+            </div>
+            </div>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <!-- FORM WIZARD WITH VALIDATION START HERE-->
+    <script type="text/javascript">
+        jQuery(document).ready(function ($)
+        {
+            $(".multi-select").multiSelect({
+                afterInit: function ()
+                {
+                    // Add alternative scrollbar to list
+                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                },
+                afterSelect: function ()
+                {
+                    // Update scrollbar size
+                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                }
+            });
+
+            $(".selectboxit").selectBoxIt().on('open', function ()
+            {
+                // Adding Custom Scrollbar
+                $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+            });
+        });
+    </script>
+    <form class="form-wizard" dirty="addEmployee.formDirty" selectedtab="tabNo" novalidate="" role="form">
+        <ul class="tabs">
+            <li class="{{tabNo==1?'active':''}}">
+                <a data-toggle="tab" href="" ng-click="addEmployee.navigateToTab($event, 'tab1')">
+                    <div class="visible-xs"><i class="fa-user"></i></div> 
+                    <div class="hidden-xs">Personal Details</div>
+                    <span>
+                        1
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==2?'active':''}}">
+                <a data-toggle="tab" href=""  ng-click="addEmployee.navigateToTab($event, 'tab2')" >
+                    <div class="visible-xs"><i class="fa fa-location-arrow"></i></div> 
+                    <div class="hidden-xs">Location Information</div>
+                    <span>
+                        2
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==3?'active':''}}">
+                <a data-toggle="tab" href=""  ng-click="addEmployee.navigateToTab($event, 'tab3')">
+                    <div class="visible-xs"><i class="fa fa-graduation-cap"></i></div> 
+                    <div class="hidden-xs">Education Details</div>
+                    <span>
+                        3
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==4?'active':''}}">
+                <a data-toggle="tab" href=""  ng-click="addEmployee.navigateToTab($event, 'tab4')">
+                    <div class="visible-xs"><i class="fa fa-hospital-o"></i></div> 
+                    <div class="hidden-xs">Work Experience</div>
+                    <span>
+                        4
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==5?'active':''}}">
+                <a data-toggle="tab" href=""  ng-click="addEmployee.navigateToTab($event, 'tab5')">
+                    <div class="visible-xs"><i class="fa fa-check"></i></div> 
+                    <div class="hidden-xs">  General  </div>
+                    <span>
+                        5
+                    </span>
+                </a>
+            </li>
+        </ul>
+        <div class="progress-indicator">
+            <span>
+            </span>
+        </div>
+        <div ui-view></div>
+    </form>
+</div>
+<!-- FORM WIZARD WITH VALIDATION END HERE-->
+
+<script type="text/javascript">
+    // validate
+    customJqueryValidation();
+    jQuery(document).ready(function ($) {
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+
+
+    });// ready 
+</script>

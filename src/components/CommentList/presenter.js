@@ -1,20 +1,27 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Comment from '../Comment';
 import { getAngularService } from '../../services/AngularReactHelper';
 
-const CommentList = (props) => {
+const CommentList = ({ comments }) => {
     const AuthorService = getAngularService(document, 'AuthorService');
-    const toComment = (c, i) =>
-        <Comment key={ i } comment={ c } author={ AuthorService.getAuthor(c.authorId) } />;
+
     return (
         <div>
-            { props.comments.map(toComment) }
+            {comments.map((comment, index) => (
+                <Comment
+                    key={comment.id || index}
+                    comment={comment}
+                    author={AuthorService.getAuthor(comment.authorId)}
+                />
+            ))}
+            <h1>TEST is on the way</h1>
         </div>
     );
 };
 
 CommentList.propTypes = {
-    comments: PropTypes.array.isRequired,
+    comments: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default CommentList;

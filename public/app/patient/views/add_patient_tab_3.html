@@ -1,0 +1,281 @@
+<div class="row"  ng-init="addPatient.tab3DataInit()">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal validate" id="add_patient_form" novalidate="" name="add_patient_form" role="form" ng-submit="addPatient.savePatient()">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" type="submit" ng-disabled="addPatient.disableSaveButton" ng-click="addPatient.setFromNext('tab3')">
+                                Save Changes
+                            </button>
+                            <button class="btn btn-info btn-single gray_bt pull-right" type="reset">
+                                Reset To Default
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Is Private Pay
+                        </label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <label class="cbr-inline">
+                                    <input class="cbr cbr-primary" name="IsPrivatePay" type="radio" ng-value="true"
+                                        ng-model="addPatient.patient.isPrivatePay" ng-change="addPatient.paymentMethodChanged()">
+                                    Yes
+                                    </input>
+                                </label>
+                                <label class="cbr-inline">
+                                    <input class="cbr cbr-primary" name="IsPrivatePay" type="radio" ng-value="false"
+                                        ng-model="addPatient.patient.isPrivatePay" ng-change="addPatient.paymentMethodChanged()">
+                                    No
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Payer
+                        </label>
+                        <div class="col-sm-9">
+                            <script type="text/javascript">
+                                // jQuery(document).ready(function($)
+                                // 	{
+                                // 		$("#sboxit-1").selectBoxIt().on('open', function()
+                                // 		{
+                                // 			// Adding Custom Scrollbar
+                                // 			$(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+                                // 		});
+                                // 	});
+                            </script>
+                            <select class="form-control" id="sboxit-1" name="InsuranceProvider" data-validate="required"
+                                data-message-required="Please select Payer." ng-model="addPatient.patient.insuranceProviderId"
+                                ng-options='ins.id as (ins.insuranceName) for ins in addPatient.insuranceProviderList'>
+                                <option value="">
+                                    Select the Payer
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div ng-if="!addPatient.patient.isPrivatePay">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-41">
+                            Plan Name
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-41" name="PlanName" type="text" maxlength="50"
+                                   ng-model="addPatient.patient.planName"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-42">
+                            Policy Number
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-42" name="PolicyNumber" type="text" maxlength="200"
+                                   ng-model="addPatient.patient.policyNumber"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-43">
+                            Insurance ID
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-43" name="InsuranceID" type="text" maxlength="45"
+                                   ng-model="addPatient.patient.insuranceId"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="medicaidNumber">
+                            Medicaid Number
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-43" name="MedicaidNumber" type="text" maxlength="45"
+                                   ng-model="addPatient.patient.medicaidNumber"/>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label-static text-right" for="field-44">
+                            MRN Number
+                        </label>
+                        <div class="col-sm-9">
+                            {{addPatient.patient.mrnNumber}}
+                        </div>
+                    </div>
+                    <div ng-if="!addPatient.patient.isPrivatePay">
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Is Patient The Subscriber
+                        </label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <label class="cbr-inline">
+                                    <input class="cbr cbr-primary" name="IsSubscriber" type="radio" ng-value="true" ng-model="addPatient.patient.isSubscriber">
+                                    Yes
+                                    </input>
+                                </label>
+                                <label class="cbr-inline">
+                                    <input class="cbr cbr-primary" name="IsSubscriber" type="radio" ng-value="false" ng-model="addPatient.patient.isSubscriber">
+                                    No
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Patient's condition related to
+                        </label>
+                        <div class="col-sm-9 input-group">
+                            <label class="col-md-3 control-label" style="text-align: left">
+                                Employment? 
+                            </label>
+                            <label class="cbr-inline">
+                                <input class='cbr cbr-primary' type="radio" value="true" name="patientConditionRelatedEM" ng-model="addPatient.patient.patientConditionRelatedEM" ng-change="addPatient.bindPatientCondition('EM');"/>YES
+                            </label>
+                            <label class="cbr-inline">
+                                <input class='cbr cbr-primary' type="radio" value="false" name="patientConditionRelatedEM" ng-model="addPatient.patient.patientConditionRelatedEM" ng-change="addPatient.bindPatientCondition('EM');"/>NO
+                            </label>
+                        </div>
+                        <label class="col-sm-3 control-label">
+                        </label>
+                        <div class="col-sm-9 input-group">
+                            <label class="col-md-3 control-label" style="text-align: left">
+                                Auto Accident?  
+                            </label>
+                            <label class="cbr-inline">
+                                <input class='cbr cbr-primary' type="radio" value="true" name="patientConditionRelatedAA" ng-model="addPatient.patient.patientConditionRelatedAA" ng-change="addPatient.bindPatientCondition('AA');"/>YES
+                            </label>
+                            <label class="cbr-inline">
+                                <input class='cbr cbr-primary' type="radio" value="false" name="patientConditionRelatedAA" ng-model="addPatient.patient.patientConditionRelatedAA" ng-change="addPatient.bindPatientCondition('AA');"/>NO
+                                 &nbsp;&nbsp;&nbsp;&nbsp;| {{terminologyBank.state}} &nbsp;
+                                <select name="patientConditionRelatedAAState" ng-model="addPatient.patient.patientConditionRelatedAAState" ng-disabled="addPatient.patient.patientConditionRelatedAA === 'false'"
+                                        ng-options="state.abbreviation as state.abbreviation for state in states" ng-change="addPatient.bindPatientCondition('STATE');">
+                                </select>
+                            </label>
+                        </div>
+                        <label class="col-sm-3 control-label">
+                        </label>
+                        <div class="col-sm-9 input-group">
+                            <label class="col-md-3 control-label" style="text-align: left">
+                                Other Accident?  
+                            </label>
+                            <label class="cbr-inline">
+                                <input class='cbr cbr-primary' type="radio" value="true" name="patientConditionRelatedOA" ng-model="addPatient.patient.patientConditionRelatedOA" ng-change="addPatient.bindPatientCondition('OA');"/>YES
+                            </label>
+                            <label class="cbr-inline">
+                                <input class='cbr cbr-primary' type="radio" value="false" name="patientConditionRelatedOA" ng-model="addPatient.patient.patientConditionRelatedOA" ng-change="addPatient.bindPatientCondition('OA');"/>NO
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Does Patient have a Co-Payment
+                        </label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <label class="cbr-inline">
+                                    <input class="cbr cbr-primary" name="HasCopayment" type="radio" ng-value="true"
+                                        ng-model="addPatient.patient.hasCopayment" ng-change="addPatient.coPaymentOptionChanged()">
+                                    Yes
+                                    </input>
+                                </label>
+                                <label class="cbr-inline">
+                                    <input class="cbr cbr-primary" name="HasCopayment" type="radio" ng-value="false"
+                                        ng-model="addPatient.patient.hasCopayment" ng-change="addPatient.coPaymentOptionChanged()">
+                                    No
+                                    </input>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-if="addPatient.patient.hasCopayment">
+                    </div>
+                    <div class="form-group" ng-if="addPatient.patient.hasCopayment">
+                        <label class="col-sm-3 control-label" for="hourlyAmount">
+                            Hourly Amount
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-43" name="hourlyAmount" type="text"
+                                ng-model="addPatient.patient.hourlyAmount" numbers-only="true" decimalallowed="2" maxlength="10" decimalpoints="true" ng-blur="addPatient.updateHourlyRate()"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-if="addPatient.patient.hasCopayment">
+                    </div>
+                    <div class="form-group" ng-if="addPatient.patient.hasCopayment">
+                        <label class="col-sm-3 control-label" for="perVisitAmount">
+                            Per Visit Amount
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" id="field-43" name="perVisitAmount" type="text"
+                                ng-model="addPatient.patient.perVisitAmount" numbers-only="true" decimalallowed maxlength="10" decimalpoints="true" ng-blur="addPatient.updatePerVisitCharge()"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-if="addPatient.patient.hasCopayment">
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addPatient.setFromNext('tab4')">
+                                Next »
+                            </button>
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addPatient.setFromNext('tab2')">
+                                « Previous
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FORM WIZARD WITH VALIDATION END HERE-->
+<script type="text/javascript">
+    // validate
+    customJqueryValidation();
+    jQuery(document).ready(function ($) {
+
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+            cbr_replace();
+        }, 100);
+
+
+//        // Validation
+//        $("#add_patient_tab_3_form").validate({
+//            rules: {//PlanName: {required: true},
+//// PolicyNumber: {required: true},
+//                InsuranceProvider: {required: true},
+//// MRNNumber: {required: true},
+//// InsuranceID: {required: true},
+//            },
+//            messages: {PlanName: {required: 'Please enter Plan Name.'},
+//                PolicyNumber: {required: 'Please enter Policy Number.'},
+//                InsuranceProvider: {required: 'Please select Payer.'},
+//                MRNNumber: {required: 'Please enter MRN Number.'},
+//                InsuranceID: {required: 'Please enter Insurance ID.'},
+//            },
+//        });
+    });
+</script>

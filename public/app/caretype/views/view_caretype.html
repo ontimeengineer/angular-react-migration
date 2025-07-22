@@ -1,0 +1,97 @@
+<div class="page-title full-width" title="Native Elements" description="Plain text boxes, select dropdowns and other basic form elements">
+	<div class="title-env" style="width:80%">
+		<h1 class="title ng-binding">Care Types</h1>
+		<p class="description ng-binding">Listing of Care Types</p>
+	</div>
+	<div class="title-env" style="width:20%">
+		<a class="btn btn-secondary pull-right" ng-click="viewCareType.addEditPopup()" ng-if="hasAccess('CREATE_CARETYPE')" style="margin-top: 10px;">Add New Care Type</a>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body table-responsive">
+		<table class="table table-bordered table-striped responsive-md" id="example-2">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Company Position</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			
+			<tbody class="middle-align">
+				<tr role="row" class="odd"  ng-repeat="caretype in viewCareType.careTypeList" 
+                                                    total-items="totalRecords">
+					<td>{{caretype.careTypeTitle}}</td>
+					<td>{{caretype.companyPositionsString}}</td>
+					<td>
+						<div class="center">
+							<a class="btn icon-left fa fa-pencil edit_button ng-scope" ng-if="hasAccess('UPDATE_CARETYPE')" ng-click="viewCareType.addEditPopup(caretype);" tooltip="Edit"><span class="ed_b"></span></a> 
+							<a class="btn icon-left fa fa-ban deactivate_bt" href="" ng-if="hasAccess('UPDATE_CARETYPE') && caretype.status == 'a'" ng-click="viewCareType.activateDeactivatePopup(caretype, 'careTypeActivateModal', 'deactivate')" tooltip="Deactivate"><span class="ed_b"></span></a>
+                            <a class="btn icon-left fa fa-check edit_button" href="" ng-if="hasAccess('UPDATE_CARETYPE') && caretype.status == 'i'" ng-click="viewCareType.activateDeactivatePopup(caretype, 'careTypeActivateModal', 'activate')" tooltip="Activate"><span class="ed_b"></span></a>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script type="text/ng-template" id="careTypeModel">
+	<div class="modal-header">
+        <button type="button" class="close" ng-click="careTypeModel.closePopup();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" > {{ careTypeModel.title }}</h4>
+    </div>
+
+    <div class="modal-body">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default" style="padding: 0;">
+				<div class="panel-body form-horizontal">
+
+					<form role="form" class="form-horizontal ng-pristine ng-valid col-md-12" id="caretype_form" name="careTypeModel.caretype_form" role="form"  ng-submit="careTypeModel.save()" >
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="field-1">Title</label>
+
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="title" placeholder="Enter Title" ng-required='true' ng-model="careTypeModel.caretype.careTypeTitle" data-validate="required" data-message-required="Please enter Title.">
+							</div>
+						</div>
+                                                
+                                                <div class="form-group-separator">
+						</div>
+                                                <div class="form-group">
+						<label class="col-sm-2 control-label" for="tagsinput-1">Company position</label>
+						<div class="col-sm-10">
+							<select class="form-control" name="companyPositionId" multiple="multiple" id="companyPositionId" ng-model="careTypeModel.companyPositionId" onblur="setSelectValidationMessage(this)" ng-options="cp.id as cp.position for cp in careTypeModel.positions" itemid="companyPositionId">
+					      	</select>
+						</div>
+					</div>
+						
+						<div class="modal-footer">
+	                        <button type="button" class="btn btn-white" ng-click="careTypeModel.closePopup();">Close</button>
+	                        <button type="submit" class="btn btn-info" >Save changes</button>
+	                    </div>
+					</form>
+			</div>
+		</div>
+	</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="careTypeActivateModal">
+    <div class="modal-header">      
+    <h4 class="modal-title"> {{ careTypeActivateModal.title }}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to {{careTypeActivateModal.action}} this Care Type?
+    
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="careTypeActivateModal.confirm(careTypeActivateModal.caretype);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="careTypeActivateModal.dismiss();">No</button>
+    </div>
+</script>

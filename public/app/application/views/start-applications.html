@@ -1,0 +1,118 @@
+<div class="login-container">
+    <div class="row" style="max-width:500px; margin:auto;">
+        <div class="col-sm-12"> 
+            <script type="text/javascript">
+                jQuery(document).ready(function ($)
+                {
+                    // Reveal Login form
+                    setTimeout(function () {
+                        $(".fade-in-effect").addClass('in');
+                    }, 1);
+
+
+                    // Validation and Ajax action
+                    $("form#login").validate({
+                        rules: {
+                            email: {
+                                required: true
+                            },
+
+                            accessCode: {
+                                required: true
+                            },
+                            phone: {
+                                required: true
+                            }
+                        },
+
+                        messages: {
+                            email: {
+                                required: 'Please enter your email.'
+                            },
+
+                            accessCode: {
+                                required: 'Please enter access code.'
+                            },
+                            phone: {
+                                required: 'Please enter mobile number'
+                            }
+                        },
+
+                    });
+
+                    // Set Form focus
+                    $("form#login .form-group:has(.form-control):first .form-control").focus();
+                });
+            </script> 
+
+            <!-- Errors container -->
+            <div class="errors-container"> </div>
+            <div class="login-form fade-in-effect " ng-cloak ng-show="application.companyName">
+                <div class="login-header" style="margin-bottom: 20px!important"> 
+
+                    <h2><a href="" class="logo" style="color: #29b94e; text-align: center; text-decoration: none">{{application.companyName}}</a></h2>
+
+                </div>
+
+
+                <div ng-show='application.firstTime !== null && !application.applicationSubmitted' style="text-align: center">
+                    <h4>{{application.companyName}} would like to thank you for showing interest in the {{application.postTitle}} position.</h4>
+                    <form method="post" role="form" id="login" name='loginForm' class="validate" ng-submit='application.submitApplicationRetrieve();'>
+
+                        <div class="info-links" ng-if='!application.forgotPassword'>
+                            <br/>
+                            <p> Please provide below details to {{application.firstTime===true?'initiate your application.':'retrieve your existing application.'}}
+                        </div>
+                        <div class="info-links"  ng-if='application.forgotPassword===true'>
+                            <br/>
+                            <p> Please provide your email to get existing application details.
+                        </div>
+                        <div class="form-group">
+                            <!--<label class="control-label" for="username">Username</label>-->
+                            <input type="email" class="form-control" ng-keyup="$event.keyCode == 13 && application.submitApplicationRetrieve()"
+                                   placeholder="Email" name="email" id="email" autocomplete="off" ng-model='application.applicationData.email'  />
+                        </div>
+                        <div class="form-group" ng-show="application.firstTime !== true && application.forgotPassword!==true">
+                            <!--<label class="control-label" for="password">Password</label>-->
+                            <input type="text" class="form-control" ng-keyup="$event.keyCode == 13 && application.submitApplicationRetrieve()"
+                                   placeholder="Access Code" name="accessCode" id="ssn" autocomplete="off" ng-model='application.applicationData.accessCode' 
+                                   maxlength="8"  minlength="8" ng-required="{{application.firstTime !== true  && application.forgotPassword!==true}}"/>
+                        </div>
+                        <div class="form-group" ng-show="application.firstTime === true  && application.forgotPassword!==true">
+                            <!--<label class="control-label" for="password">Password</label>-->
+                            <input type="text" class="form-control" ng-keyup="$event.keyCode == 13 && application.submitApplicationRetrieve()"
+                                   placeholder="Mobile Number" name="phone" id="phone" autocomplete="off" ng-model='application.applicationData.phone' 
+                                   maxlength="10"  numbers-only="true" minlength="10" ng-required="{{application.firstTime === true  && application.forgotPassword!==true}}"/>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary  btn-block text-left" ng-show='!application.forgotPassword'>{{application.firstTime===true?'Start Application':'Retrieve Application'}} <i class="fa-arrow-circle-right"></i></button>
+                            <button type="submit" class="btn btn-primary  btn-block text-left" ng-show='application.forgotPassword'>Email Application Details <i class="fa-arrow-circle-right"></i></button>
+                        </div>
+
+                    </form>
+                </div>
+                <div ng-show="application.applicationSubmitted">
+                    <h4>Thanks for applying, Please check your email for a verification link and access code to start the application process.</h4>
+                </div>
+
+                <div class="login-footer"  style="text-align: center"> 
+                    <a style="cursor: pointer" ng-click="application.existingApplication()" ng-show='application.firstTime === true || application.forgotPassword===true'>Retrieve existing application?</a>
+                    <a style="cursor: pointer" ng-click="application.showForgotPassword()" ng-show='application.firstTime === false && application.forgotPassword===false'>Forgot password?</a>
+                </div>
+
+                <div class="info-links">
+                    <p><i>All information learned from this application process is privileged and is not for public disclosure. 
+                            This information is solely used for hiring purposes and will be kept confidential.</i></p>
+                </div>
+                
+                <br/>
+                <div style="text-align: right"> <a href="" class="logo" style="text-decoration: none; color: #979898"> <span>Powered by </span> <img src="assets/images/logo-white-bg@2x.png" alt="" width="80" />  </a>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+

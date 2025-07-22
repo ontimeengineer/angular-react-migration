@@ -1,8 +1,7 @@
 const COMMENTS_URI = 'http://localhost:3004/comments';
 
-export default class CommentService {
+class CommentService {
 
-    static $inject = ['$http'];
     constructor($http) {
         this.$http = $http;
     }
@@ -22,3 +21,7 @@ export default class CommentService {
         return comments;
     }
 }
+
+CommentService.$inject = ['$http']; // ✅ Explicitly assign after class definition
+
+export default CommentService;

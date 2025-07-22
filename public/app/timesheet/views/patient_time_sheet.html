@@ -1,0 +1,506 @@
+
+<div class="page-body"> 
+
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">Patient Time Sheet</h1>
+            <p class="description">Patient Time Sheet</p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal validate" role="form">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-4 pad_lf0" style="margin-top:-15px;" ng-show="patTimesheet.selectedPatient && patTimesheet.selectedPatient !== null" >                                    
+                                    <div class="user_av_hd">
+                                        <h1><a href="" ng-click="patTimesheet.viewPatient(patTimesheet.selectedPatient.id)">{{patTimesheet.selectedPatient.lName + ", " + patTimesheet.selectedPatient.fName + " " + patTimesheet.selectedPatient.middleInitial}}</a></h1>
+                                        <!--<p>{{patTimesheet.selectedPatient.position}}</p>-->
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-8 pull-right pad0 wd_full">
+                                    <div class="form-group" ng-class="{'validate-has-error':patTimesheet.searchParams.patientId == null && patTimesheet.formSubmitted}">
+                                        <label class="col-sm-3 control-label">Patient Name</label>
+                                        <div class="col-sm-9">
+                                            <!--<input type="text" class="form-control" ng-model="patTimesheet.searchValue" ng-change="patTimesheet.filterTimesheet()">-->
+                                            <script type="text/javascript">
+                                                jQuery(document).ready(function ($)
+                                                {
+                                                    setTimeout(function () {
+                                                        $("#sboxit-2").select2({
+//                                                        minimumResultsForSearch: -1,
+                                                            placeholder: 'Select Patient...',
+//                                                        minimumInputLength: 1,
+//                                                        placeholder: 'Search',
+                                                        }).on('select2-open', function ()
+                                                        {
+                                                            // Adding Custom Scrollbar
+                                                            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                                        });
+                                                    }, 200);
+
+                                                });
+                                            </script>
+                                            <select class="form-control" name ="sboxit-2" id="sboxit-2" ng-model="patTimesheet.searchParams.patientId" ng-options='pat.id as (pat.lName + ", " + pat.fName + " " + pat.middleInitial) for pat in patTimesheet.patientList track by pat.id'>
+                                                <option value="" selected hidden />
+                                            </select>
+                                            <div ng-show='patTimesheet.searchParams.patientId == null && patTimesheet.formSubmitted'>
+                                                <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>Please select Patient Name.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 pad0">
+                                <div class="page-count-selector col-md-4 pull-left pad-rg-xs-15" ng-show="patTimesheet.timesheetList.length">
+                                    <label class="control-label nowrap"><span>Show Entries</span></label>
+                                    <div style="width:70px;">
+                                        <select class="form-control input-sm" ng-model="patTimesheet.searchParams.limit">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+                                </div> 
+
+                                <div class="col-sm-7 pull-right wd_full">
+                                    <div class="col-sm-6 pad0 wd_full">
+                                        <div class="form-group">
+                                            <label for="field-68" class="col-sm-3 control-label nowrap">From</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input type="text" id="field-68" class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="patTimesheet.searchParams.startDate" max-date="patTimesheet.searchParams.endDate" name='fromDate' data-validate="required"  data-message-required="Please select From Date." required>
+                                                    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 pad0">
+                                        <div class="form-group">
+                                            <label for="field-69" class="col-sm-3 control-label">To</label>
+                                            <div class="col-sm-9 pad-lf-sm-0">
+                                                <div class="input-group">
+                                                    <input type="text" id="field-69" class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="patTimesheet.searchParams.endDate" min-date="patTimesheet.searchParams.startDate">
+                                                    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 pad0">
+                                <div class="col-sm-10 pull-right">
+
+                                    <button type="submit" class="btn btn-info green_bt pull-right" style="width:auto;" ng-click="patTimesheet.searchParams.pageNo = 1;
+                                        patTimesheet.searchParams.sortBy = 'date';
+                                        patTimesheet.searchParams.order = 'desc';
+                                        patTimesheet.filterTimesheet();
+                                        patTimesheet.formSubmitted = true">Review</button>
+                                    <a href="#/app/manual_punch{{patTimesheet.selectedPatient==null?'':'/patient/'+patTimesheet.searchParams.patientId+'?lastPage=patient_time_sheet'}}" class="btn btn-info btn-single process_bt pull-right mar_rg5 mar_lf0 mar-rg0-xxs" ng-disabled="patTimesheet.selectedPatient.status === 'd'">Manual Punch</a>
+                                    <button class="btn btn-info btn-single gray_bt pull-right" type="button" ng-click="patTimesheet.resetFilters()">
+                                        Reset Filters
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="table-responsive border0 search_hide">
+                                <table id="example-1" class="table table-striped table-bordered table-small-font" ng-if="patTimesheet.timesheetList.length" cellspacing="0" >
+                                    <thead>
+                                        <tr>
+                                            <th width="12%" nowrap ng-class="patTimesheet.applySortingClass('punchIn')" ng-click="patTimesheet.applySorting('punchIn')">Date In</th>
+                                            <th width="12%" nowrap ng-class="patTimesheet.applySortingClass('punchOut')" ng-click="patTimesheet.applySorting('punchOut')">Date Out</th>
+                                            <th width="9%" nowrap >Time In</th>
+                                            <th width="9%" nowrap >Time Out</th>
+                                            <th width="9%" nowrap>Hours</th>
+                                            <th width="8%" nowrap>UT</th>
+                                            <th width="20%" nowrap ng-class="patTimesheet.applySortingClass('employee')" ng-click="patTimesheet.applySorting('employee')">Employees Name</th>
+                                            <th nowrap>Actions</th>
+                                            <th width="13%" nowrap>Signature</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr pagination-id="patientTimesheetPagination" dir-paginate="timesheet in patTimesheet.timesheetList| itemsPerPage: patTimesheet.searchParams.limit"
+                                            total-items="patTimesheet.totalRecords"
+                                            current-page="patTimesheet.searchParams.pageNo">
+                                            <th>
+                                                {{timesheet.roundedPunchInTime|date :dateFormat}}
+                                            </th>
+                                            <th>
+                                                <span ng-if='validNumber(timesheet.roundedPunchOutTime)'>
+                                                    {{timesheet.roundedPunchOutTime|date :dateFormat}}
+                                                </span>
+                                                <span ng-if='!validNumber(timesheet.roundedPunchOutTime)'>Not Punched</span>
+                                            </th>
+                                            <td>
+                                                <!--Display green dot for matched GPS location-->
+                                                <!--<div class="green_dot"></div>-->
+                                                <!--Display red dot for not matched GPS location-->
+                                                <!--<div class="red_dot"></div>-->
+                                                <div ng-class="{'black_dot':timesheet.punchInColorFlag == 'black','red_dot':timesheet.punchInColorFlag == 'red','green_dot':timesheet.punchInColorFlag == 'green'}"></div>
+                                                {{timesheet.roundedPunchInTime|date :timeFormat}}
+                                            </td>
+                                            <td>
+                                                <span ng-if='validNumber(timesheet.roundedPunchOutTime)'>
+                                                    <div ng-class="{'black_dot':timesheet.punchOutColorFlag == 'black','red_dot':timesheet.punchOutColorFlag == 'red','green_dot':timesheet.punchOutColorFlag == 'green'}"></div>
+                                                    {{timesheet.roundedPunchOutTime|date :timeFormat}}
+                                                </span>
+                                                <span ng-if='!validNumber(timesheet.roundedPunchOutTime)'>Not Punched</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if='validNumber(timesheet.roundedPunchOutTime)'>
+                                                    <span ng-if='timesheet.unauthorizedTime && timesheet.forBilling && timesheet.scheduleId'>
+                                                        {{timesheet.roundedPunchInTime|duration:timesheet.roundedPunchOutTime}}
+                                                    </span>
+                                                    <span ng-if='(timesheet.unauthorizedTime && !timesheet.forBilling && timesheet.scheduleId) || timesheet.ut'>
+                                                        {{timesheet.scheduleId.roundedStartTime|duration:timesheet.scheduleId.roundedEndTime}}
+                                                    </span>
+                                                    <span ng-if='!timesheet.ut && !timesheet.unauthorizedTime'>
+                                                        {{timesheet.roundedPunchInTime|duration:timesheet.roundedPunchOutTime}}
+                                                    </span>
+                                                </span>
+                                                <span ng-if='!validNumber(timesheet.roundedPunchOutTime)'>N/A</span>
+                                            </td>
+                                            <td>
+                                                <span ng-if='timesheet.ut' style="cursor: pointer;" ng-click="patTimesheet.openUTModal(timesheet, 'utModal')">{{timesheet.ut}}</span>
+                                                <span ng-if='timesheet.unauthorizedTime'>
+                                                    {{timesheet.unauthorizedTime}} <i class="fa fa-check edit_button" style="cursor: pointer;" ng-click="hide(this);" onclick="hide(this);"></i>
+                                                    <div class="eventstoload" style="display:none;">
+                                                        <div>
+                                                            <div ng-if="timesheet.unauthorizedDocument">
+                                                                <a style="color: blue;text-decoration: underline" ng-href="{{patTimesheet.baseUrl}}file/download/{{patTimesheet.companyCode}}/u/{{timesheet.unauthorizedDocument}}">
+                                                                    document{{timesheet.unauthorizedDocument|extension}}
+                                                                </a>
+                                                                <br/>
+                                                            </div>
+                                                            <b>Scheduled At</b><br/>
+                                                            from {{timesheet.scheduleId.roundedStartTime|date :timeFormat}} to {{timesheet.scheduleId.roundedEndTime|date :timeFormat}}<br/>
+                                                            <b>Cleared For</b><br/>
+                                                            <div ng-if="timesheet.forPayroll">Payroll<br/></div>
+                                                            <div ng-if="timesheet.forBilling">Billing<br/></div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {{timesheet.employeeId.lName + ", " + timesheet.employeeId.fName + " " + timesheet.employeeId.middleInitial}}
+                                            </td>
+                                            <td>
+                                                <div style="float:left; min-width:120px;">
+                                                    <a ng-if="(timesheet.isEdited == true && patTimesheet.selectedPatient.status != 'd' && hasAccess('EDIT_PATIENT_TIMESHEET')) || hasAccess('EDIT_ALL_TIMESHEET')" class="btn icon-left fa fa-pencil edit_button" ng-href="#/app/{{timesheet.isMissedPunch===true?'edit_missed_punch':'edit_timesheet'}}/{{timesheet.id}}?lastPage=patient_time_sheet" tooltip="Edit"><span class="ed_b"></span></a> 
+                                                    <a ng-if="timesheet.isEdited == true && hasAccess('DELETE_PATIENT_TIMESHEET')" class="btn icon-left fa fa-trash-o delete_button" href="" ng-click="patTimesheet.openDeleteModal(timesheet, 'deleteModel')" tooltip="Delete"><span class="ed_b"></span></a> 
+                                                    <!--<a class="btn icon-left fa fa-search view_task_button" href="#"><span class="ed_b">Tasks </span></a>-->
+
+                                                    <a ng-if="hasAccess('VIEW_PATIENT_TASKS')" class=" btn fa fa-search view_task_button" ng-click="patTimesheet.openTaskListModal('modal-3', 'lg', 'static', timesheet.tasks);" href="javascript:;" tooltip="View Tasks"><span class="ed_b"></span></a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-if="timesheet.isManualPunch === true">{{timesheet.createdByName==null? 'Admin Verified':'Verified : '+timesheet.createdByName}}</div>
+                                                <div ng-if="timesheet.isManualPunch !== true && timesheet.signature === null">{{timesheet.createdByName==null? 'Admin Verified':'Verified : '+timesheet.createdByName}}</div>
+                                                <img ng-if="(!timesheet.isManualPunch || timesheet.isManualPunch === false) && timesheet.signature && timesheet.signature !== null" width="58" height="34" alt="Signature" ng-src="{{ patTimesheet.signatureList[timesheet.signature] }}">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-if="(patTimesheet.timesheetList == null || patTimesheet.timesheetList.length == 0) && patTimesheet.dataRetrieved && patTimesheet.criteriaSelected === true">
+                                    No timesheet available for selected patient.
+                                </div>
+                                <div ng-if="patTimesheet.criteriaSelected === false">
+                                    Please select all filters to review timesheets.
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <div ng-show="patTimesheet.timesheetList.length">
+                            <div id="paginationButtons" class="text-right">
+                                <dir-pagination-controls boundary-links="true" 
+                                                         max-size="9"
+                                                         template-url="app/tpls/dirPagination.tpl.html" pagination-id="patientTimesheetPagination" on-page-change="patTimesheet.pageChanged(newPageNumber)"></dir-pagination-controls>
+                            </div>
+                        </div>
+                    </form>
+                    <table width="100%"  class="table table-small-font table-bordered table-striped" cellspacing="0" ng-if="(patTimesheet.timesheetList.length > 0) && patTimesheet.dataRetrieved">
+                        <tbody>
+                            <tr style="border:0px !important;">
+                                <td width="25%"  class="border0 total" align="right">Total</td>
+                                <td width="25%"  class="border0 total" align="left"><span ng-bind="patTimesheet.timesheetList | durationtotal:'forBilling'"></span> HRS</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--                <div class="panel-body pad_top0">
+                                    <div id="example-1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="time_sh_bt_buttons">
+                                                    <button style="width:auto;" class="btn btn-info green_bt pull-left" type="button">&laquo; Previous</button>
+                                                    <button style="width:auto;" class="btn btn-info green_bt pull-left" type="button">Next &raquo;</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+
+                <div class="panel-body pad_top0">
+                    <div id="example-1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"><script type="text/javascript">
+                        // This JavaScript Will Replace Checkboxes in dropdown toggles
+                        jQuery(document).ready(function ($)
+                        {
+                            setTimeout(function ()
+                            {
+                                $(".checkbox-row input").addClass('cbr');
+                                cbr_replace();
+                            }, 0);
+                        });
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+<!-- Modal 7 (Ajax Modal)-->
+<!--<div class="modal fade" id="modal-7">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Completed Tasks</h4>
+            </div>
+
+            <div class="modal-body">
+
+
+                <form class="form-horizontal" role="form">
+                    <div class="row">
+
+
+                        <div style="width:100%; float:left;">
+
+                            <div class="col-sm-12">
+                                <strong>Patient Name:</strong> Pierre, Karl<br>
+                                <strong>Provider Name:</strong> Doe, John<br>
+                                <strong>Title:</strong> HHA<br>
+                                <strong>Date:</strong>  April 07 2015
+                            </div>
+
+                            <div class="col-sm-12 ">
+
+                                <table width="100%"  style="margin-top:15px;"  class="table table-small-font table-bordered table-striped" cellspacing="0">
+                                    <tbody>
+
+                                        <tr>
+                                            <td align="left">Batch Toilet</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">Catheter Care</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">Dressing Assistance</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">Errands</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">Feeding</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">House Keeping</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">Incontient Care</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">Laundry</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">Maeal Preparations</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">Medication Reminder</td>
+                                        </tr>
+
+
+
+                                    </tbody>
+                                </table>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>-->
+
+<!--<script type="text/javascript">
+    function showAjaxModal()
+    {
+        jQuery('#modal-7').modal('show', {backdrop: 'static'});
+
+        setTimeout(function()
+        {
+            jQuery.ajax({
+                url: "data/ajax-content.txt",
+                success: function(response)
+                {
+                    jQuery('#modal-7 .modal-body').html(response);
+                }
+            });
+        }, 800); // just an example
+    }
+</script>-->
+<!-- Modal 7 (Ajax Modal)-->
+<script type="text/ng-template" id="modal-3">
+    <div class="modal-header">
+    <h4 class="modal-title">Task List</h4>
+    </div>
+
+    <div class="modal-body">
+    <div class="row">
+
+    <div class="col-sm-12" ng-repeat="task in taskListModal.taskList" ng-if="taskListModal.taskList!=null && taskListModal.taskList.length>0">
+    <div>
+    {{task.companyTasksId.task}} <span ng-show="task.value!=null && task.value.toLowerCase()!='true' && task.value.toLowerCase()!='false'">- {{task.value}}</span>
+    </div>
+    </div>
+    <div class="col-sm-12" ng-if="taskListModal.taskList==null || taskListModal.taskList.length==0">
+    No tasks are available.
+
+    </div>
+    </div>
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="taskListModal.close();">Close</button>
+    </div>
+</script>
+<script type="text/ng-template" id="deleteModel">
+    <div class="modal-header">		
+    <h4 class="modal-title">{{deletePunchModal.punchObj.punchInTime|timesheetformat}} - {{deletePunchModal.punchObj.punchInTime|date :dateFormat}} - {{deletePunchModal.punchObj.punchInTime|date :timeFormat}} to {{deletePunchModal.punchObj.punchOutTime|date :timeFormat}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to delete this Punch record?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="deletePunchModal.delete(deletePunchModal.punchObj);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="deletePunchModal.dismiss();">No</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="utModal">
+    <form class="validate form-horizontal" name="utForm" id="ut_form" >
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="utModal.cancel();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Unauthorized Time</h4>
+    </div>
+
+    <div class="modal-body">
+    <div class="row">
+    <label class="col-sm-12">
+    <strong>Upload Documentation</strong>
+    </label>
+    <div class="col-sm-12">
+    <div flow-init="utModal.documentUploadFile" flow-file-added="utModal.documentFileAdded($file, $flow)" flow-file-success="utModal.documentFileUploaded($message,$file,$flow)" flow-files-submitted="utModal.documentFileSelected($file,$flow)" flow-file-error="utModal.documentFileError( $file, $message, $flow )">
+    <div class="row">
+    <div class="col-sm-3">
+    <button type='button' class='btn btn-single gray_bt' id="Document" ng-model="utModal.obj.document" flow-btn style="margin-bottom:0px !important" name="Document" ng-disabled="utModal.disableDocumentUploadButton">Choose File</button>
+    </div>
+    <div class="col-sm-9">
+    <label class="control-label">
+    <a ng-show="utModal.obj.unauthorizedDocument != null" style="color: blue;text-decoration: underline" ng-href="{{utModal.baseUrl}}file/download/{{utModal.companyCode}}/u/{{utModal.obj.unauthorizedDocument}}">
+    document{{utModal.obj.unauthorizedDocument|extension}}
+    </a>
+    <a href=""><i class="fa fa-close" ng-show="utModal.obj.unauthorizedDocument != null" ng-click="utModal.clearDocument()"></i></a>    </label>
+    </div>
+    </div>
+    <div>
+    <div ng-show="utModal.docFileObj.errorMsg != null && utModal.docFileObj.errorMsg != ''">
+    <span class="red">{{utModal.docFileObj.errorMsg}}</span>
+    </div> 
+    </div>
+    <div flow-transfers class="form-control-static" ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+    <div ng-repeat="file in transfers">
+    <div id="docFileprogress" class="progress" ng-show="file.progress() < 1 && utModal.documentShowfileProgress">
+    <div  class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{file.progress() * 100}}%;">
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="row col-md-12" style="margin-top:12px;">
+    <label><strong>Cleared For</strong></label>
+    </div>
+    <div class="row col-md-12">
+    <input type="checkbox" name="payroll" ng-model="utModal.obj.forPayroll">
+    <label>Payroll</label>
+    </div>
+    <div class="row col-md-12">
+
+    <input type="checkbox" name="billing" ng-model="utModal.obj.forBilling">
+    <label>Billing</label>
+    </div>
+    </div>
+
+    <div class="row"/>    
+    <div class="modal-footer">
+    <button type="submit" class="btn btn-success" ng-click="utModal.approve();">Approve</button>
+    </div>
+    </form>
+</script>
+<script type="text/javascript">
+    function hide(obj) {
+        $(obj).next().popover('show');
+        $(obj).popover({
+            content: $(obj).next().contents(),
+            html: true
+        })
+    }
+</script>

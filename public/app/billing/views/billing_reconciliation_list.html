@@ -1,0 +1,69 @@
+<div ng-include="'app/billing/views/billing_reconciliation.html'"></div>
+<div class="row" ng-controller="BillingReconciliationListCtrl as billingReconciliationList">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body"> 
+                <div class="row">                            
+                    <div class="form-group col-sm-6 pull-left">
+                        <label class="col-sm-3 control-label pull-left" style="min-width:110px;"><span style="float:left;">Show Entries</span></label>
+                        <div style="width:70px; float:left;">
+                            <select class="form-control input-sm" ng-model="billingReconciliationList.searchParams.limit">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div> 
+                    <div class="form-group col-md-6 col-sm-6 col-xs-12 pull-right">
+                        <input type="search" class="form-control input-sm" ng-model="billingReconciliationList.searchParams.searchFilter" placeholder="Search by [Received Form, # Reference]" ng-change="billingReconciliationList.applySearch()">
+                    </div> 
+                </div>
+                <div class="dataTables_wrapper form-inline dt-bootstrap" ng-if="billingReconciliationList.reconciliations.length">
+                    <div class="table-responsive scroll">
+                        <table id="example-1" class="table table-striped table-bordered  table table-small-font" cellspacing="0">
+                            <thead>
+                                <tr>                                    
+                                    <th width="24%" ng-click="viewEmployee.applySorting('receivedFromName')" >Received From</th>
+                                    <th width="15%">Received Date</th>
+                                    <th width="13%">Payment Method</th>
+                                    <th width="18%"># Reference</th>
+                                    <th width="15%">Payment Amount</th>
+                                    <th width="15%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr pagination-id="drinksPagination" dir-paginate="reconciliation in billingReconciliationList.reconciliations| itemsPerPage: billingReconciliationList.searchParams.limit" 
+                                    total-items="billingReconciliationList.reconciliationCount"
+                                    current-page="billingReconciliationList.searchParams.pageNo">
+                                    <td>{{reconciliation.receivedFromName}}</td>
+                                    <td>{{reconciliation.receivedDate}}</td>
+                                    <td>{{reconciliation.paymentMethod === 'CSH' ? 'Cash': (reconciliation.paymentMethod === 'EFT' ? 'EFT' : 'Check')}}</td>
+                                    <td>{{reconciliation.referenceNumber}}</td>
+                                    <td>{{reconciliation.paymentAmount| number : 2}}</td>
+                                    <td>
+                                        <div class="center">
+                                            <a class="btn icon-left fa fa-edit edit_button" href="" tooltip="Edit Reconciliation"  ui-sref="app.billing_reconciliation_view({id:reconciliation.id})"><span class="ed_b"></span></a>       
+                                            <a class="btn icon-left fa fa-trash-o delete_button" href="" tooltip="Delete" ng-click="billingReconciliationList.openDeleteModal(reconciliation)"><span class="ed_b" ></span></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>                    
+                </div>
+                <div ng-if="(billingReconciliationList.reconciliations === null || billingReconciliationList.reconciliations.length === 0)">
+                    No billing reconciliations available.
+                </div>
+                <div ng-show="billingReconciliationList.reconciliations.length">                    
+                    <div id="paginationButtons" class="text-right">
+                        <dir-pagination-controls boundary-links="true" 
+                                                 max-size="9"
+                                                 template-url="app/tpls/dirPagination.tpl.html" pagination-id="drinksPagination" 
+                                                 on-page-change="billingReconciliationList.pageChanged(newPageNumber)"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

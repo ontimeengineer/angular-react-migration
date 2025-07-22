@@ -1,0 +1,198 @@
+<style>
+    .no-pad .tab-content{
+        padding: 0px;
+        margin-bottom: 0px;
+    }
+    #ApplyFixHeight tbody {
+        display:block;
+        max-height: 400px;
+        overflow:auto;
+    }
+    #ApplyFixHeight thead, #ApplyFixHeight ,#ApplyFixHeight tbody tr {
+        display:table;
+        width:100%;
+        table-layout:fixed;/* even columns width , fix width of table too*/
+    }
+    #ApplyFixHeight thead {
+        width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+    }
+</style>
+<div class="" ng-init="isProfile = true">
+    <div class="modal-body" style="min-height: 300px;">
+        <div class="row">
+            <div class="user_panel col-md-12">
+                <div class="user_img"> 
+                    <img alt="user" class="img-cirlce img-responsive" src="assets/images/user-5.png" ng-src="{{ employeeinfo.profileImage }}"> </div>
+                <div class="emp_user_hd" style="width: 77%;">
+                    <div class="emp_user_name">{{employeeinfo.employee.lName}}, {{employeeinfo.employee.fName}} {{employeeinfo.employee.middleInitial}}</div>
+                    <p>{{positions[employeeinfo.employee.companyPositionId]}}</p>
+                </div>
+                <a href="" ng-click="isProfile = !isProfile;employeeinfo.readNotes(isProfile)" style="margin-top: 20px;position: absolute;text-decoration: none;">
+                    <span>
+                        <i class="fa deactivate_bt" ng-class='{"fa-book":isProfile === true,"fa-info-circle":isProfile === false}'></i>
+                        {{isProfile === true?"Show Notes":"Show Information"}}
+                    </span>
+                </a>
+                <button type="button" class="close" ng-click="employeeinfo.close();" aria-hidden="true">&times;</button>
+            </div>
+
+        </div>
+        <hr/>
+        <div ng-show="!isProfile">
+            <notes-directive user-id="employeeinfo.employeeId" has-create="true" has-retrieve="true" can-edit="true"
+                             can-delete="true" read-notes="false"></notes-directive>
+        </div>
+        <div ng-show="isProfile">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="field-1" class="control-label col-md-5"><strong>Position</strong></label>
+                        <div class="col-md-7">
+                            {{positions[employeeinfo.employee.companyPositionId]}} 
+                        </div>
+                    </div>	
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="field-1" class="control-label col-md-5"><strong>Phone Number</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.phone| tel}} 
+                        </div>
+                    </div>	
+
+                </div>
+            </div>
+            <div class="row" ng-if="employeeinfo.employee.phone2 != null">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="field-1" class="control-label col-md-5"><strong>Phone 2</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.phone2| tel}} 
+                        </div>
+                    </div>	
+
+                </div>
+            </div>
+            <div class="row" ng-if="employeeinfo.employee.emergencyContactName != null">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="field-1" class="control-label col-md-5"><strong>Emergency Contact Name</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.emergencyContactName}} 
+                        </div>
+                    </div>	
+
+                </div>
+            </div>
+            <div class="row" ng-if="employeeinfo.employee.emergencyContactNumber != null">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="field-1" class="control-label col-md-5"><strong>Emergency Contact Number</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.emergencyContactNumber| tel}} 
+                        </div>
+                    </div>	
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="field-1" class="control-label col-md-5"><strong>Address</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.address1}}<div ng-if="employeeinfo.employee.address2 != null">{{employeeinfo.employee.address2}}</div><div>  {{employeeinfo.employee.city}}, {{employeeinfo.employee.state}}, {{employeeinfo.employee.zipcode}}</div>
+                        </div>
+                    </div>	
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="field-1" class="control-label col-md-5"><strong>Date Of Birth</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.dateOfBirth|date :dateFormat}} 
+                        </div>
+                    </div>	
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label class="control-label col-md-5"><strong>Gender</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.gender}} 
+                        </div>
+                    </div>	
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <label for="field-1" class="control-label col-md-5"><strong>{{terminologyBank.ssn}} Number</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.ssn| ssn}} 
+                        </div>
+                    </div>	
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="field-111" class="control-label col-md-5"><strong>Authorized Hours</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.authorizedHours}} 
+                        </div>
+                    </div>	
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-5"><strong>Languages Spoken</strong></label>
+                <div class="col-md-7">
+                    <span ng-if="employeeinfo.employee.languageSpoken == null || employeeinfo.employee.languageSpoken.length == 0">N/A</span>
+                    <span ng-repeat="language in employeeinfo.employee.languageSpoken">{{languages[language]}}
+                        <label ng-if="$index < employeeinfo.employee.languageSpoken.length - 1">, </label>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-5"><strong>Does Employee Drive?</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.doesEmpDrive? 'Yes':'No'}} 
+                        </div>
+                    </div>	
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label col-md-5"><strong>Email</strong></label>
+                        <div class="col-md-7">
+                            {{employeeinfo.employee.email}} 
+                        </div>
+                    </div>	
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="employeeinfo.close();">Close</button>
+    </div>
+</div>

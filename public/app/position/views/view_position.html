@@ -1,0 +1,117 @@
+<div class="page-title full-width"  title="Native Elements" description="Plain text boxes, select dropdowns and other basic form elements">
+    <div class="title-env" style="width:80%">
+        <h1 class="title ng-binding">Positions</h1>
+        <p class="description ng-binding">Listing of positions</p>
+    </div>
+    <div class="title-env" style="width:20%" >
+        <a class="btn btn-secondary pull-right" ng-click="viewPosition.addEditPopup()" ng-if="hasAccess('CREATE_POSITION')" style="margin-top: 10px;">Add New Position</a>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body table-responsive">
+        <table class="table table-bordered table-striped responsive-md" id="example-2">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Position Group</th>
+                    <th>Color code</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            
+            <tbody class="middle-align">
+                <tr role="row" class="odd" ng-repeat="position in viewPosition.positionList" 
+                                                    total-items="totalRecords">
+                <!-- <tr role="row" class="odd"> -->
+                    <td>{{position.position}}</td>
+                    <td>{{position.positionGroup}}</td>
+                    <td><span style="display: block;width:20px;height: 20px;border-radius: 100%;background-color: {{position.colorCode}};float: left;"></span> <span style="vertical-align: inherit;">&nbsp;&nbsp;&nbsp;{{position.colorCode}}</span></td>
+                    <td>
+                        <div class="center">
+                            <a class="btn icon-left fa fa-pencil edit_button ng-scope" ng-if="hasAccess('UPDATE_POSITION')" ng-click="viewPosition.addEditPopup(position);" tooltip="Edit"><span class="ed_b"></span></a>
+                            <a class="btn icon-left fa fa-ban deactivate_bt" href="" ng-if="hasAccess('UPDATE_POSITION') && position.status == 'a'" ng-click="viewPosition.activateDeactivatePopup(position, 'positionActivateModal', 'deactivate')" tooltip="Deactivate"><span class="ed_b"></span></a>
+                            <a class="btn icon-left fa fa-check edit_button" href="" ng-if="hasAccess('UPDATE_POSITION') && position.status == 'i'" ng-click="viewPosition.activateDeactivatePopup(position, 'positionActivateModal', 'activate')" tooltip="Activate"><span class="ed_b"></span></a> 
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="positionModel">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="positionModel.closePopup();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" > {{positionModel.title }}</h4>
+    </div>
+    
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <form role="form" class="form-horizontal ng-pristine ng-valid col-md-12"> -->
+                <form class="form-horizontal validate col-md-12" id="position_form" name="positionModel.position_form" role="form"  ng-submit="positionModel.save()">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-1">Title</label>
+
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="position" name="position" placeholder="Enter Title" ng-required='true' ng-model="positionModel.position.position" data-validate="required" data-message-required="Please enter Title.">
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="tagsinput-1">Position Group</label>
+                        
+                        <div class="col-sm-10">
+                            
+                            
+                            <select class="form-control" ng-model="positionModel.position.positionGroup" multiple="multiple" id="multi-select" name="my-select[]" style="width:100%">
+                                <option value="OS">Office Staff</option>
+                                <option value="SC">Staffing Coordinator</option>
+                                <option value="NCC">Nursing Care Coordinator</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="field-1">Color Code </label>
+
+                        <div class="col-sm-10">
+                            <input type="color" ng-model="positionModel.position.colorCode" class="form-control" id="color_code" placeholder="Enter Color Code ">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" ng-click="positionModel.closePopup();">Close</button>
+                        <button type="submit" class="btn btn-info" >Save changes</button>
+                    </div>
+
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="positionActivateModal">
+    <div class="modal-header">      
+    <h4 class="modal-title"> {{ positionActivateModal.title }}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to {{positionActivateModal.action}} this Position?
+    
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="positionActivateModal.confirm(positionActivateModal.position);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="positionActivateModal.dismiss();">No</button>
+    </div>
+</script>
+

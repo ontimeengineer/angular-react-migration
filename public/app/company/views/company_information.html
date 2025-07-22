@@ -1,0 +1,409 @@
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">Company History</h1>
+            <p class="description">Edit Company Information</p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal validate" role="form" id="company_information_form"
+                        name="company_information_form" ng-submit="addCompany.saveCompany()"
+                        ng-init="addCompany.initForm()">
+                        <div class="row">
+                            <div class="col-sm-12 pull-right">
+                                <button class="btn btn-info green_bt pull-right" type="submit"
+                                    ng-disabled="addCompany.disableSaveButton">Save Changes</button>
+                                <button class="btn btn-info btn-single gray_bt pull-right" type="reset">Reset To
+                                    Default</button>
+                                <button tooltip="Job Application Link" class="btn gray_bt pull-right w-auto w-btn-xxs" ng-click="addCompany.openCopyJobLinkModalFun($event);"><i
+                                        class="glyphicon glyphicon-link"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-73" class="col-sm-3 control-label">Company Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="field-73" class="form-control" name="CompanyName"
+                                    ng-model="addCompany.companyObj.companyName" data-validate="required"
+                                    data-message-required="Please enter Company Name." maxlength="45">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+                        <div flow-init="addCompany.profileUploadFile"
+                            flow-file-added="addCompany.profileFileAdded($file, $flow)"
+                            flow-file-success="addCompany.profileFileUploaded($message,$file,$flow)"
+                            flow-files-submitted="addCompany.profileFileSelected($file,$flow)"
+                            flow-file-error="addCompany.profileFileError( $file, $message, $flow )">
+                            <div class="modal fade" id="cropper-example-2-modal" data-keyboard="false">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Crop Image</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-sm-8" id="cropper-example-2">
+                                                    <img flow-img="$flow.files[0]"
+                                                        style="height: 403px;left: 0px;top: 0px;width: 537px;" />
+                                                    <!--<img src="img/picture.jpg" alt="Picture">-->
+
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div>
+                                                        Preview:
+                                                    </div>
+                                                    <div class="img-preview preview-lg">
+                                                        <img flow-img="$flow.files[0]"
+                                                            style="height: 201px;left: 0px;top: 0px;width: 268px;" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    <div class="vertical-top  pull-right">
+                                                        <button class="btn btn-icon btn-primary" data-method="zoom"
+                                                            data-option="0.1" type="button" tooltip="Zoom In"
+                                                            ng-click="addCompany.zoomIn()">
+                                                            <span class="docs-tooltip">
+                                                                <i class="fa fa-search-plus"></i>
+                                                            </span>
+                                                        </button>
+                                                        <button class="btn btn-icon btn-primary" data-method="zoom"
+                                                            data-option="-0.1" type="button" tooltip="Zoom Out"
+                                                            ng-click="addCompany.zoomOut()">
+                                                            <span class="docs-tooltip">
+                                                                <i class="fa fa-search-minus"></i>
+                                                            </span>
+                                                        </button>
+                                                        <button class="btn btn-icon btn-primary" data-method="zoom"
+                                                            data-option="-0.1" type="button" tooltip="Reset"
+                                                            ng-click="addCompany.reset()">
+                                                            <span class="docs-tooltip">
+                                                                <i class="fa fa-refresh"></i>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info"
+                                                ng-click="addCompany.crop();">Crop</button>
+                                            <button type="button" class="btn btn-white"
+                                                ng-click="addCompany.closeCropModal();">Close</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Company Logo
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button type='button' class='btn btn-single gray_bt' id="ProfileImage"
+                                                style="margin-bottom:0px !important"
+                                                ng-model="addCompany.companyObj.logoPath" flow-btn name="ProfileImage"
+                                                ng-disabled="addCompany.disableUploadButton">Choose File</button>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <label class="control-label"
+                                                ng-show="addCompany.companyObj.logoPath != null">
+                                                <a style="color: blue;text-decoration: underline"
+                                                    ng-href="{{addCompany.baseUrl}}file/download/{{addCompany.companyCode}}/{{addCompany.bucketKey}}/{{addCompany.companyObj.logoPath}}">company
+                                                    logo{{addCompany.companyObj.logoPath|extension}}</a>
+                                                <a href=""><i class="fa fa-close"
+                                                        ng-click="addCompany.clearProfileImage()"></i></a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div
+                                            ng-show="addCompany.profileFileObj.errorMsg != null && addCompany.profileFileObj.errorMsg != ''">
+                                            <span class="red">{{addCompany.profileFileObj.errorMsg}}</span>
+                                        </div>
+                                    </div>
+                                    <div flow-transfers class="form-control-static"
+                                        ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+                                        <div ng-repeat="file in transfers">
+                                            <div id="docFileprogress" class="progress"
+                                                ng-show="file.progress() < 1 && addCompany.profileShowfileProgress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="100"
+                                                    aria-valuemin="0" aria-valuemax="100"
+                                                    style="width: {{file.progress() * 100}}%;">
+                                                    <!--{{file.progress() * 100 | number : 0}} %-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+                        <div class="form-group">
+                            <label for="field-74" class="col-sm-3 control-label">Federal Tax ID #</label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <label class="cbr-inline">
+                                        <input type="radio" class="cbr cbr-primary" name="FederalTaxID"
+                                            ng-model="addCompany.companyObj.federalIdType" value="S">
+                                        SS </label>
+                                    <label class="cbr-inline">
+                                        <input type="radio" class="cbr cbr-primary" name="FederalTaxID"
+                                            ng-model="addCompany.companyObj.federalIdType" value="E">
+                                        EIN </label>
+
+                                </div>
+                                <input type="text" id="field-74" class="form-control" restrict-hyphen
+                                    name="FederalTaxIDNumber" ng-model="addCompany.companyObj.federalId"
+                                    data-validate="required" data-message-required="Please enter Federal Tax ID #."
+                                    maxlength="45">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-75" class="col-sm-3 control-label">NPI Number</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="field-75" class="form-control" name="NPINumber"
+                                    ng-model="addCompany.companyObj.npiNumber" data-validate="required"
+                                    data-message-required="Please enter NPI Number." maxlength="45">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-76" class="col-sm-3 control-label">Address 1</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="field-76" class="form-control" name="Address1"
+                                    ng-model="addCompany.companyObj.address1" data-validate="required"
+                                    data-message-required="Please enter Address 1." maxlength="45">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-77" class="col-sm-3 control-label">Address 2</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="field-77" class="form-control" name="Address2"
+                                    ng-model="addCompany.companyObj.address2" maxlength="45">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-78" class="col-sm-3 control-label">City</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="field-78" class="form-control" name="City"
+                                    ng-model="addCompany.companyObj.city" data-validate="required"
+                                    data-message-required="Please enter City." maxlength="45">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-79" class="col-sm-3 control-label">{{terminologyBank.state}}</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="sboxit-1" name="State"
+                                    ng-model="addCompany.companyObj.state" data-validate="required"
+                                    data-message-required="Please select the state."
+                                    ng-options="state.abbreviation as state.name for state in states">
+                                    <option value="">Select the {{terminologyBank.state}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-80" class="col-sm-3 control-label">{{terminologyBank.zipCode}}</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="field-80" class="form-control" name="ZipCode"
+                                    ng-model="addCompany.companyObj.zipcode" data-validate="required"
+                                    data-message-required="Please enter Zip Code." maxlength="10">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-80" class="col-sm-3 control-label">Contact Person</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="field-80" class="form-control" name="ContactPerson"
+                                    ng-model="addCompany.companyObj.contactPerson" data-validate="required"
+                                    data-message-required="Please enter Contact Person." maxlength="45">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-81" class="col-sm-3 control-label">Phone</label>
+                            <div class="col-sm-9">
+                                <input numbers-only="true" maxlength="10" type="text" id="field-81" class="form-control"
+                                    name="Phone" ng-model="addCompany.companyObj.phone"
+                                    data-validate="required,number,minlength[10],maxlength[10]"
+                                    data-message-required="Please enter Phone Number."
+                                    data-message-minlength="Phone Number must contain 10 digits"
+                                    data-message-maxlength="Phone Number must contain 10 digits">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-82" class="col-sm-3 control-label">Fax</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="field-82" class="form-control" name="Fax"
+                                    ng-model="addCompany.companyObj.fax" data-validate="number" maxlength="45">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label for="field-83" class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="field-83" class="form-control" name="Email"
+                                    ng-model="addCompany.companyObj.email" data-validate="email"
+                                    data-message-email="Please enter valid email." maxlength="255">
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                PTO Year End
+                            </label>
+                            <div class="col-sm-3">
+                                <select class="form-control mar_sm_bt7" ng-model="addCompany.companyObj.ptoExpirationMonth"
+                                    name="expirationMonth" data-validate="required"
+                                    data-message-required="Please enter PTO Expiration Month." ng-required='true'
+                                    ng-options="month.id as month.label for month in addCompany.months"
+                                    ng-change="addCompany.changeDays('expiration', addCompany.companyObj.ptoExpirationMonth, addCompany.companyObj.ptoExpirationDay)">
+                                    <option value="" class="">Month</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control" ng-model="addCompany.companyObj.ptoExpirationDay"
+                                    name="expirationDay" data-validate="required"
+                                    data-message-required="Please enter PTO Expiration Date." ng-required='true'
+                                    ng-options="day for day in addCompany.expirationDays">
+                                    <option value="" class="">Day</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                PTO Utilization
+                            </label>
+                            <div class="col-sm-3">
+                                <select class="form-control mar_sm_bt7" ng-model="addCompany.companyObj.ptoUtilizationMonth"
+                                    name="utilizationMonth" data-validate="required"
+                                    data-message-required="Please enter PTO Utilization Month." ng-required='true'
+                                    ng-options="month.id as month.label for month in addCompany.months"
+                                    ng-change="addCompany.changeDays('utilization', addCompany.companyObj.ptoUtilizationMonth, addCompany.companyObj.ptoUtilizationDay)">
+                                    <option value="" class="">Month</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control" ng-model="addCompany.companyObj.ptoUtilizationDay"
+                                    name="utilizationDay" data-validate="required"
+                                    data-message-required="Please enter PTO Utilization Date." ng-required='true'
+                                    ng-options="day for day in addCompany.utilizationDays">
+                                    <option value="" class="">Day</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                PTO Apply Before
+                            </label>
+                            <div class="col-sm-3">
+                                <select class="form-control mar_sm_bt7" ng-model="addCompany.companyObj.ptoApplyMonth"
+                                    name="applyMonth" data-validate="required"
+                                    data-message-required="Please enter PTO Apply Month." ng-required='true'
+                                    ng-options="month.id as month.label for month in addCompany.months"
+                                    ng-change="addCompany.changeDays('apply', addCompany.companyObj.ptoApplyMonth, addCompany.companyObj.ptoApplyDay)">
+                                    <option value="" class="">Month</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control" ng-model="addCompany.companyObj.ptoApplyDay"
+                                    name="applyDay" data-validate="required"
+                                    data-message-required="Please enter PTO Apply Date." ng-required='true'
+                                    ng-options="day for day in addCompany.applyDays">
+                                    <option value="" class="">Day</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator"></div>
+                       
+                        <div class="row">
+                            <!-- <div class="col-sm-12 pull-right">
+                                <button class="btn btn-info green_bt pull-right" type="button"
+                                
+                                ng-click="addCompany.openCopyJobLinkModalFun();"
+                                >Job App Link</button>
+                            </div> -->
+                   
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/ng-template" id="eventModel">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="eventModel.closePopup();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Job Application Link</h4>
+    </div>
+    <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="form-horizontal validate col-md-12" id="event_form" name="eventModel.event_form" role="form" ng-submit="eventModel.getJobPostLink()">
+                        <!-- Add an element to display error message -->
+                        <div ng-if="!eventModel.event.jobLink" id="errorMessage" class="text-danger" style="margin-top: 10px;">
+                            No job application link exists. Contact Ontime Support.
+                        </div>
+
+                        <div class="row" ng-if="eventModel.event.jobLink">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="field-1"><strong>Application link</strong></label>
+                                    <div class="col-sm-9">
+                                        <input id="jobAppLink" name="jobAppLink" class="form-control"  type="text" ng-model="eventModel.event.jobLink"
+                                        readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" ng-click="eventModel.closePopup();">Close</button>
+                            <button ng-if="eventModel.event.jobLink" type="submit" class="btn btn-info">Copy</button>
+                        </div>
+        
+                    </form>
+                </div>
+            </div>
+        </div>
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        setTimeout(function () {
+            cbr_replace();
+        }, 100);
+    });
+</script>

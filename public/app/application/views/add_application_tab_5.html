@@ -1,0 +1,136 @@
+<div class="row"  ng-init="addEmployee.tab5DataInit()">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal validate" id="add_employee_form" novalidate="" name="add_employee_form" role="form" ng-submit="addEmployee.saveEmployee()">
+                    <fieldset ng-disabled="addEmployee.viewOnly">
+                        <div class="row"  ng-if="!addEmployee.viewOnly">
+                            <div class="col-sm-11">
+                                <button class="btn btn-success mar_rg5 mar_lf5 mar_rg5 pull-right" type="submit" ng-click="addEmployee.setFromNext('tab5')">
+                                    Save Changes
+                                </button>
+                                <button class="btn btn-white mar_rg5 pull-right" type="submit" ng-click="addEmployee.setFromNext('close')">
+                                    Save & Close
+                                </button>
+                                <button class="btn btn-black mar_rg5 pull-right" type="submit" ng-if="addEmployee.employee.status != null && addEmployee.employee.status !== 'submitted'" ng-click="addEmployee.setFromNext('submit')">
+                                    Submit Application
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10">
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <div class="input-group adjust-row-padding">
+                                        <label>
+                                            Have you ever been convicted of a crime in the past 5 years, barring employment on a Home Care and community Agency?
+                                        </label>
+                                        <label class="cbr-inline" style="padding-left: 20px">
+                                            <input class="cbr cbr-primary" name="ConvictedOnCrime" type="radio" ng-value="true" ng-model="addEmployee.employee.convictedOnCrime">
+                                            Yes
+                                            </input>
+                                        </label>
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="ConvictedOnCrime" type="radio" ng-value="false" ng-model="addEmployee.employee.convictedOnCrime">
+                                            No
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group adjust-row-padding"  ng-if="addEmployee.employee.convictedOnCrime === true">
+                                <div class="col-md-12 ">
+                                    <div>
+                                        <label class="pull-left col-md-12 pad0">Conviction will not necessarily disqualify an applicant from employment. If yes, describe in full:</label>
+                                        <div class="col-md-8 pad0">
+                                            <textarea class="form-control" ng-model="addEmployee.employee.convictionReason" cols="5"
+                                                      id="convictionReason" name="ConvictionReason" placeholder="Describe details of conviction."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <div class="input-group adjust-row-padding">
+                                        <label>
+                                            Are you capable of performing the job set forth in the job description?
+                                        </label>
+                                        <label class="cbr-inline" style="padding-left: 20px">
+                                            <input class="cbr cbr-primary" name="CapableForJob" type="radio" ng-value="true" ng-model="addEmployee.employee.capableForJob">
+                                            Yes
+                                            </input>
+                                        </label>
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="CapableForJob" type="radio" ng-value="false" ng-model="addEmployee.employee.capableForJob">
+                                            No
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group adjust-row-padding"  ng-if="addEmployee.employee.capableForJob === false">
+                                <div class="col-md-12 ">
+                                    <div>
+                                        <label class="pull-left col-md-12 pad0">If you answered No, which job requirement you can not meet?</label>
+                                        <div class="col-md-8 pad0">
+                                            <textarea class="form-control" ng-model="addEmployee.employee.notCabalableOf" cols="5"
+                                                      id="note" name="note" placeholder="Describe which job requirement you can not meet."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group adjust-row-padding">
+                                <div class="col-md-12 ">
+                                    <div>
+                                        <label class="pull-left col-md-12 pad0">List all states in which licensed giving registration and expiration date. Summarize special job-related skills and qualification acquired from employment or other experience</label>
+                                        <div class="col-md-8 pad0">
+                                            <textarea class="form-control" ng-model="addEmployee.employee.registrationAndSkillSummary" cols="5"
+                                                      id="note" name="note"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <button class="btn btn-white pull-right" type="submit" ng-click="addEmployee.setFromNext('close')">
+                                Save & Close
+                            </button>
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addEmployee.setFromNext('tab4')">
+                                « Previous
+                            </button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // validate
+    customJqueryValidation();
+    jQuery(document).ready(function ($) {
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+    });
+</script>

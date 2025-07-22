@@ -1,0 +1,519 @@
+<div class="row" ng-init="addEmployee.tab2DataInit()">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal validate" id="add_employee_form" name="add_employee_form" role="form" ng-submit="addEmployee.saveEmployee()">
+                    <div class="row">
+                        <div class="col-sm-12 pull-right">
+                            <button class="btn btn-info green_bt pull-right" type="submit" ng-click="addEmployee.setFromNext('tab2')">
+                                Save Changes
+                            </button>
+                            <button class="btn btn-info btn-single gray_bt pull-right" type="reset" ng-click="addEmployee.resetEmployeeTab2()">
+                                Reset To Default
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Tax Status</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <label class="cbr-inline">
+                                    <input checked="true" type="radio" name="TaxStatus" value='W' class="cbr cbr-primary" ng-model="addEmployee.employee.taxStatus">
+                                    {{terminologyBank.taxStatus1}} </label>
+                                <label class="cbr-inline">
+                                    <input type="radio" name="TaxStatus"  value='1' class="cbr cbr-primary" ng-model="addEmployee.employee.taxStatus">
+                                    {{terminologyBank.taxStatus2}} </label>
+
+                            </div>
+                        </div>
+                    </div><div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Wages</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <label class="cbr-inline" >
+                                    <input checked="true" type="radio" name="Wages" value='H' class="cbr cbr-primary" ng-model="addEmployee.employee.wages">
+                                    Hourly </label>
+                                <label class="cbr-inline">
+                                    <input type="radio" name="Wages" value='S' class="cbr cbr-primary" ng-model="addEmployee.employee.wages">
+                                    Salary </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        
+<!--                        <label class="col-sm-2 control-label" for="defaultAuthorizedHours">
+                            Default Auth hours
+                        </label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control" name="defaultAuthorizedHours" maxlength="5" numbers-only="true" decimalallowed type="text" ng-model="addEmployee.employee.defaultAuthorizedHours"> 
+                                <span class="input-group-addon">
+                                    <i>per week</i>
+                                </span>
+                                </input>
+                            </div>
+                        </div>-->
+                        <label class="col-sm-2 control-label">Payroll Group</label>
+                        <div class="col-sm-4">
+                            <select class="form-control pull-right" id="PayrollGroup" name="PayrollGroup" ng-model="addEmployee.employee.payrollGroup">
+                                <option value="">
+                                    Select a Payroll Group
+                                </option>
+                                <option value="A">
+                                    A
+                                </option>
+                                <option value="B">
+                                    B
+                                </option>
+                                <option value="C">
+                                    C
+                                </option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label" for="authorizedHours">
+                            Temporary Auth hours
+                        </label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input class="form-control" name="authorizedHours" maxlength="5" numbers-only="true" decimalallowed type="text" ng-model="addEmployee.employee.authorizedHours"> 
+                                <span class="input-group-addon">
+                                    <i>per week</i>
+                                </span>
+                                </input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-if="addEmployee.employee.authorizedHours != null && addEmployee.employee.authorizedHours!=0"></div>
+                    <div class="form-group" ng-if="addEmployee.employee.authorizedHours != null && addEmployee.employee.authorizedHours!=0">
+                        <label class="col-sm-2 control-label" for="authorizedHoursReason">
+                            Authorization Reason
+                        </label>
+                        <div class="col-sm-4">
+                            <select class="form-control pull-right" id="authorizedHoursReason" name="authorizedHoursReason"
+                                    ng-model="addEmployee.employee.authorizedHoursReason">
+                                <option value="">
+                                    Select authorized Reason
+                                </option>
+                                <option value="Relieved Late">
+                                    Relieved Late
+                                </option>
+                                <option value="Emergency Coverage">
+                                    Emergency Coverage
+                                </option>
+                                <option value="Family Request - Permanent">
+                                    Family Request - Permanent
+                                </option>
+                                <option value="Live In - Permanent">
+                                    Live In - Permanent
+                                </option>
+                                <option value="New case coverage">
+                                    New case coverage
+                                </option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label" for="authorizedHoursExpiryDate">
+                            Authorization Expiry
+                        </label>
+                        <div class="col-sm-4" ng-if="addEmployee.employee.authorizedHours!=null && addEmployee.employee.authorizedHours!=0">
+                            <div class="input-group">
+                                    <input class="form-control datepicker" data-format="mm/dd/yyyy" name="authorizedHoursExpiryDate" type="text" ng-model="addEmployee.employee.authorizedHoursExpiryDate"
+                                           required/>
+                                    <div class="input-group-addon">
+                                        <a href="#">
+                                            <i class="linecons-calendar">
+                                            </i>
+                                        </a>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group" ng-show="addEmployee.employee.wages === 'S'">
+                        <label class="col-sm-2 control-label" >Salary</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input class="form-control" name="Salary" type="text" ng-model="addEmployee.employee.salary"
+                                       numbers-only="true" decimalallowed onblur="setValidationMessage(this)" itemid="Salary">
+                                <span class="input-group-addon">
+                                    <i>$/week</i>
+                                </span>
+                                </input>
+                            </div>
+                        </div>
+                        <!--                        <div class="col-sm-5">
+                                                    <div class="input-group">
+                                                        <label class="cbr-inline" >
+                                                            <input type="radio" checked="true" name="SalaryFreq" value='1W' class="cbr cbr-primary" ng-model="addEmployee.employee.salaryFrequency">
+                                                            weekly </label>
+                                                        <label class="cbr-inline">
+                                                            <input type="radio" name="SalaryFreq" value='2W' class="cbr cbr-primary" ng-model="addEmployee.employee.salaryFrequency">
+                                                            bi-weekly </label>
+                        
+                                                    </div>
+                                                </div>-->
+                    </div>
+                    
+                    <div class="form-group" ng-show="addEmployee.employee.wages !== 'S'">
+                        <label class="col-sm-2 control-label">
+                            Rate 1
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="no-padding-left col-sm-3 element-align">
+                                <input class="form-control" name="Rate1" type="text" ng-model="addEmployee.employee.careRatesList.rate1.rate"
+                                       maxlength="10" numbers-only="true" decimalallowed decimalpoints="true"
+                                       onblur="setValidationMessage(this)" itemid="Rate 1">
+                                </input>
+                            </div>
+                            <div class="col-sm-9 largebox-align">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        $("#rate1").multiSelect({
+                                            afterInit: function ()
+                                            {
+                                                // Add alternative scrollbar to list
+                                                console.log(this);
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function ()
+                                            {
+                                                // Update scrollbar size
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" id="rate1" multiple="multiple" name="rate1"
+                                        ng-change ="addEmployee.buildCareTypesList()"
+                                        onblur="setSelectValidationMessage(this)" itemid="Care Types" ng-model="addEmployee.employee.careRatesList.rate1.careTypes"
+                                        ng-options='ct.id as ct.careTypeTitle for ct in addEmployee.careTypeList1'>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-show="addEmployee.employee.wages !== 'S'">
+                    </div>
+                    <div class="form-group" ng-show="addEmployee.employee.wages !== 'S'">
+                        <label class="col-sm-2 control-label">
+                            Rate 2
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="no-padding-left col-sm-3 element-align">
+                                <input class="form-control" name="Rate2" type="text" 
+                                       numbers-only="true" decimalallowed maxlength="10" decimalpoints="true" ng-model="addEmployee.employee.careRatesList.rate2.rate">
+                                </input>
+                            </div>
+                            <div class="col-sm-9 largebox-align">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        $("#rate2").multiSelect({
+                                            afterInit: function ()
+                                            {
+                                                // Add alternative scrollbar to list
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function ()
+                                            {
+                                                // Update scrollbar size
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" id="rate2" multiple="multiple" name="rate2"
+                                        ng-change ="addEmployee.buildCareTypesList()"
+                                        ng-model="addEmployee.employee.careRatesList.rate2.careTypes"
+                                        ng-options='ct.id as ct.careTypeTitle for ct in addEmployee.careTypeList2'>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="addEmployee.employee.wages !== 'S'">
+                        <label class="col-sm-2 control-label">
+                            Rate 3
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="no-padding-left col-sm-3 element-align">
+                                <input class="form-control" name="Rate3" type="text" 
+                                       numbers-only="true" decimalallowed maxlength="10" decimalpoints="true" ng-model="addEmployee.employee.careRatesList.rate3.rate">
+                                </input>
+                            </div>
+                            <div class="col-sm-9 largebox-align">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        $("#rate3").multiSelect({
+                                            afterInit: function ()
+                                            {
+                                                // Add alternative scrollbar to list
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function ()
+                                            {
+                                                // Update scrollbar size
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" id="rate3" multiple="multiple" name="rate3"
+                                        ng-change ="addEmployee.buildCareTypesList()"
+                                        ng-model="addEmployee.employee.careRatesList.rate3.careTypes"
+                                        ng-options='ct.id as ct.careTypeTitle for ct in addEmployee.careTypeList3'>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="addEmployee.employee.wages !== 'S'">
+                        <label class="col-sm-2 control-label">
+                            Rate 4
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="no-padding-left col-sm-3 element-align">
+                                <input class="form-control" name="Rate4" type="text" 
+                                       numbers-only="true" decimalallowed maxlength="10" decimalpoints="true" ng-model="addEmployee.employee.careRatesList.rate4.rate">
+                                </input>
+                            </div>
+                            <div class="col-sm-9 largebox-align">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        $("#rate4").multiSelect({
+                                            afterInit: function ()
+                                            {
+                                                // Add alternative scrollbar to list
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function ()
+                                            {
+                                                // Update scrollbar size
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" id="rate4" multiple="multiple" name="rate4"
+                                        ng-change ="addEmployee.buildCareTypesList()"
+                                        ng-model="addEmployee.employee.careRatesList.rate4.careTypes"
+                                        ng-options='ct.id as ct.careTypeTitle for ct in addEmployee.careTypeList4'>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="addEmployee.employee.wages !== 'S'">
+                        <label class="col-sm-2 control-label">
+                            Rate 5
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="no-padding-left col-sm-3 element-align">
+                                <input class="form-control" name="Rate5" type="text" 
+                                       numbers-only="true" decimalallowed maxlength="10" decimalpoints="true" ng-model="addEmployee.employee.careRatesList.rate5.rate">
+                                </input>
+                            </div>
+                            <div class="col-sm-9 largebox-align">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        $("#rate5").multiSelect({
+                                            afterInit: function ()
+                                            {
+                                                // Add alternative scrollbar to list
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function ()
+                                            {
+                                                // Update scrollbar size
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" id="rate5" multiple="multiple" name="rate5"
+                                        ng-change ="addEmployee.buildCareTypesList()"
+                                        ng-model="addEmployee.employee.careRatesList.rate5.careTypes"
+                                        ng-options='ct.id as ct.careTypeTitle for ct in addEmployee.careTypeList5'>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-show="addEmployee.employee.wages !== 'S'">
+                    </div>
+                    <div class="form-group" ng-show="addEmployee.employee.wages !== 'S'">
+                        <label class="col-sm-2 control-label">
+                            Worksite Hours Rate
+                        </label>
+                        <div class="col-sm-10">
+
+                            <select class="form-control" id="WHRate" ng-model="addEmployee.employee.workSiteRate" ng-options="rate.key as rate.value for rate in payrollRates"
+                                    name="PersonalRate" onblur="setSelectValidationMessage(this)" itemid="Worksite Rate">
+                                <option value="">
+                                    Select
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            Benefit Package
+                        </label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="BenefitPackage" ng-model="addEmployee.employee.employeeBenefitDetails.benefitPackageId" 
+                                    ng-options="package.id as package.packageName for package in addEmployee.benefitPackages"
+                                    name="BenefitPackage" onblur="setSelectValidationMessage(this)" itemid="Benefit Package">
+                                <option value="">
+                                    Select
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-if="addEmployee.employee.employeeBenefitDetails.benefitPackageId
+                                    && addEmployee.benefitPackageWiseLineTypes
+                                    && (addEmployee.benefitPackageWiseLineTypes[addEmployee.employee.employeeBenefitDetails.benefitPackageId].indexOf('WFC') > -1)">
+                    </div>
+                    <div class="form-group" ng-if="addEmployee.employee.employeeBenefitDetails.benefitPackageId
+                                    && addEmployee.benefitPackageWiseLineTypes
+                                    && (addEmployee.benefitPackageWiseLineTypes[addEmployee.employee.employeeBenefitDetails.benefitPackageId].indexOf('WFC') > -1)">
+                        <label class="col-sm-2 control-label">
+                            WPP Flex Contribution
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input class="form-control" name="WPPFlex" type="text" ng-model="addEmployee.employee.employeeBenefitDetails.employeeContributionWpp"
+                                       numbers-only="true" decimalallowed onblur="setValidationMessage(this)" itemid="WPP Flex Rate">
+                                </input>
+                                <span class="input-group-addon">
+                                    <i>
+                                        $ / week
+                                    </i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-if="addEmployee.employee.employeeBenefitDetails.benefitPackageId
+                                    && addEmployee.benefitPackageWiseLineTypes
+                                    && (addEmployee.benefitPackageWiseLineTypes[addEmployee.employee.employeeBenefitDetails.benefitPackageId].indexOf('HEC') > -1)">
+                    </div>
+                    <div class="form-group" ng-if="addEmployee.employee.employeeBenefitDetails.benefitPackageId
+                                    && addEmployee.benefitPackageWiseLineTypes
+                                    && (addEmployee.benefitPackageWiseLineTypes[addEmployee.employee.employeeBenefitDetails.benefitPackageId].indexOf('HEC') > -1)">
+                        <label class="col-sm-2 control-label">
+                            Healthcare Contribution
+                        </label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <input class="form-control" name="Healthcare" type="text" ng-model="addEmployee.employee.employeeBenefitDetails.employeeContributionHealthcare"
+                                       numbers-only="true" decimalallowed onblur="setValidationMessage(this)" itemid="Healthcare Rate">
+                                </input>
+                                <span class="input-group-addon">
+                                    <i>
+                                        $ / week
+                                    </i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-if="addEmployee.employee.employeeBenefitDetails.benefitPackageId
+                                    && addEmployee.benefitPackageWiseLineTypes
+                                    && (addEmployee.benefitPackageWiseLineTypes[addEmployee.employee.employeeBenefitDetails.benefitPackageId].indexOf('401') > -1)">
+                    </div>
+                    <div class="form-group" ng-if="addEmployee.employee.employeeBenefitDetails.benefitPackageId
+                                    && addEmployee.benefitPackageWiseLineTypes
+                                    && (addEmployee.benefitPackageWiseLineTypes[addEmployee.employee.employeeBenefitDetails.benefitPackageId].indexOf('401') > -1)">
+                        <label class="col-sm-2 control-label">
+                            401K Contribution
+                        </label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="401K" type="text" ng-model="addEmployee.employee.employeeBenefitDetails.employeeContribution401k"
+                                   numbers-only="true" decimalallowed onblur="setValidationMessage(this)" itemid="401K Rate">
+                            </input>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <label class="cbr-inline">
+                                    <input class="cbr cbr-primary" value="F" name="radioRate" type="radio" ng-model="addEmployee.employee.employeeBenefitDetails.employeeContribution401kType" >
+                                    Fixed per week
+                                </label>
+                                <label class="cbr-inline">
+                                    <input class="cbr cbr-primary" name="radioRate" value="P" type="radio" ng-model="addEmployee.employee.employeeBenefitDetails.employeeContribution401kType">
+                                    %
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addEmployee.setFromNext('tab3')">
+                                Next »
+                            </button>
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addEmployee.setFromNext('tab1')">
+                                « Previous
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FORM WIZARD WITH VALIDATION END HERE-->
+<script type="text/javascript">
+// validate
+    function setValidationMessage(element) {
+        var elementName = element.getAttribute("name") + "-error";
+        var itemId = element.getAttribute("itemid");
+        $("#" + elementName).text('Please enter ' + itemId + '.');
+    }
+    function setSelectValidationMessage(element) {
+        var elementName = element.getAttribute("name") + "-error";
+        var itemId = element.getAttribute("itemid");
+        $("#" + elementName).text('Please select ' + itemId + '.');
+    }
+    var form_clean;
+    customJqueryValidation();
+    jQuery(document).ready(function ($) {
+
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+//            cbr_replace();
+        }, 1);
+        //to set an variable to check dirtiness of form.
+//        setTimeout(function() {
+//        // serialize clean form
+//            $(function() {
+//                form_clean = $("form").serialize();
+//            });
+//        }, 500);
+////
+////
+////        // Validation
+////        $("#add_employee_tab_2_form").validate({
+////            rules: {//Rate2: {required: true},
+////                Rate1: {required: true},
+////                OTHDRate: {required: true},
+////            },
+////            messages: {Rate2: {required: 'Please enter Rate 2.'},
+////                Rate1: {required: 'Please enter Rate 1.'},
+////                OTHDRate: {required: 'Please enter OT/HD Rate.'},
+////            },
+////            errorPlacement: function(error, element) {
+////                if (element.attr("name") == "DateofBirth") {
+////                    error.insertAfter($(element).parent());
+////                } else {
+////                    error.insertAfter(element);
+////                }
+////            },
+////        });// validate
+//
+    });// ready 
+</script>

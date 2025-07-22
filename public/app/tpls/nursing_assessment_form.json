@@ -1,0 +1,4090 @@
+[
+    {
+        "type": "date",
+        "label": "Visit Date",
+        "name": "visit_date",
+        "errormsg": "Please select a specific date",
+        "required": false
+    },
+    {
+        "type": "date",
+        "label": "Certification Start Date",
+        "name": "certificate_start_date",
+        "errormsg": "Please select a specific date",
+        "required": false
+    },
+    {
+        "type": "date",
+        "label": "Certification End Date",
+        "name": "certificate_end_date",
+        "errormsg": "Please select a specific date",
+        "required": false
+    },
+    {
+        "type": "select",
+        "label": "Assesment Type",
+        "name": "assesment_type",
+        "required": true,
+        "errormsg": "Please select one of the following assesesment type",
+        "options": [
+            {
+                "title": "Caregiver Observation",
+                "value": "caregiver_observation"
+            },
+            {
+                "title": "Change In Patient Condition",
+                "value": "change_in_patient_condition"
+            },
+            {
+                "title": "Initial Assessment",
+                "value": "initial_assessment"
+            },
+            {
+                "title": "Patient/Proxy Request",
+                "value": "patient_Proxy_request"
+            },
+            {
+                "title": "Post Hospitalization Visit",
+                "value": "post_hospitalization_visit"
+            },
+            {
+                "title": "Re-Assessment",
+                "value": "reassessment"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Assessment Conducted",
+        "name": "assessment_conducted",
+        "id": "assesment_conducted",
+        "options": [
+            {
+                "title": "Field",
+                "value": "Field",
+                "id": "assesment_conducted_field",
+                "selected": true
+            },
+            {
+                "title": "Telephonic",
+                "value": "Telephonic",
+                "id": "assesment_conducted_telephonic",
+                "selected": false
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Covid Vaccine Status",
+        "name": "covid_vaccine",
+        "id": "covid_vaccine",
+        "options": [
+            {
+                "title": "Yes - Date if known",
+                "value": "yes",
+                "id": "covid_vaccine_yes",
+                "selected": false,
+                "subfield": {
+                    "type": "date",
+                    "label": "",
+                    "name": "covid_vaccine_date",
+                    "required":true
+                }
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "covid_vaccine_no",
+                "selected": true
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "HX of Covid",
+        "name": "hx_covid",
+        "id": "hx_covid",
+        "options": [
+            {
+                "title": "Yes - Date if known",
+                "value": "yes",
+                "id": "hx_covid_yes",
+                "selected": false,
+                "subfield": {
+                    "type": "date",
+                    "label": "",
+                    "name": "hx_covid_yes_date",
+                    "required":true
+                }
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "hx_covid_no",
+                "selected": true
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Aide Present",
+        "name": "aide",
+        "dbType": "object",
+        "required": true,
+        "errormsg": "Aide field is required",
+        "options": [
+            {
+                "title": "Present during assessment",
+                "value": "preseent_during_assessment",
+                "id": "aide_preseent_during_assessment",
+                "selected": true
+            },
+            {
+                "title": "Not Present",
+                "value": "not_present",
+                "id": "aide_not_present",
+                "subfield": {
+                    "type": "text",
+                    "name": "aide_not_present_reason",
+                    "value": "",
+                    "placeholder": "Reason for not presenting",
+                    "id": "aide_not_present_reason",
+                    "required": true
+                }
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "aide_preseent_na"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Languages",
+        "name": "languages",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "English",
+                "value": "English",
+                "id": "english",
+                "checked": true
+            },
+            {
+                "title": "Creole",
+                "value": "Creole",
+                "id": "creole"
+            },
+            {
+                "title": "Spanish",
+                "value": "Spanish",
+                "id": "spanish"
+            },
+            {
+                "title": "Russian",
+                "value": "Russian",
+                "id": "russian"
+            },
+            {
+                "title": "French",
+                "value": "French",
+                "id": "french"
+            },
+            {
+                "title": "Hindi",
+                "value": "Hindi",
+                "id": "hindi"
+            },
+            {
+                "title": "Bengali",
+                "value": "Bengali",
+                "id": "bengali"
+            },
+            {
+                "title": "Mandarin",
+                "value": "Mandarin",
+                "id": "mandarin"
+            },
+            {
+                "title": "Korean",
+                "value": "Korean",
+                "id": "korean"
+            },
+            {
+                "title": "Arabic",
+                "value": "Arabic",
+                "id": "arabic"
+            },
+            {
+                "title": "Farsi",
+                "value": "Farsi",
+                "id": "farsi"
+            },
+            {
+                "title": "Urdu",
+                "value": "Urdu",
+                "id": "urdu"
+            },
+            {
+                "title": "Other",
+                "value": "Other",
+                "id": "other_language",
+                "subfield": {
+                    "type": "multiInput",
+                    "id": "other_language_value",
+                    "name": "other_language_value",
+                    "value": "other_language_value",
+                    "placeholder": "First, Second, Third",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Required Interpreter",
+        "name": "required_interpreter",
+        "id": "required_interpreter",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "required_interpreter_yes",
+                "selected": true,
+                "subfield": {
+                    "type": "text",
+                    "name": "required_interpreter_name",
+                    "value": "required_interpreter_name",
+                    "placeholder": "Interpreter Name...",
+                    "required":true
+                }
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "required_interpreter_no"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Evacuation Level",
+        "name": "evacuation_level",
+        "id": "evacuation_level",
+        "options": [
+            {
+                "title": "RED - Tal 1 - Hospital/Skilled Nursing Facility",
+                "value": "tal1",
+                "id": "evacuation_level_tal1",
+                "selected": true
+            },
+            {
+                "title": "YELLOW - Tal 2 - Special Care Facility",
+                "value": "tal2",
+                "id": "evacuation_level_tal2"
+            },
+            {
+                "title": "GREEN - Tal 3 - Public Shelter",
+                "value": "tal3",
+                "id": "evacuation_level_tal3"
+            }
+        ]
+    },
+    {
+        "type": "text",
+        "label": "Emergency Contact Name",
+        "id": "emergency_contact_id",
+        "name": "emergency_contact_name",
+        "placeholder": "Emergency Contact Name"
+    },
+    {
+        "type": "phone",
+        "content": "phone",
+        "label": "Emergency Contact Number",
+        "id": "emergency_contact_number_id",
+        "name": "emergency_contact_number",
+        "placeholder": "Emergency Contact Number"
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Emergency contact relationship",
+        "name": "emergency_contact_relation",
+        "options": [
+            {
+                "title": "Relative",
+                "value": "relative",
+                "id": "emergency_contact_relative",
+                "selected": true
+            },
+            {
+                "title": "Spouse",
+                "value": "spouse",
+                "id": "emergency_contact_spouse"
+            },
+            {
+                "title": "Friend",
+                "value": "friend",
+                "id": "emergency_contact_friend"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Patient Lives With",
+        "name": "live_with",
+        "options": [
+            {
+                "title": "Alone",
+                "value": "alone",
+                "id": "lives_with_alone",
+                "selected": true
+            },
+            {
+                "title": "Spouse",
+                "value": "spouse",
+                "id": "lives_with_spouse"
+            },
+            {
+                "title": "Friend",
+                "value": "friend",
+                "id": "lives_with_friend"
+            },
+            {
+                "title": "Authorized Representative",
+                "value": "authorized_representative",
+                "id": "authorized_representative"
+            },
+            {
+                "title": "Family",
+                "value": "family",
+                "id": "family"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Pets",
+        "name": "pets",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "pets_yes",
+                "subfield": {
+                    "type": "tags",
+                    "id": "pets_type",
+                    "name": "pets_type",
+                    "value": "pets_type",
+                    "placeholder": "Type here...",
+                    "required": true,
+                    "options": [
+                        {
+                            "title": "Dogs",
+                            "value": "dogs"
+                        },
+                        {
+                            "title": "Cats",
+                            "value": "cats"
+                        }
+                    ]
+                }
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "pets_no",
+                "selected": true
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "DNR",
+        "name": "dnr",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "dnr_yes"
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "dnr_no"
+            },
+            {
+                "title": "Unknown",
+                "value": "unknown",
+                "id": "dnr_unknown"
+            }
+        ]
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "dnr_patient_educated",
+        "id": "dnr_patient_educated",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Patient educated",
+                "value": "dnr_patient_educated_yes",
+                "id": "dnr_patient_educated_yes",
+                "checked": true
+            }
+        ]
+    },
+    {
+        "type": "text",
+        "label": "Hospice Name",
+        "name": "hospice_name",
+        "placeholder": "Hospice Name"
+    },
+    {
+        "type": "phone",
+        "content": "phone",
+        "label": "Hospice Number",
+        "name": "hospice_number",
+        "placeholder": "Hospice Number"
+    },
+    {
+        "type": "text",
+        "label": "Hospice Care Manager",
+        "name": "hospice_care_manager",
+        "placeholder": "Hospice Care Manager"
+    },
+    {
+        "type": "text",
+        "label": "Hospice PCP",
+        "name": "hospice_pcp",
+        "placeholder": "Hospice PCP"
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Can the patient be left alone?",
+        "name": "can_patient_be_alone",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "can_patient_be_alone_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "can_patient_be_alone_no"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "heading": "Neurological",
+        "label": "Mental Status",
+        "name": "mental_status",
+        "dbType": "object",
+        "id": "mental_status",
+        "options": [
+            {
+                "title": "Alert",
+                "name": "alert",
+                "value": "alert",
+                "id": "alert"
+            },
+            {
+                "title": "Oriented - Person",
+                "name": "oriented_person",
+                "value": "oriented_person",
+                "id": "oriented_person"
+            },
+            {
+                "title": "Oriented - Place",
+                "name": "oriented_place",
+                "value": "oriented_place",
+                "id": "oriented_place"
+            },
+            {
+                "title": "Oriented - Time",
+                "name": "oriented_time",
+                "value": "oriented_time",
+                "id": "oriented_time"
+            },
+            {
+                "title": "Forgetful",
+                "name": "forgetful",
+                "value": "forgetful",
+                "id": "forgetful"
+            },
+            {
+                "title": "Disoriented",
+                "name": "disoriented",
+                "value": "disoriented",
+                "id": "disoriented"
+            },
+            {
+                "title": "Depressed",
+                "name": "depressed",
+                "value": "depressed",
+                "id": "depressed"
+            },
+            {
+                "title": "Comatose",
+                "name": "comatose",
+                "value": "comatose",
+                "id": "comatose"
+            },
+            {
+                "title": "Other",
+                "name": "other_mental_status",
+                "value": "other_mental_status",
+                "id": "other_mental_status",
+                "subfield": {
+                    "type": "text",
+                    "name": "other_mental_status_value",
+                    "id": "other_mental_status_value",
+                    "value": "other_mental_status_value",
+                    "placeholder": "Type here ...",
+                    "required": true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Blood Pressure",
+        "name": "bp",
+        "dbType": "object",
+        "id": "blood_pressure",
+        "options": [
+            {
+                "title": "Enter Value",
+                "value": "enter_value_bp",
+                "id": "enter_name_bp",
+                "subfield": {
+                    "type": "text",
+                    "name": "bp_value",
+                    "value": "bp_value",
+                    "placeholder": "Enter Value",
+                    "required":true
+                }
+            },
+            {
+                "title": "UTO - Telephonic",
+                "value": "uto_telephonic",
+                "id": "uto_telephonic_bp"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Pulse",
+        "name": "pulse",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Enter Value",
+                "value": "enter_value_pulse",
+                "id": "enter_name_pulse",
+                "subfield": {
+                    "type": "text",
+                    "name": "pulse_value",
+                    "value": "pulse_value",
+                    "placeholder": "Enter Value",
+                    "required":true
+                }
+            },
+            {
+                "title": "UTO - Telephonic",
+                "value": "uto_telephonic",
+                "id": "uto_telephonic_pulse"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Respiratory",
+        "name": "respiratory",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Enter Value",
+                "value": "enter_value_respiratory",
+                "id": "enter_name_respiratory",
+                "subfield": {
+                    "type": "text",
+                    "name": "respiratory_value",
+                    "value": "respiratory_value",
+                    "placeholder": "Enter Value",
+                    "required":true
+                }
+            },
+            {
+                "title": "UTO - Telephonic",
+                "value": "uto_telephonic",
+                "id": "uto_telephonic_respiratory"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Temp",
+        "name": "temperature",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Enter temp & select options",
+                "value": "enter_value_temp",
+                "id": "enter_value_temp",
+                "siblings": "temp_oral,temp_tympanic",
+                "subfield": {
+                    "type": "text",
+                    "name": "temp_value",
+                    "value": "temp_value",
+                    "placeholder": "Enter Value",
+                    "required":true
+                }
+            },
+            {
+                "title": "Oral",
+                "value": "temp_oral",
+                "id": "temp_oral",
+                "showwhen": "temp_value"
+            },
+            {
+                "title": "Tympanic",
+                "value": "temp_tympanic",
+                "id": "temp_tympanic",
+                "showwhen": "temp_value"
+            },
+            {
+                "title": "UTO - Telephonic",
+                "value": "uto_telephonic",
+                "id": "uto_telephonic_temp"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Weight",
+        "name": "weight",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Enter weight & select options",
+                "value": "enter_value_weight",
+                "id": "enter_value_weight",
+                "siblings": "weight_reported,weight_actual",
+                "subfield": {
+                    "type": "text",
+                    "name": "weight_value",
+                    "value": "weight_value",
+                    "placeholder": "Enter Value",
+                    "required":true
+                }
+            },
+            {
+                "title": "Reported",
+                "value": "weight_reported",
+                "id": "weight_reported",
+                "showwhen": "enter_value_weight"
+            },
+            {
+                "title": "Actual",
+                "value": "weight_actual",
+                "id": "weight_actual",
+                "showwhen": "enter_value_weight"
+            },
+            {
+                "title": "UTO - Telephonic",
+                "value": "uto_telephonic",
+                "id": "uto_telephonic_weight"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Grasp Right",
+        "name": "grasp_right",
+        "options": [
+            {
+                "title": "Equal",
+                "value": "Equal",
+                "id": "grasp_right_equal",
+                "selected": true
+            },
+            {
+                "title": "Not Equal",
+                "value": "Not Equal",
+                "id": "grasp_right_not",
+                "subfield": {
+                    "type": "text",
+                    "name": "grasp_right_not_equal",
+                    "value": "grasp_right_not_equal",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "UTO Telephonic",
+                "value": "UTO Telephonic",
+                "id": "grasp_right_uto"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Grasp Left",
+        "name": "grasp_left",
+        "options": [
+            {
+                "title": "Equal",
+                "value": "Equal",
+                "id": "grasp_left_equal",
+                "selected": true
+            },
+            {
+                "title": "Not Equal",
+                "value": "Not Equal",
+                "id": "grasp_left_not",
+                "subfield": {
+                    "type": "text",
+                    "name": "grasp_left_not_equal",
+                    "value": "grasp_left_not_equal",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "UTO Telephonic",
+                "value": "UTO Telephonic",
+                "id": "grasp_left_uto"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Neurological",
+        "name": "neurological",
+        "dbType": "object",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "neurological_wnl",
+            "required":true
+        },
+        "options": [
+            {
+                "title": "Headache",
+                "value": "headache",
+                "id": "neurological_headache"
+            },
+            {
+                "title": "Vertigo",
+                "value": "vertigo",
+                "id": "neurological_vertigo"
+            },
+            {
+                "title": "Weakness",
+                "value": "weakness",
+                "id": "neurological_weakness"
+            },
+            {
+                "title": "Seizures",
+                "value": "seizures",
+                "id": "neurological_seizures"
+            },
+            {
+                "title": "Tremor",
+                "value": "tremor",
+                "id": "neurological_tremor"
+            },
+            {
+                "title": "Aphasia",
+                "value": "aphasia",
+                "id": "neurological_aphasia"
+            },
+            {
+                "title": "Paralysis",
+                "value": "paralysis",
+                "id": "neurological_paralysis",
+                "subfield": {
+                    "type": "text",
+                    "name": "neurological_paralysis_value",
+                    "value": "neurological_paralysis_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Slurred Speech",
+                "value": "slurred_speech",
+                "id": "neurological_slurred_speech"
+            },
+            {
+                "title": "Short term memory loss",
+                "value": "short_term_memory_loss",
+                "id": "neurological_short_term_memory_loss"
+            },
+            {
+                "title": "Long term memory loss",
+                "value": "long_term_memory_loss",
+                "id": "neurological_long_term_memory_loss"
+            },
+            {
+                "title": "Non Verbal",
+                "value": "non_verbal",
+                "id": "neurological_non_verbal"
+            },
+            {
+                "title": "Other",
+                "value": "other",
+                "id": "other",
+                "subfield": {
+                    "type": "text",
+                    "name": "neurological_other",
+                    "value": "neurological_other",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Additional Comments",
+                "value": "comments",
+                "id": "neurological_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "neurological_comments",
+                    "value": "neurological_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Cardiopulmonary",
+        "dbType": "array",
+        "name": "cardiopulmonary",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "cardiopulmonary_wnl"
+        },
+        "options": [
+            {
+                "title": "Pace Maker",
+                "value": "pace_maker",
+                "id": "cardiopulmonary_pace_maker",
+                "subfield": {
+                    "type": "text",
+                    "name": "pace_maker_value",
+                    "value": "pace_maker_value",
+                    "placeholder": "Type pacer setting ...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Tachycardia",
+                "value": "tachycardia",
+                "id": "cardiopulmonary_tachycardia"
+            },
+            {
+                "title": "Bradycardia",
+                "value": "bradycardia",
+                "id": "cardiopulmonary_bradycardia"
+            },
+            {
+                "title": "Palpitations",
+                "value": "palpitations",
+                "id": "cardiopulmonary_palpitations"
+            },
+            {
+                "title": "Diaphoresis",
+                "value": "diaphoresis",
+                "id": "cardiopulmonary_diaphoresis"
+            },
+            {
+                "title": "Night Sweats",
+                "value": "night_sweats",
+                "id": "cardiopulmonary_night_sweats"
+            },
+            {
+                "title": "Cyanosis",
+                "value": "cyanosis",
+                "id": "cardiopulmonary_cyanosis"
+            },
+            {
+                "title": "Dyspnea",
+                "value": "dyspnea",
+                "id": "cardiopulmonary_dyspnea"
+            },
+            {
+                "title": "Orthopnea",
+                "value": "orthopnea",
+                "id": "cardiopulmonary_orthopnea"
+            },
+            {
+                "title": "Change in SOB in last 6 months",
+                "value": "change_in_sob",
+                "id": "cardiopulmonary_change_in_sob"
+            },
+            {
+                "title": "Cough",
+                "value": "cough",
+                "id": "cardiopulmonary_cough"
+            },
+            {
+                "title": "Pallor",
+                "value": "pallor",
+                "id": "cardiopulmonary_pallor"
+            },
+            {
+                "title": "Wheezes",
+                "value": "wheezes",
+                "id": "cardiopulmonary_wheezes"
+            },
+            {
+                "title": "Tracheostomy",
+                "value": "tracheostomy",
+                "id": "cardiopulmonary_tracheostomy"
+            },
+            {
+                "title": "Smoker",
+                "value": "smoker",
+                "id": "cardiopulmonary_smoker"
+            },
+            {
+                "title": "Smoking Cessation Education Provided",
+                "value": "smoking_cessation_education_provided",
+                "id": "cardiopulmonary_smoking_cessation_education_provided"
+            },
+            {
+                "title": "Oxygen specify in liters/min",
+                "value": "oxygen",
+                "id": "cardiopulmonary_oxygen",
+                "subfield": {
+                    "type": "text",
+                    "name": "cardiopulmonary_oxygen_value",
+                    "value": "cardiopulmonary_oxygen_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Oxygen Safety Teaching Provided",
+                "value": "oxygen_safety_teaching_provided",
+                "id": "cardiopulmonary_oxygen_safety_teaching_provided"
+            },
+            {
+                "title": "Nebulizer",
+                "value": "nebulizer",
+                "id": "cardiopulmonary_nebulizer"
+            },
+            {
+                "title": "Nasal Cannula",
+                "value": "nasal_cannula",
+                "id": "cardiopulmonary_nasal_cannula"
+            },
+            {
+                "title": "Face Mask",
+                "value": "face_mask",
+                "id": "cardiopulmonary_face_mask"
+            },
+            {
+                "title": "Additional Comments",
+                "value": "comments",
+                "id": "cardiopulmonary_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "cardiopulmonary_comments",
+                    "value": "cardiopulmonary_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Vision",
+        "name": "vision",
+        "dbType": "array",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "vision_wnl"
+        },
+        "options": [
+            {
+                "title": "Legaly Blind",
+                "value": "legally_blind",
+                "id": "vision_legally_blind"
+            },
+            {
+                "title": "Glasses",
+                "value": "glasses",
+                "id": "vision_glasses"
+            },
+            {
+                "title": "Cataracts",
+                "value": "cataracts",
+                "id": "vision_cataracts"
+            },
+            {
+                "title": "Glaucoma",
+                "value": "glaucoma",
+                "id": "vision_glaucoma"
+            },
+            {
+                "title": "IMD",
+                "value": "imd",
+                "id": "vision_imd"
+            },
+            {
+                "title": "Contacts",
+                "value": "contacts",
+                "id": "vision_contacts"
+            },
+            {
+                "title": "Prosthesis",
+                "value": "prosthesis",
+                "id": "vision_prosthesis"
+            },
+            {
+                "title": "Eye Drops",
+                "value": "eye_drops",
+                "id": "vision_eye_drops"
+            },
+            {
+                "title": "Additional Comments",
+                "value": "comments",
+                "id": "vision_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "vision_comments",
+                    "value": "vision_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Hearing",
+        "name": "hearing",
+        "dbType": "array",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "hearing_wnl"
+        },
+        "options": [
+            {
+                "title": "Hard of Hearing",
+                "value": "hard_of_hearing",
+                "id": "hearing_hard_of_hearing",
+                "subfield": {
+                    "type": "text",
+                    "name": "hearing__hard_of_hearing",
+                    "value": "hearing__hard_of_hearing_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Hearing Aid",
+                "value": "hearing_aid",
+                "id": "hearing_hearing_aid",
+                "subfield": {
+                    "type": "text",
+                    "name": "hearing__aid",
+                    "value": "hearing__aid_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Deaf",
+                "value": "deaf",
+                "id": "hearing_deaf",
+                "subfield": {
+                    "type": "text",
+                    "name": "hearing__deaf",
+                    "value": "hearing__deaf_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Additional Comments",
+                "value": "comments",
+                "id": "hearing_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "hearing_comments",
+                    "value": "hearing_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Musculoskeletal",
+        "name": "musculoskeletal",
+        "dbType": "array",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "musculoskeletal_wnl"
+        },
+        "options": [
+            {
+                "title": "Decreased Mobility",
+                "value": "decreased_mobility",
+                "id": "musculoskeletal_decreased_mobility"
+            },
+            {
+                "title": "Weakness",
+                "value": "weakness",
+                "id": "musculoskeletal_weakness"
+            },
+            {
+                "title": "Unsteady Gait",
+                "value": "unsteady_gait",
+                "id": "musculoskeletal_unsteady_gait"
+            },
+            {
+                "title": "Poor Balance",
+                "value": "poor_balance",
+                "id": "musculoskeletal_poor_balance"
+            },
+            {
+                "title": "Amputation",
+                "value": "amputation",
+                "id": "musculoskeletal_amputation",
+                "subfield": {
+                    "type": "text",
+                    "name": "musculoskeletal_amputation_location",
+                    "value": "musculoskeletal_amputation_location",
+                    "placeholder": "Specifiy location ...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Prosthesis",
+                "value": "prosthesis",
+                "id": "musculoskeletal_prosthesis"
+            },
+            {
+                "title": "Contractures",
+                "value": "contractures",
+                "id": "musculoskeletal_contractures"
+            },
+            {
+                "title": "Joint Stiffness/Swelling",
+                "value": "joint_stiffness_swelling",
+                "id": "musculoskeletal_joint_stiffness_swelling"
+            },
+            {
+                "title": "Stooped Posture",
+                "value": "stopted_posture",
+                "id": "musculoskeletal_stopted_posture"
+            },
+            {
+                "title": "Splint",
+                "value": "splint",
+                "id": "musculoskeletal_splint"
+            },
+            {
+                "title": "Non-Ambulatory",
+                "value": "non_ambulatory",
+                "id": "musculoskeletal_non_ambulatory"
+            },
+            {
+                "title": "Bedbound",
+                "value": "bedbound",
+                "id": "musculoskeletal_bedbound"
+            },
+            {
+                "title": "PT Referral",
+                "value": "pt_referral",
+                "id": "musculoskeletal_pt"
+            },
+            {
+                "title": "OT Referral",
+                "value": "ot_referral",
+                "id": "musculoskeletal_ot"
+            },
+            {
+                "title": "ST Referral",
+                "value": "st_referral",
+                "id": "musculoskeletal_st"
+            },
+            {
+                "title": "Turning And Repositioning every 2 hours",
+                "value": "turning_and_repositioning",
+                "id": "musculoskeletal_turning_and_repositioning"
+            },
+            {
+                "title": "Additional Comments",
+                "value": "comments",
+                "id": "musculoskeletal_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "musculoskeletal_comments",
+                    "value": "musculoskeletal_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Endocrine",
+        "name": "endocrine",
+        "dbType": "array",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "endocrine_wnl"
+        },
+        "options": [
+            {
+                "title": "Insuline Coverage",
+                "value": "insulin_coverage",
+                "id": "endocrine_insulin_coverage",
+                "subfield": {
+                    "type": "select",
+                    "name": "insulin_coverage_type",
+                    "value": "insulin_coverage_type",
+                    "placeholder": "select one...",
+                    "required": true,
+                    "options": [
+                        {
+                            "title": "Self Injected",
+                            "value": "self_injected"
+                        },
+                        {
+                            "title": "Insulin Pump",
+                            "value": "insulin_pump"
+                        },
+                        {
+                            "title": "Assisted Injection",
+                            "value": "assisted_injection"
+                        }
+                    ]
+                }
+            },
+            {
+                "title": "BG Level : Please specify (Reported/Actual)",
+                "value": "bg_level",
+                "id": "endocrine_bg_level",
+                "subfield": {
+                    "type": "text",
+                    "name": "bg_level_value",
+                    "value": "bg_level_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "BG Level Performed By",
+                "value": "bg_level_performed_by",
+                "id": "endocrine_bg_level_performer",
+                "subfield": {
+                    "type": "text",
+                    "name": "bg_level_performer_value",
+                    "value": "bg_level_performer_value",
+                    "placeholder": "Type here..."
+                }
+            },
+            {
+                "title": "Hypothyroidism (weight gained)",
+                "value": "hypothyroidism_weight_gained",
+                "id": "endocrine_hypothyroidism_weight_gained"
+            },
+            {
+                "title": "Hyperthyroidism (weight lost)",
+                "value": "hypothyroidism_weight_lost",
+                "id": "endocrine_hypothyroidism_weight_lost"
+            },
+            {
+                "title": "Dialysis",
+                "value": "dialysis",
+                "id": "endocrine_dialysis"
+            },
+            {
+                "title": "Other",
+                "value": "other",
+                "id": "endocrine_other",
+                "subfield": {
+                    "type": "text",
+                    "name": "endocrine_other_value",
+                    "value": "endocrine_other_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Additional Comments",
+                "value": "comments",
+                "id": "endocrine_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "endocrine_comments",
+                    "value": "endocrine_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Gastrointestinal",
+        "name": "gastrointestinal",
+        "dbType": "array",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "gastrointestinal_wnl"
+        },
+        "options": [
+            {
+                "title": "Incontinent: Bowel",
+                "value": "incontinent_bowel",
+                "id": "gastrointestinal_incontinent_bowel"
+            },
+            {
+                "title": "Constipation: Last Date",
+                "value": "constipation",
+                "id": "gastrointestinal_constipation",
+                "subfield": {
+                    "type": "date",
+                    "name": "constipation_date",
+                    "value": "constipation_date",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Diarrhea",
+                "value": "diarrhea",
+                "id": "gastrointestinal_diarrhea"
+            },
+            {
+                "title": "Hemorrhoids",
+                "value": "hemorrhoids",
+                "id": "gastrointestinal_hemorrhoids"
+            },
+            {
+                "title": "Melena",
+                "value": "melena",
+                "id": "gastrointestinal_melena"
+            },
+            {
+                "title": "Indigestion",
+                "value": "indigestion",
+                "id": "gastrointestinal_indig"
+            },
+            {
+                "title": "Nausea",
+                "value": "nausea",
+                "id": "gastrointestinal_nausea"
+            },
+            {
+                "title": "Vomiting",
+                "value": "vomiting",
+                "id": "gastrointestinal_vomiting"
+            },
+            {
+                "title": "Ostomy",
+                "value": "ostomy",
+                "id": "gastrointestinal_ostomy"
+            },
+            {
+                "title": "Ostomy Care performed by",
+                "value": "ostomy_care_performed_by",
+                "id": "gastrointestinal_ostomy_care",
+                "subfield": {
+                    "type": "text",
+                    "name": "ostomy_care_performed_by_value",
+                    "value": "gastrointestinal_ostomy_care_performed_by_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Oral",
+        "name": "oral",
+        "dbType": "array",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "oral_wnl"
+        },
+        "options": [
+            {
+                "title": "Dentures",
+                "value": "dentures",
+                "id": "oral_dentures"
+            },
+            {
+                "title": "Bleeding Gums",
+                "value": "bleeding_gums",
+                "id": "oral_bleeding_gums"
+            },
+            {
+                "title": "Dysphagia",
+                "value": "dysphagia",
+                "id": "oral_dysphagia"
+            },
+            {
+                "title": "Difficulty Chewing",
+                "value": "difficulty_chewing",
+                "id": "oral_difficulty_chewing"
+            },
+            {
+                "title": "Additional Comments",
+                "value": "comments",
+                "id": "oral_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "oral_comments_value",
+                    "value": "oral_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Diet",
+        "name": "diet",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Regular",
+                "name": "regular",
+                "value": "regular",
+                "id": "diet_regular"
+            },
+            {
+                "title": "Special: Low fat",
+                "name": "special_low_fat",
+                "value": "special_low_fat",
+                "id": "diet_special_low_fat"
+            },
+            {
+                "title": "Special: Low Salt",
+                "name": "special_low_salt",
+                "value": "special_low_salt",
+                "id": "diet_special_low_salt"
+            },
+            {
+                "title": "Special: Low Sugar",
+                "name": "special_low_sugar",
+                "value": "special_low_sugar",
+                "id": "diet_special_low_sugar"
+            },
+            {
+                "title": "Fluid Restrictions",
+                "name": "fluid_restrictions",
+                "value": "fluid_restrictions",
+                "id": "diet_fluid_restrictions"
+            },
+            {
+                "title": "Supplements",
+                "name": "supplements",
+                "value": "supplements",
+                "id": "diet_supplements",
+                "subfield": {
+                    "type": "text",
+                    "name": "supplements_value",
+                    "value": "supplements_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Peg Tube",
+                "name": "peg_tube",
+                "value": "peg_tube",
+                "id": "diet_peg_tube"
+            },
+            {
+                "title": "NG Tube",
+                "name": "ng_tube",
+                "value": "ng_tube",
+                "id": "diet_ng_tube"
+            },
+            {
+                "title": "Pureed",
+                "name": "pureed",
+                "value": "pureed",
+                "id": "diet_pureed"
+            },
+            {
+                "title": "Chopped",
+                "name": "chopped",
+                "value": "chopped",
+                "id": "diet_chopped"
+            },
+            {
+                "title": "Other",
+                "name": "other",
+                "value": "other",
+                "id": "diet_other",
+                "subfield": {
+                    "type": "text",
+                    "name": "diet_other_value",
+                    "value": "diet_other_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Meals prepared by",
+        "name": "meals_prepared_by",
+        "id": "meals_prepared_by",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Patient",
+                "name": "patient",
+                "value": "Patient",
+                "id": "meals_prepared_by_patient"
+            },
+            {
+                "title": "Aide",
+                "name": "aide",
+                "value": "Aide",
+                "id": "meals_prepared_by_aide"
+            },
+            {
+                "title": "PCG",
+                "name": "pcg",
+                "value": "PCG",
+                "id": "meals_prepared_by_pcg"
+            },
+            {
+                "title": "Other",
+                "name": "other",
+                "value": "Other",
+                "id": "meals_prepared_by_other",
+                "subfield": {
+                    "type": "text",
+                    "name": "meals_prepared_by_other_value",
+                    "value": "",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Feeding",
+        "name": "feeding",
+        "dbType": "array",
+        "options": [
+            {
+                "title": "Gastric Tube",
+                "value": "gastric_tube",
+                "id": "feeding_gastric_tube"
+            },
+            {
+                "title": "Oral",
+                "value": "oral",
+                "id": "feeding_oral"
+            },
+            {
+                "title": "Other",
+                "value": "other",
+                "id": "feeding_other",
+                "subfield": {
+                    "type": "text",
+                    "name": "feeding_other_value",
+                    "value": "feeding_other_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Appetite",
+        "name": "appetite",
+        "dbType": "array",
+        "options": [
+            {
+                "title": "Good",
+                "value": "good",
+                "id": "good"
+            },
+            {
+                "title": "Poor",
+                "value": "poor",
+                "id": "poor"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "na"
+            }
+        ]
+    },
+    {
+        "type": "listing",
+        "label": "Nutritional Risk/Assessment",
+        "name": "nutritional_risks",
+        "dbType": "object",
+        "total": "total_score",
+        "subtype": "score",
+        "highScore": 6,
+        "options": [
+            {
+                "title": "On a medically prescribed diet",
+                "value": "on_diet",
+                "id": "nutritional_risks_on_diet",
+                "points": 1
+            },
+            {
+                "title": "Has an open wound",
+                "value": "open_wound",
+                "id": "nutritional_risks_open_wound",
+                "points": 1
+            },
+            {
+                "title": "Is elderly, lives alone and dependent for shopping, meal prep and/or feeding",
+                "value": "live_for_shopping",
+                "id": "nutritional_risks_live_for_shopping",
+                "points": 1
+            },
+            {
+                "title": "Is on a fluid restricted diet",
+                "value": "fluid_restricted_diet",
+                "id": "nutritional_risks_fluid_restricted_diet",
+                "points": 1
+            },
+            {
+                "title": "Has Oral/dental problems that makes eating difficult",
+                "value": "oral_dental_problems",
+                "id": "nutritional_risks_oral_dental_problems",
+                "points": 1
+            },
+            {
+                "title": "Feeding other than oral",
+                "value": "feeding_other",
+                "id": "nutritional_risks_feeding_other",
+                "points": 2
+            },
+            {
+                "title": "Eats fewer than 2 meals per day",
+                "value": "eats_less_than_2_meals_per_day",
+                "id": "nutritional_risks_eats_less_than_2_meals_per_day",
+                "points": 1
+            },
+            {
+                "title": "Unexplained  loss/gain 10lbs in past 6 months",
+                "value": "loss_weight_in_past_6_months",
+                "id": "nutritional_risks_loss_weight_in_past_6_months",
+                "points": 1
+            },
+            {
+                "title": "Is on more than 3 RX or over the counter medications ",
+                "value": "more_than_3_medications",
+                "id": "nutritional_risks_more_than_3_medications",
+                "points": 1
+            },
+            {
+                "title": "Takes more than 2 drinks (beer,alcohol, wine) a day",
+                "value": "takes_more_than_2_drinks",
+                "id": "nutritional_risks_takes_more_than_2_drinks",
+                "points": 1
+            }
+        ],
+        "details": "<h5>Nutritional/Risk Assessment</h5> <br> <p>0-2: No Risk, 3-5: Moderate Risk, 6 or more: High Risk</p>  <p>Follow up if High Risk</p>",
+        "riskText": "<strong style='color: white'>Due to high risk, Nutritionist consult Recommeded</strong>"
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "nutritional_risks_refferal",
+        "id": "nutritional_risks_refferal",
+        "dbType": "object",
+        "relativeField": "nutritional_risks",
+        "relativeFieldTotal": "total_score",
+        "highScore": 6,
+        "required":true,
+        "options": [
+            {
+                "title": "Make Nutritionist Referral",
+                "value": "nutritionist_referral",
+                "id": "nutritionist_referral"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Genitourinary",
+        "name": "genitourinary",
+        "id": "genitourinary",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "genitourinary_wnl"
+        },
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Incontinence of bladder",
+                "value": "incontinence_of_bladder",
+                "id": "genitourinary_incontinence_of_bladder"
+            },
+            {
+                "title": "Frequency",
+                "value": "frequency",
+                "id": "genitourinary_frequency"
+            },
+            {
+                "title": "Urgency",
+                "value": "urgency",
+                "id": "genitourinary_urgency"
+            },
+            {
+                "title": "Odor",
+                "value": "odor",
+                "id": "genitourinary_odor"
+            },
+            {
+                "title": "Hematuria",
+                "value": "hematuria",
+                "id": "genitourinary_hematuria"
+            },
+            {
+                "title": "Nocturia",
+                "value": "nocturia",
+                "id": "genitourinary_nocturia"
+            },
+            {
+                "title": "Catheter",
+                "value": "catheter",
+                "id": "genitourinary_catheter",
+                "subfield": {
+                    "type": "text",
+                    "name": "genitourinary_catheter",
+                    "value": "genitourinary_catheter_value",
+                    "placeholder": "Enter  Size, Type, and Loc",
+                    "required":true
+                }
+            },
+            {
+                "title": "Other",
+                "value": "other",
+                "id": "genitourinary_other",
+                "subfield": {
+                    "type": "text",
+                    "name": "genitourinary_other",
+                    "value": "genitourinary_other_value",
+                    "placeholder": "Other value ",
+                    "required":true
+                }
+            },
+            {
+                "title": "Additional Comments",
+                "value": "comments",
+                "id": "genitourinary_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "genitourinary_comments",
+                    "value": "genitourinary_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Skin",
+        "name": "skin",
+        "id": "skin",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "WNL (No issues or needs identified)",
+            "value": "wnl",
+            "id": "skin_wnl"
+        },
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Rash",
+                "value": "rash",
+                "id": "skin_rash",
+                "subfield": {
+                    "type": "text",
+                    "name": "skin_rash",
+                    "value": "skin_rash_value",
+                    "placeholder": "Location and Description...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Itching",
+                "value": "itching",
+                "id": "skin_itching",
+                "subfield": {
+                    "type": "text",
+                    "name": "skin_itching",
+                    "value": "skin_itching_value",
+                    "placeholder": "Location and Description...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Ecchymosis",
+                "value": "ecchymosis",
+                "id": "skin_ecchymosis",
+                "subfield": {
+                    "type": "text",
+                    "name": "skin_ecchymosis",
+                    "value": "skin_ecchymosis_value",
+                    "placeholder": "Location and Description...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Abrasion",
+                "value": "abrasion",
+                "id": "skin_abrasion",
+                "subfield": {
+                    "type": "text",
+                    "name": "skin_abrasion",
+                    "value": "skin_abrasion_value",
+                    "placeholder": "Location and Description...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Surgical Wound",
+                "value": "surgical_wound",
+                "id": "skin_surgical_wound",
+                "subfield": {
+                    "type": "text",
+                    "name": "skin_surgical_wound",
+                    "value": "skin_surgical_wound_value",
+                    "placeholder": "Location and Description...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Wound",
+                "value": "wound",
+                "id": "skin_wound",
+                "subfield": {
+                    "type": "text",
+                    "name": "skin_wound",
+                    "value": "skin_wound_value",
+                    "placeholder": "Location and Description...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Wound care provided by:",
+                "value": "wound_care_provided_by",
+                "id": "skin_wound_care_provided_by",
+                "subfield": {
+                    "type": "text",
+                    "name": "skin_wound_care_provided_by",
+                    "value": "skin_wound_care_provided_by_value",
+                    "placeholder": "Location and Description...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Wound Care Followup needed",
+                "value": "wound_care_followup_needed",
+                "id": "skin_wound_care_followup_needed",
+                "subfield": {
+                    "type": "text",
+                    "name": "skin_wound_care_followup_needed",
+                    "value": "skin_wound_care_followup_needed_value",
+                    "placeholder": "Location and Description...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Additional Comments",
+                "value": "comments",
+                "id": "skin_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "skin_comments",
+                    "value": "skin_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Does the patient have pain ?",
+        "name": "patient_pain",
+        "id": "does_patient_pain",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "patient_pain_yes",
+                "subfield": {
+                    "type": "text",
+                    "name": "patient_pain_yes_value",
+                    "value": "patient_pain_yes",
+                    "placeholder": "Type here ...",
+                    "required":true
+                }
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "patient_pain_no",
+                "selected": true,
+                "group": true,
+                "group_member": [
+                    {
+                        "name": "noted_pain",
+                        "value": "no",
+                        "checktype": "radio"
+                    },
+                    {
+                        "name": "pain_scale",
+                        "value": 0,
+                        "checktype": "radio"
+                    },
+                    {
+                        "name": "pain_medications",
+                        "value": "no",
+                        "checktype": "radio"
+                    },
+                    {
+                        "subfield": "N/A",
+                        "name": "describe_pain",
+                        "value": "N_A",
+                        "checktype": "checkbox",
+                        "dbType": "object",
+                        "id": "N/A_no_pain"
+                    },
+                    {
+                        "name": "pain_aggravation",
+                        "value": "N/A - No Pain",
+                        "checktype": "radio"
+                    },
+                    {
+                        "name": "pain_relief",
+                        "value": "no",
+                        "checktype": "radio"
+                    }
+                ]
+            },
+            {
+                "title": "Unable to report",
+                "value": "unable_to_report",
+                "id": "patient_pain_unable_to_report"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Does PCG or Aide note pain ?",
+        "name": "noted_pain",
+        "id": "noted_pain",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "noted_pain_yes",
+                "subfield": {
+                    "type": "text",
+                    "name": "noted_pain_yes_value",
+                    "value": "noted_pain_yes",
+                    "placeholder": "Type here ...",
+                    "required":true
+                }
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "noted_pain_no",
+                "selected": true
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Pain Scale",
+        "name": "pain_scale",
+        "errormsg": "Please select one of the following assesesment type",
+        "options": [
+            {
+                "title": "Unable to Report",
+                "value": "unable_to_report",
+                "id": "pain_scale_unable_to_report"
+            },
+            {
+                "title": "0 - No Pain",
+                "value": 0,
+                "id": "pain_scale_0",
+                "selected": true
+            },
+            {
+                "title": "1",
+                "value": 1,
+                "id": "pain_scale_1"
+            },
+            {
+                "title": "2",
+                "value": 2,
+                "id": "pain_scale_2"
+            },
+            {
+                "title": "3",
+                "value": 3,
+                "id": "pain_scale_3"
+            },
+            {
+                "title": "4",
+                "value": 4,
+                "id": "pain_scale_4"
+            },
+            {
+                "title": "5",
+                "value": 5,
+                "id": "pain_scale_5"
+            },
+            {
+                "title": "6",
+                "value": 6,
+                "id": "pain_scale_6"
+            },
+            {
+                "title": "7",
+                "value": 7,
+                "id": "pain_scale_7"
+            },
+            {
+                "title": "8",
+                "value": 8,
+                "id": "pain_scale_8"
+            },
+            {
+                "title": "9",
+                "value": 9,
+                "id": "pain_scale_9"
+            },
+            {
+                "title": "10 - Severe Pain",
+                "value": 10,
+                "id": "pain_scale_10"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Are there any pain medications ?",
+        "name": "pain_medications",
+        "id": "pain_medications",
+        "options": [
+            {
+                "title": "Yes (Specifiy)",
+                "value": "yes",
+                "id": "pain_medications_yes",
+                "subfield": {
+                    "type": "text",
+                    "name": "pain_medication_yes_value",
+                    "value": "pain_medication_yes_value",
+                    "placeholder": "Type here ...",
+                    "required":true
+                }
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "pain_medication_no",
+                "selected": true
+            }
+        ]
+    },
+    {
+        "label": "Describe Pain",
+        "value": "describe_pain",
+        "name": "describe_pain",
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Unable to Report",
+                "value": "unable_to_report",
+                "id": "describe_pain_unable_to_report"
+            },
+            {
+                "title": "Throbbing",
+                "value": "throbbing",
+                "id": "describe_pain_throbbing"
+            },
+            {
+                "title": "Aching",
+                "value": "aching",
+                "id": "describe_pain_aching"
+            },
+            {
+                "title": "Sharp",
+                "value": "sharp",
+                "id": "describe_pain_sharp"
+            },
+            {
+                "title": "Burning",
+                "value": "burning",
+                "id": "describe_pain_burning"
+            },
+            {
+                "title": "Dull",
+                "value": "dull",
+                "id": "describe_pain_dull"
+            },
+            {
+                "title": "Other",
+                "value": "other",
+                "id": "describe_pain_other",
+                "subfield": {
+                    "type": "text",
+                    "name": "describe_pain_other_value",
+                    "value": "describe_pain_other_value",
+                    "placeholder": "Type here ...",
+                    "required":true
+                }
+            },
+            {
+                "title": "N/A",
+                "value": "N_A",
+                "id": "N/A_no_pain"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "What aggravates the pain ?",
+        "name": "pain_aggravation",
+        "id": "pain_aggravation",
+        "options": [
+            {
+                "title": "Describe",
+                "value": "describe",
+                "id": "pain_aggravation_describe",
+                "subfield": {
+                    "type": "text",
+                    "name": "pain_aggravation_describe_value",
+                    "value": "pain_aggravation_describe_value",
+                    "placeholder": "Type here ...",
+                    "required":true
+                }
+            },
+            {
+                "title": "N/A - No Pain",
+                "value": "N/A - No Pain",
+                "id": "pain_aggravation_no",
+                "selected": true
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "What alleviates the pain ?",
+        "name": "pain_alleviation",
+        "id": "pain_alleviation",
+        "options": [
+            {
+                "title": "Describe",
+                "value": "describe",
+                "id": "pain_alleviation_describe",
+                "subfield": {
+                    "type": "text",
+                    "name": "pain_alleviation_describe_value",
+                    "value": "pain_alleviation_describe_value",
+                    "placeholder": "Type here ...",
+                    "required":true
+                }
+            },
+            {
+                "title": "N/A - No Pain",
+                "value": "N/A - No Pain",
+                "id": "pain_alleviation_no",
+                "selected": true
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Is pain relief adequate ?",
+        "name": "pain_relief",
+        "id": "pain_relief",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "pain_relief_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "pain_relief_no",
+                "subfield": {
+                    "type": "text",
+                    "name": "pain_relief_no_description",
+                    "value": "pain_relief_no_description",
+                    "placeholder": "Type here ...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Functional Assesment",
+        "name": "functional_assessment",
+        "id": "functional_assessment",
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Patient Needs Assistance with ADLS",
+                "value": "assistance_with_adls",
+                "id": "functional_assessment_assistance_with_adls"
+            },
+            {
+                "title": "Patient Needs Assistance with IADLS",
+                "value": "assistance_with_iadls",
+                "id": "functional_assessment_assistance_with_iadls"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Functional Limitations",
+        "name": "functional_limitations",
+        "id": "functional_limitations",
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Amputation",
+                "value": "amputation",
+                "name": "amputation",
+                "id": "functional_limitations_amputation"
+            },
+            {
+                "title": "Bowel Incontinence",
+                "value": "bowel_incontinence",
+                "name": "bowel_incontinence",
+                "id": "functional_limitations_bowel_incontinence"
+            },
+            {
+                "title": "Bladder Incontinence",
+                "value": "bladder_incontinence",
+                "name": "bladder_incontinence",
+                "id": "functional_limitations_bladder_incontinence"
+            },
+            {
+                "title": "Contracture",
+                "value": "contracture",
+                "name": "contracture",
+                "id": "functional_limitations_contracture"
+            },
+            {
+                "title": "Hearing",
+                "value": "hearing",
+                "name": "hearing",
+                "id": "functional_limitations_hearing"
+            },
+            {
+                "title": "Paralysis",
+                "value": "paralysis",
+                "name": "paralysis",
+                "id": "functional_limitations_paralysis"
+            },
+            {
+                "title": "Endurance",
+                "value": "endurance",
+                "name": "endurance",
+                "id": "functional_limitations_endurance"
+            },
+            {
+                "title": "Ambulation",
+                "value": "ambulation",
+                "name": "ambulation",
+                "id": "functional_limitations_ambulation"
+            },
+            {
+                "title": "Speech",
+                "value": "speech",
+                "name": "speech",
+                "id": "functional_limitations_speech"
+            },
+            {
+                "title": "Vision",
+                "value": "vision",
+                "name": "vision",
+                "id": "functional_limitations_vision"
+            },
+            {
+                "title": "Dyspnea",
+                "value": "dyspnea",
+                "name": "dyspnea",
+                "id": "functional_limitations_dyspnea"
+            },
+            {
+                "title": "ADL",
+                "value": "adl",
+                "name": "adl",
+                "id": "functional_limitations_adl"
+            },
+            {
+                "title": "DOE",
+                "value": "doe",
+                "name": "doe",
+                "id": "functional_limitations_doe"
+            },
+            {
+                "title": "Other",
+                "value": "other",
+                "name": "other",
+                "id": "functional_limitations_other",
+                "subfield": {
+                    "type": "text",
+                    "id": "functional_limitations_other_value",
+                    "name": "functional_limitations_other_value",
+                    "value": "functional_limitations_other_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "listing",
+        "label": "Fall Risk Assessment",
+        "name": "fall_risk_assessment",
+        "dbType": "object",
+        "total": "total_score",
+        "id": "fall_rist_assessment",
+        "subtype": "score",
+        "highScore": 4,
+        "options": [
+            {
+                "title": "Age over 65",
+                "value": "age_over_65",
+                "id": "fall_rist_assessment_age_over_65",
+                "points": 1
+            },
+            {
+                "title": "Diagnosis - 3 or more coexisting diagnosed conditions",
+                "value": "diagnosed_conditions",
+                "id": "fall_rist_assessment_diagnosis",
+                "points": 2
+            },
+            {
+                "title": "Prior History of Falls within 3 months",
+                "value": "prior_history_of_falls_within_3_months",
+                "id": "fall_rist_assessment_prior_history_of_falls_within_3_months",
+                "points": 1
+            },
+            {
+                "title": "Incontinence",
+                "value": "fall_rist_incontinence",
+                "id": "fall_rist_assessment_incontinence",
+                "points": 2
+            },
+            {
+                "title": "Visual impairment",
+                "value": "visual_impairment",
+                "id": "fall_rist_assessment_visual_impairment",
+                "points": 2
+            },
+            {
+                "title": "Impared functional mobility requires IADL's or ADL's",
+                "value": "impare_functional_mobility_IADL_or_ADL",
+                "id": "impared_functional_mobility_requires_IADL_or_ADL",
+                "points": 1
+            },
+            {
+                "title": "Environmental hazards including inappropriate footwear, pets, hard to reach items, rugs, uneven floor surfaces",
+                "value": "environmental_hazards",
+                "id": "environmental_hazards_including_inappropriate_footwear",
+                "points": 3
+            },
+            {
+                "title": "Polypharmacy - 4 or more medications/postural hypotension with dizziness",
+                "value": "polypharmacy",
+                "id": "fall_rist_assessment_polypharmacy",
+                "points": 1
+            },
+            {
+                "title": "Pain affecting level of function",
+                "value": "pain_affecting_level_of_function",
+                "id": "fall_rist_assessment_pain_affecting_level_of_function",
+                "points": 1
+            },
+            {
+                "title": "Cognitive impairment",
+                "value": "cognitive_impairment",
+                "id": "fall_rist_assessment_cognitive_impairment",
+                "points": 1
+            }
+        ],
+        "details": "<h5>Scores of 4 or more is considered high risk for falls</h5>",
+        "riskText": "<strong style='color: white'>Due to high risk, OT or PT is recommended</strong>"
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "fall_risk_assessment_refferal",
+        "id": "fall_risk_assessment_refferal",
+        "dbType": "object",
+        "relativeField": "fall_risk_assessment",
+        "relativeFieldTotal": "total_score",
+        "highScore": 4,
+        "required":true,
+        "options": [
+            {
+                "title": "Make OT referral",
+                "value": "fall_risk_assessment_make_ot_referral",
+                "id": "fall_risk_assessment_make_ot_referral"
+            },
+            {
+                "title": "Make PT referral",
+                "value": "fall_risk_assessment_make_pt_referral",
+                "id": "fall_risk_assessment_make_pt_referral"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "If Total score exceeds 4 educate and ask patient if they would be interested in physical therapy services",
+        "name": "therapty_service",
+        "id": "therapy_service",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "therapy_service_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "therapy_service_no"
+            },
+            {
+                "title": "N/A score 3 or less",
+                "value": "N/A",
+                "id": "therapy_service_NA"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Has the patient had a recent fall ?",
+        "name": "recent_fall",
+        "id": "recent_fall",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "recent_fall_yes",
+                "selected": true,
+                "subfield": {
+                    "type": "text",
+                    "name": "recent_fall_yes_value",
+                    "value": "recent_fall_yes_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "recent_fall_no"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Allergies",
+        "name": "allergies",
+        "id": "allergies",
+        "options": [
+            {
+                "title": "NKA",
+                "name": "NKA",
+                "value": "NKA",
+                "id": "allergies_nka",
+                "selected": true
+            },
+            {
+                "title": "Enter Allergies",
+                "name": "Enter Allergies",
+                "value": "Enter Allergies",
+                "id": "allergies_enter_allergies",
+                "subfield": {
+                    "type": "multiInput",
+                    "name": "allergies_enter_allergies_value",
+                    "id": "allergies_enter_allergies_value",
+                    "value": "allergies_enter_allergies_value",
+                    "placeholder": "First one, Second, Third",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "multiInput",
+        "label": "Diagnosis",
+        "id": "diagnosis",
+        "name": "diagnosis"
+    },
+    {
+        "type": "nestedarrayMedicine",
+        "withoutLabelFlow": true
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Is client able to administrate own medications",
+        "name": "client_can_administrate_medicine",
+        "id": "client_can_administrate_medicine",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "client_can_administrate_medicine_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "client_can_administrate_medicine_no"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Does client require medication box setup/pre-pour?",
+        "name": "client_needs_medications",
+        "id": "client_needs_medications",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "client_needs_medications_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "client_needs_medications_no"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Is client compliant with medication regimen?",
+        "name": "client_compliant_with_regimen",
+        "id": "client_compliant_with_regimen",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "client_compliant_with_regimen_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "client_compliant_with_regimen_no",
+                "subfield": {
+                    "type": "text",
+                    "name": "client_compliant_with_regimen_no_value",
+                    "value": "client_compliant_with_regimen_no_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Who was taught ?",
+        "name": "who_was_taught",
+        "id": "who_was_taught",
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Patient",
+                "value": "patient",
+                "id": "who_was_taught_patient",
+                "selected": true
+            },
+            {
+                "title": "Aide",
+                "value": "aide",
+                "id": "who_was_taught_aide"
+            },
+            {
+                "title": "PCG",
+                "value": "pcg",
+                "id": "who_was_taught_pcg"
+            },
+            {
+                "title": "Other",
+                "value": "other",
+                "id": "who_was_taught_other",
+                "subfield": {
+                    "type": "text",
+                    "name": "who_was_taught_other_value",
+                    "value": "who_was_taught_other_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "How were instructions provided?",
+        "name": "instructions_provided",
+        "id": "instructions_provided",
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Verbal",
+                "value": "verbal",
+                "id": "instructions"
+            },
+            {
+                "title": "Demonstration",
+                "value": "demonstration",
+                "id": "instructions_provided_demonstration"
+            },
+            {
+                "title": "Education handouts provided",
+                "value": "education_handouts_provided",
+                "id": "instructions_provided_education_handouts_provided"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Response to instruction?",
+        "name": "response",
+        "id": "response",
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Return demonstration observed",
+                "value": "return_demonstration_reserved",
+                "id": "response_return_demonstration_reserved"
+            },
+            {
+                "title": "Understanding verbalized",
+                "value": "understanding_verbalized",
+                "id": "response_understanding_verbalized"
+            },
+            {
+                "title": "Additional comments",
+                "value": "comments",
+                "id": "resposne_comments",
+                "subfield": {
+                    "type": "text",
+                    "name": "resposne_comments",
+                    "value": "resposne_comments_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Aide educated to remind patient to take medications",
+        "name": "educated_to_remind_patient",
+        "id": "educated_to_remind_patient",
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "educated_to_remind_patient_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "educated_to_remind_patient_no"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "educated_to_remind_patient_na"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Seasonal flu Immunization",
+        "name": "seasonal_flu_immunization",
+        "id": "seasonal_flu_immunization",
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "seasonal_flu_immunization_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "seasonal_flu_immunization_no"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "seasonal_flu_immunization_na"
+            }
+        ]
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "seasonal_flu_immunization_education_provided",
+        "id": "seasonal_flu_immunization_education_provided",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Education Provided",
+                "value": "seasonal_flu_immunization_education_provided_yes",
+                "id": "seasonal_flu_immunization_education_provided_yes"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Pneumococcal Vaccine(65+) ",
+        "name": "pneumococcal_vaccine",
+        "id": "pneumococcal_vaccine",
+        "dbType":"object",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "pneumococcal_vaccine_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "pneumococcal_vaccine_no"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "pneumococcal_vaccine_na"
+            }
+        ]
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "pneumococcal_vaccine_education_provided",
+        "id": "pneumococcal_vaccine_education_provided",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Education Provided",
+                "value": "pneumococcal_vaccine_education_provided_yes",
+                "id": "pneumococcal_vaccine_education_provided_yes"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Eye Exam - within 1 year",
+        "name": "eye_exam",
+        "id": "eye_exam",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "eye_exam_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "eye_exam_no"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "eye_exam_na"
+            }
+        ]
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "eye_exam_education_provided",
+        "id": "eye_exam_education_provided",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Education Provided",
+                "value": "eye_exam_education_provided_yes",
+                "id": "eye_exam_education_provided_yes"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Hearing Exam - within 1 year",
+        "name": "hearing_exam",
+        "id": "hearing_exam",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "hearing_exam_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "hearing_exam_no"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "hearing_exam_na"
+            }
+        ]
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "hearing_exam_education_provided",
+        "id": "hearing_exam_education_provided",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Education Provided",
+                "value": "hearing_exam_education_provided_yes",
+                "id": "hearing_exam_education_provided_yes"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Dental Exam - within 1 year",
+        "name": "dental_exam",
+        "id": "dental_exam",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "dental_exam_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "dental_exam_no"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "dental_exam_na"
+            }
+        ]
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "dental_exam_education_provided",
+        "id": "dental_exam_education_provided",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Education Provided",
+                "value": "dental_exam_education_provided_yes",
+                "id": "dental_exam_education_provided_yes"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Mammogram Or Breast Exam - within 2 years for women of 50+ or HX",
+        "name": "breast_exam",
+        "id": "breast_exam",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "breast_exam_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "breast_exam_no"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "breast_exam_na"
+            }
+        ]
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "breast_exam_education_provided",
+        "id": "breast_exam_education_provided",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Education Provided",
+                "value": "breast_exam_education_provided_yes",
+                "id": "breast_exam_education_provided_yes"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Pap Smear",
+        "name": "pap_smear",
+        "id": "pap_smear",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "pap_smear_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "pap_smear_no"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "pap_smear_na"
+            }
+        ]
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "pap_smear_education_provided",
+        "id": "pap_smear_education_provided",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Education Provided",
+                "value": "pap_smear_education_provided_yes",
+                "id": "pap_smear_education_provided_yes"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Monthly BSE",
+        "name": "monthly_bse",
+        "id": "monthly_bse",
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "monthly_bse_yes",
+                "selected": true
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "monthly_bse_no"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "monthly_bse_na"
+            }
+        ]
+    },
+    {
+        "mergeSection": true,
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "name": "monthly_bse_education_provided",
+        "id": "monthly_bse_education_provided",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Education Provided",
+                "value": "monthly_bse_education_provided_yes",
+                "id": "monthly_bse_education_provided_yes"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Men's Health",
+        "name": "mens_health",
+        "id": "mens_health",
+        "dbType": "object",
+        "oneSelector": {
+            "type": "checkbox",
+            "label": "N/A",
+            "value": "na",
+            "id": "mens_health_na"
+        },
+        "options": [
+            {
+                "title": "Male BPH",
+                "value": "male_bph",
+                "id": "male_bph"
+            },
+            {
+                "title": "Prostate CA",
+                "value": "prostate_ca",
+                "id": "prostate_ca"
+            },
+            {
+                "title": "TSE",
+                "value": "tse",
+                "id": "tse"
+            },
+            {
+                "title": "Hematuria",
+                "value": "hematuria",
+                "id": "hematuria"
+            },
+            {
+                "title": "Dysuria",
+                "value": "dysuria",
+                "id": "dysuria"
+            },
+            {
+                "title": "Other",
+                "value": "other",
+                "id": "mens_health_other",
+                "subfield": {
+                    "type": "text",
+                    "name": "mens_health_other_value",
+                    "value": "mens_health_other_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Education Provided",
+                "value": "men_health_education_provided",
+                "id": "men_health_education_provided"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Last PCP visit",
+        "name": "last_pcp_visit",
+        "id": "last_pcp_visit",
+        "options": [
+            {
+                "title": "Date",
+                "value": "date",
+                "id": "last_pcp_visit_date",
+                "subfield": {
+                    "type": "date",
+                    "name": "last_pcp_visit_date_value",
+                    "value": "last_pcp_visit_date_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Unknown",
+                "value": "unknown",
+                "id": "last_pcp_visit_unknown",
+                "selected": true
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Next PCP visit",
+        "name": "next_pcp_visit",
+        "id": "next_pcp_visit",
+        "options": [
+            {
+                "title": "Date",
+                "value": "date",
+                "id": "next_pcp_visit_date",
+                "subfield": {
+                    "type": "date",
+                    "name": "next_pcp_visit_date_value",
+                    "value": "next_pcp_visit_date_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Unknown",
+                "value": "unknown",
+                "id": "next_pcp_visit_unknown",
+                "selected": true
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "radio",
+        "label": "Any recent hospitalizations within 1 month ?",
+        "name": "recent_hospitalizations",
+        "id": "recent_hospitalizations",
+        "options": [
+            {
+                "title": "Date",
+                "value": "date",
+                "id": "recent_hospitalizations_date",
+                "selected": true,
+                "subfield": {
+                    "type": "date",
+                    "date_limit": 30,
+                    "name": "recent_hospitalizations_date_value",
+                    "value": "recent_hospitalizations_date_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "No",
+                "value": "no",
+                "id": "recent_hospitalizations_no"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Educate Patient / PCG on benefits of utilizing urgent care rather than ER for minor issues",
+        "name": "education_on_benefits",
+        "id": "education_on_benefits",
+        "dbType": "object",
+        "required":true,
+        "options": [
+            {
+                "title": "Yes",
+                "value": "yes",
+                "id": "education_on_benefits_yes",
+                "checked": true
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "DME/Supplies",
+        "name": "dme_supplies",
+        "id": "dme_supplies",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Wheelchair",
+                "name": "wheelchair",
+                "value": "wheelchair",
+                "id": "dme_supplies_wheelchair"
+            },
+            {
+                "title": "Crutches",
+                "name": "crutches",
+                "value": "crutches",
+                "id": "dme_supplies_crutches"
+            },
+            {
+                "title": "Commode",
+                "name": "commode",
+                "value": "commode",
+                "id": "dme_supplies_commode"
+            },
+            {
+                "title": "Shower Chair",
+                "name": "shower_chair",
+                "value": "shower_chair",
+                "id": "dme_supplies_shower_chair"
+            },
+            {
+                "title": "Nebulizer",
+                "name": "nebulizer",
+                "value": "nebulizer",
+                "id": "dme_supplies_nebulizer"
+            },
+            {
+                "title": "Glucometer",
+                "name": "glucometer",
+                "value": "glucometer",
+                "id": "dme_supplies_glucometer"
+            },
+            {
+                "title": "Walker",
+                "name": "walker",
+                "value": "walker",
+                "id": "dme_supplies_walker"
+            },
+            {
+                "title": "Sliding Board",
+                "name": "sliding_board",
+                "value": "sliding_board",
+                "id": "dme_supplies_sliding_board"
+            },
+            {
+                "title": "Urinal",
+                "name": "urinal",
+                "value": "urinal",
+                "id": "dme_supplies_urinal"
+            },
+            {
+                "title": "Hospital",
+                "name": "hospital",
+                "value": "hospital",
+                "id": "dme_supplies_hospital"
+            },
+            {
+                "title": "02 Concentrator",
+                "name": "concentrator_02",
+                "value": "concentrator_02",
+                "id": "dme_supplies_02_concentrator"
+            },
+            {
+                "title": "Grab bars",
+                "name": "grab_bars",
+                "value": "grab_bars",
+                "id": "dme_supplies_grab_bars"
+            },
+            {
+                "title": "Cane",
+                "name": "cane",
+                "value": "cane",
+                "id": "dme_supplies_cane"
+            },
+            {
+                "title": "Prosthesis",
+                "name": "prosthesis",
+                "value": "prosthesis",
+                "id": "dme_supplies_prosthesis"
+            },
+            {
+                "title": "Bedpan",
+                "name": "bedpan",
+                "value": "bedpan",
+                "id": "dme_supplies_bedpan"
+            },
+            {
+                "title": "Hoyer Lift",
+                "name": "hoyer_lift",
+                "value": "hoyer_lift",
+                "id": "dme_supplies_hoyer_lift"
+            },
+            {
+                "title": "PERS",
+                "name": "pers",
+                "value": "pers",
+                "id": "dme_supplies_pers"
+            },
+            {
+                "title": "Incontinent Pads",
+                "name": "incontinent_pads",
+                "value": "incontinent_pads",
+                "id": "dme_supplies_incontinent_pads"
+            },
+            {
+                "title": "Diabetic Supplies",
+                "name": "diabetic_supplies",
+                "value": "diabetic_supplies",
+                "id": "dme_supplies_diabetic_supplies"
+            },
+            {
+                "title": "Wound Care Supplies",
+                "name": "diabetic_wound_care_supplies",
+                "value": "diabetic_wound_care_supplies",
+                "id": "dme_supplies_wound_care_supplies"
+            },
+            {
+                "title": "Bed Side Table",
+                "name": "diabetic_bed_side_table",
+                "value": "diabetic_bed_side_table",
+                "id": "dme_supplies_bed_side_table"
+            },
+            {
+                "title": "Hospital Bed",
+                "name": "diabetic_hospital_bed",
+                "value": "diabetic_hospital_bed",
+                "id": "dme_supplies_hospital_bed"
+            },
+            {
+                "title": "Other",
+                "name": "other",
+                "value": "other",
+                "id": "dme_supplies_other",
+                "subfield": {
+                    "type": "text",
+                    "name": "dme_supplies_other_value",
+                    "value": "dme_supplies_other_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    },
+    {
+        "type": "listing",
+        "label": "Environmental Risks",
+        "name": "environmental_risks",
+        "id": "environmental_risks",
+        "dbType": "object",
+        "subtype": "radioselector",
+        "select_options": [
+            {
+                "title": "Yes",
+                "value": "yes"
+            },
+            {
+                "title": "No",
+                "value": "no"
+            },
+            {
+                "title": "N/A",
+                "value": "N/A"
+            }
+        ],
+        "options": [
+            {
+                "title": "Elevator",
+                "value": "elevator",
+                "id": "environmental_risks_elevator",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "elevator_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "elevator_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "elevator_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Firescape/Secondary Egress",
+                "value": "firescape_secondary",
+                "id": "environmental_risks_firescape_secondary",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "firescape_secondary_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "firescape_secondary_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "firescape_secondary_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Rug secure",
+                "value": "rug_secure",
+                "id": "environmental_risks_rug_secure",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "rug_secure_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "rug_secure_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "rug_secure_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Sharps container & disposal",
+                "value": "sharps_container_disposal",
+                "id": "sharps_container_disposal",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "sharps_container_disposal_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "sharps_container_disposal_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "sharps_container_disposal_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Unobstructed stairs with handrail",
+                "value": "unobstructed_stairs",
+                "id": "unobstructed_stairs",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "unobstructed_stairs_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "unobstructed_stairs_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "unobstructed_stairs_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Safe environment for oxygen use",
+                "value": "safe_environemt_for_oxygen",
+                "id": "safe_environemt_for_oxygen",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "safe_environemt_for_oxygen_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "safe_environemt_for_oxygen_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "safe_environemt_for_oxygen_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Oxygen in home",
+                "value": "oxygen_in_home",
+                "id": "oxygen_in_home",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "oxygen_in_home_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "oxygen_in_home_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "oxygen_in_home_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Local utility companies notified of life support equipment",
+                "value": "loca_companies_notified",
+                "id": "loca_companies_notified",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "loca_companies_notified_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "loca_companies_notified_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "loca_companies_notified_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Sanitary and safe for provision of care",
+                "value": "sanitary_for_provision",
+                "id": "sanitary_for_provision",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "sanitary_for_provision_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "sanitary_for_provision_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "sanitary_for_provision_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Adequate lighting",
+                "value": "adequate_lighting",
+                "id": "adequate_lighting",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "adequate_lighting_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "adequate_lighting_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "adequate_lighting_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Electrical hazards",
+                "value": "electrical_hazards",
+                "id": "electrical_hazards",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "electrical_hazards_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "electrical_hazards_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "electrical_hazards_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Can access emergency services",
+                "value": "can_access_emergency_services",
+                "id": "can_access_emergency_services",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "can_access_emergency_services_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "can_access_emergency_services_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "can_access_emergency_services_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Adequate medical equipment & supplies",
+                "value": "equiptment_supplies",
+                "id": "equiptment_supplies",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "equiptment_supplies_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "equiptment_supplies_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "equiptment_supplies_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Medicine clearly labeled within reach of client and secured from children",
+                "value": "medicine_labeled",
+                "id": "medicine_labeled",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "medicine_labeled_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "medicine_labeled_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "medicine_labeled_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Functioning smoke alarm",
+                "value": "functioning_smoke_alarm",
+                "id": "functioning_smoke_alarm",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "functioning_smoke_alarm_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "functioning_smoke_alarm_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "functioning_smoke_alarm_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Functioning CO alarm",
+                "value": "functioning_co_alarm",
+                "id": "functioning_co_alarm",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "functioning_co_alarm_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "functioning_co_alarm_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "functioning_co_alarm_N/A",
+                        "selected": true
+                    }
+                ]
+            },
+            {
+                "title": "Working utilities",
+                "value": "working_utilities",
+                "id": "working_utilities",
+                "suboptions": [
+                    {
+                        "title": "Yes",
+                        "value": "yes",
+                        "id": "working_utilities_yes"
+                    },
+                    {
+                        "title": "No",
+                        "value": "no",
+                        "id": "working_utilities_no"
+                    },
+                    {
+                        "title": "N/A",
+                        "value": "N/A",
+                        "id": "working_utilities_N/A",
+                        "selected": true
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Other Environmental",
+        "name": "other_environmental",
+        "id": "other_environmental",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Vermin Infestation",
+                "value": "vermin_infestation",
+                "id": "other_environmental_vermin_infestation",
+                "subfield": {
+                    "type": "text",
+                    "name": "other_environmental_vermin_infestation_value",
+                    "value": "other_environmental_vermin_infestation_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "Other Hazards or Concerns",
+                "value": "other_hazards_or_concerns",
+                "id": "other_environmental_other_hazards_or_concerns",
+                "subfield": {
+                    "type": "text",
+                    "name": "other_environmental_other_hazards_or_concerns_value",
+                    "value": "other_environmental_other_hazards_or_concerns_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "RN provided education regarding safety concerns",
+                "value": "education_regarding_safety",
+                "id": "education_regarding_safety",
+                "subfield": {
+                    "type": "text",
+                    "name": "education_regarding_safety_value",
+                    "value": "education_regarding_safety_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            },
+            {
+                "title": "WIC dependent",
+                "value": "wic_dependent",
+                "id": "wic_dependent"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Live In Care Accomodations",
+        "name": "living_accomodation",
+        "id": "living_accomodation",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "RN Reported Appropriate",
+                "value": "rn_reported_appropriate",
+                "id": "rn_reported_appropriate"
+            },
+            {
+                "title": "Inappropriate - RN Notified",
+                "value": "inappropriate_rn_notified",
+                "id": "inappropriate_rn_notified"
+            },
+            {
+                "title": "N/A",
+                "value": "na",
+                "id": "na"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Special Precautions",
+        "name": "special_precations",
+        "id": "special_precations",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Pain",
+                "name": "pain",
+                "value": "pain",
+                "id": "special_precations_pain"
+            },
+            {
+                "title": "Dizziness",
+                "name": "dizziness",
+                "value": "dizziness",
+                "id": "special_precations_dizziness"
+            },
+            {
+                "title": "Sharps Precautions",
+                "name": "sharps_precautions",
+                "value": "sharps_precautions",
+                "id": "special_precations_sharps_precautions"
+            },
+            {
+                "title": "Seizure Precautions",
+                "name": "seizure_precautions",
+                "value": "seizure_precautions",
+                "id": "special_precations_seizure_precautions"
+            },
+            {
+                "title": "Elopement Risk",
+                "name": "elopement_risk",
+                "value": "elopement_risk",
+                "id": "special_precations_elopement_risk"
+            },
+            {
+                "title": "Oxygen Precautions",
+                "name": "oxygen_precautions",
+                "value": "oxygen_precautions",
+                "id": "special_precations_oxygen_precautions"
+            },
+            {
+                "title": "Bleeding Precautions",
+                "name": "bleeding_precautions",
+                "value": "bleeding_precautions",
+                "id": "special_precations_bleeding_precautions"
+            },
+            {
+                "title": "Feeding Tube Precautions",
+                "name": "feeding_tube_precautions",
+                "value": "feeding_tube_precautions",
+                "id": "special_precations_feeding_tube_precautions"
+            },
+            {
+                "title": "Fall/ Safety Precautions",
+                "name": "fall_safety_precautions",
+                "value": "fall_safety_precautions",
+                "id": "special_precations_fall_safety_precautions"
+            },
+            {
+                "title": "Safety Considerations/ Precautions",
+                "name": "safety_considerations_precautions",
+                "value": "safety_considerations_precautions",
+                "id": "special_precations_safety_considerations_precautions"
+            },
+            {
+                "title": "Aspiration/ Choking Precautions",
+                "name": "aspiration_choking_precautions",
+                "value": "aspiration_choking_precautions",
+                "id": "special_precations_aspiration_choking_precautions"
+            },
+            {
+                "title": "Injuries/ Bruising/ Skin Breakdown",
+                "name": "injuries_bruising_skin_breakdown",
+                "value": "injuries_bruising_skin_breakdown",
+                "id": "special_precations_injuries_bruising_skin_breakdown"
+            },
+            {
+                "title": "Hypo/ Hyperglycemia Symptoms",
+                "name": "hypo_hyperglycemia_symptoms",
+                "value": "hypo_hyperglycemia_symptoms",
+                "id": "special_precations_hypo_hyperglycemia_symptoms"
+            },
+            {
+                "title": "Burning on Urination/ Cloudy/ Foul Smelling Urine",
+                "name": "burning_on_urination_cloudy_foul_smelling_urine",
+                "value": "burning_on_urination_cloudy_foul_smelling_urine",
+                "id": "special_precations_burning_on_urination_cloudy_foul_smelling_urine"
+            }
+        ]
+    },
+    {
+        "type": "radiocheck",
+        "subtype": "checkbox",
+        "label": "Assesment Summary Checklist",
+        "name": "assesment_summary_checklist",
+        "id": "assesment_summary_checklist",
+        "dbType": "object",
+        "options": [
+            {
+                "title": "Discharge Planning Discussed",
+                "value": "discharge_planning",
+                "id": "discharge_planning"
+            },
+            {
+                "title": "Palliative Care Referral",
+                "value": "palliative_care_referralg",
+                "id": "palliative_care_referral"
+            },
+            {
+                "title": "Patient Educated on end of life issues",
+                "value": "patient_educated_end_of_life_issues",
+                "id": "patient_educated_end_of_life_issues"
+            },
+            {
+                "title": "Plan Of Care Revised With Patient PCG Involvement",
+                "value": "plan_of_care",
+                "id": "plan_of_care"
+            },
+            {
+                "title": "Plan For Next Visit",
+                "value": "plan_for_next_visit",
+                "id": "plan_for_next_visit",
+                "subfield": {
+                    "type": "date",
+                    "name": "plan_for_next_visit_value",
+                    "value": "plan_for_next_visit_value",
+                    "placeholder": "Type here...",
+                    "required":true
+                }
+            }
+        ]
+    }
+]

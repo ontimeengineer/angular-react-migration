@@ -1,0 +1,50 @@
+<div class="page-title full-width" ng-if="layoutOptions.pageTitles" title="Native Elements" description="Plain text boxes, select dropdowns and other basic form elements">
+	<div class="title-env" style="width:80%">
+		<h1 class="title ng-binding">Languages</h1>
+		<p class="description ng-binding">Listing of Languages</p>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<table class="table table-bordered table-striped" id="example-2">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			
+			<tbody class="middle-align">
+				<tr role="row" class="odd" ng-repeat="language in viewLanguage.languageList" 
+                                                    total-items="totalRecords">
+					<td>{{language.language}}</td>
+					<td>
+						<div class="center" ng-if="language.language != 'English US'">
+							<a class="btn icon-left fa fa-ban deactivate_bt" href="" ng-if="hasAccess('UPDATE_TASK') && language.status == 'a'" ng-click="viewLanguage.activateDeactivatePopup(language, 'languageActivateModal', 'deactivate')" tooltip="Deactivate"><span class="ed_b"></span></a>
+                            <a class="btn icon-left fa fa-check edit_button" href="" ng-if="hasAccess('UPDATE_TASK') && language.status == 'i'" ng-click="viewLanguage.activateDeactivatePopup(language, 'languageActivateModal', 'activate')" tooltip="Activate"><span class="ed_b"></span></a> 
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script type="text/ng-template" id="languageActivateModal">
+    <div class="modal-header">      
+    <h4 class="modal-title"> {{ languageActivateModal.title }}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to {{languageActivateModal.action}} this Language?
+    
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="languageActivateModal.confirm(languageActivateModal.language);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="languageActivateModal.dismiss();">No</button>
+    </div>
+</script>
+
+

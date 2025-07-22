@@ -1,0 +1,65 @@
+<style>
+    input[type=radio] {
+        opacity: 1;
+        z-index: 9999;
+        height: 13px;
+        width: 13px;
+    }
+    .radio-label{
+        position: relative;
+        padding-left: 15px;
+    }
+    .radio-label input[type=radio]{
+        position: absolute;
+        left: 0px;
+        bottom: 3px;
+    }
+</style>
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">
+                Resubmission Code
+            </h1>
+            <p class="description">
+                Find a resubmission code
+            </p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="border0 scroll">
+                        <table id="example-1" class="table table-striped table-bordered  table table-small-font table-bordered table-striped" cellspacing="0" ng-if="resubmissionLookup.records.length" datatable-setup display-print="false" datatable-obj="resubmissionLookup.datatableObj">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" nowrap><span class="">Select</span></th>
+                                    <th class="" nowrap><span class="">Code</span></th>
+                                    <th class="" nowrap><span class="">Claim Type</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="record in resubmissionLookup.records">
+                                    <td class="text-center">
+                                        <input type="radio" value="{{record.code}}" name="locationselection" ng-model="resubmissionLookup.selectedCode"  />
+                                    </td>
+                                    <td class="">{{record.code}}</td>
+                                    <td class="">{{record.name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-danger btn-single" ng-click="resubmissionLookup.close();">Cancel</button>
+                        <button ng-disabled="!resubmissionLookup.selectedCode" type="button" class="btn btn-info btn-single" ng-click="resubmissionLookup.submit();">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

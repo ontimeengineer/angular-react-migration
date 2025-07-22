@@ -1,0 +1,30 @@
+<form class="form-horizontal validate" role="form" name="dispatchResponse.DispatchResponseForm" id="DispatchResponseForm" >     
+    <div class="modal-header">
+        <h4 class="modal-title">Response Details</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Status</label>
+            <div class="col-sm-8">
+                <select class="form-control" name ="status" id="status" ng-model="dispatchResponse.employeeDispatchResponse.responseStatus" data-validate="required" data-message-required="Please select status.">
+                    <option value="" selected>Select</option>
+                    <option ng-repeat="(key, value) in dispatchResponse.employeeDispatchResponses" value="{{key}}">{{value}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group-separator"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Message</label>
+            <div class="col-sm-8">
+                <textarea class="form-control" id="responseMessage" name="responseMessage" ng-model="dispatchResponse.employeeDispatchResponse.responseMessage" 
+                          />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-success" ng-click="dispatchResponse.save();">Save</button>
+        <button type="button" class="btn btn-red" ng-click="dispatchResponse.close();">Cancel</button>
+    </div>
+</form>

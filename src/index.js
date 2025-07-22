@@ -1,3 +1,4 @@
-import './index.css';
-require('./app.module');
+import angular from 'angular';
+window.angular = angular;
 
+require('./app.module'); // <-- defines 'xenon-app' module

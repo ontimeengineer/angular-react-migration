@@ -1,0 +1,136 @@
+
+<div class="page-body"> <!--TOP BAR MENU PANEL START -->
+
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">Employee Benefit Adjustments</h1>
+            <p class="description">Update employee benefit adjustments</p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+
+    <div class="row">
+        <form class="form-horizontal">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="color:#2c2e2f" >
+                        <div class="row">                            
+                            <div class="col-xs-12 col-sm-6 col-lg-3 pull-right">    
+                                <label>Year</label>
+                                <select class="form-control" ng-model='empBenefitCtrl.searchParams.year'
+                                        ng-options='year as (year) for year in empBenefitCtrl.yearList'>
+                                    <option value="">
+                                        Select
+                                    </option>
+                                </select>
+                            </div>                      
+                            <div class=" col-xs-12 col-sm-6 col-lg-3 pull-right">
+                                <label>
+                                    Benefit Package
+                                </label>
+                                <select class="form-control" ng-model="empBenefitCtrl.searchParams.benefitPackageId" 
+                                        ng-options="package.id as package.packageName for package in empBenefitCtrl.benefitList">
+                                    <option value="">
+                                        Select
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 filter-checkbox pull-right">
+                                <div class="col-md-12" style="padding-top:20px;">
+                                    <button class="btn btn-success green_bt pull-right" ng-click="empBenefitCtrl.saveAdjustments()"
+                                            ng-disabled="(!(empBenefitCtrl.searchParams.benefitPackageId &&
+                                                        empBenefitCtrl.searchParams.year)) || empBenefitCtrl.showCount === 0">Save Changes{{empBenefitCtrl.showCount ? '(' + empBenefitCtrl.showCount + ')' : ''}}</button>                        
+                                    <button class="btn btn-default btn-single gray_bt pull-right" ng-click="empBenefitCtrl.retrieveEmployees(true)"
+                                            ng-disabled="!(empBenefitCtrl.searchParams.benefitPackageId &&
+                                                        empBenefitCtrl.searchParams.year)">
+                                        Apply Filters
+                                    </button>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body" style="padding-top: 10px;">
+                        <div class="row" ng-if="empBenefitCtrl.employeeList.length > 0 || empBenefitCtrl.searchParams.name">                            
+                            <div class="col-sm-12">
+                                <div class="form-group col-sm-6 pull-left">
+                                    <label class="col-sm-3 control-label pull-left" style="min-width:110px;"><span style="float:left;">Show Entries</span></label>
+                                    <div style="width:70px; float:left;">
+                                        <select class="form-control input-sm" ng-model="empBenefitCtrl.searchParams.limit">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+                                </div> 
+                                <div class="form-group col-md-4 col-sm-4 col-xs-12 pull-right">
+                                    <input type="search" class="form-control input-sm" ng-model="empBenefitCtrl.searchParams.name" placeholder="Search by Name" ng-change="empBenefitCtrl.applySearch()">
+                                </div> 
+
+                            </div>
+                        </div>                    
+                        <div class="clearfix"></div>
+                        <div class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="table table-bordered table-striped table-responsive ">
+
+                                <table id="example-1" ng-if="empBenefitCtrl.employeeList.length" class="table table-striped table-bordered  table table-small-font" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" class="text-center" style="vertical-align: bottom;">Employee Name</th>
+                                            <th colspan="3" class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('SIT') > -1">Sick Time</th>                                            
+                                            <th colspan="3" class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('VCT') > -1">Vacation Time</th>
+                                            <th colspan="3" class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('PRT') > -1">Personal Time</th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('SIT') > -1">Available</th>                                            
+                                            <th class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('SIT') > -1">Offset</th>
+                                            <th class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('SIT') > -1">Balance</th>
+                                            <th class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('VCT') > -1">Available</th>                                            
+                                            <th class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('VCT') > -1">Offset</th>
+                                            <th class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('VCT') > -1">Balance</th>
+                                            <th class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('PRT') > -1">Available</th>                                            
+                                            <th class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('PRT') > -1">Offset</th>
+                                            <th class="text-center" ng-if="empBenefitCtrl.lineTypes.indexOf('PRT') > -1">Balance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr pagination-id="drinksPagination" dir-paginate="emp in empBenefitCtrl.employeeList| itemsPerPage: empBenefitCtrl.searchParams.limit" 
+                                            total-items="totalRecords"
+                                            current-page="empBenefitCtrl.searchParams.pageNo">
+                                            <td>{{emp.employeeName}}</td>
+                                            <td ng-if="empBenefitCtrl.lineTypes.indexOf('SIT') > -1">{{emp.sickTimeEarned - emp.sickTimeUsed}}</td>
+                                            <td ng-if="empBenefitCtrl.lineTypes.indexOf('SIT') > -1">
+                                                <input type="number" ng-model="empBenefitCtrl.offsets[emp.employeeId]['sickTimeOffset']" style="width: 100%;" ng-blur="empBenefitCtrl.onBlur()">
+                                            </td>
+                                            <td ng-if="empBenefitCtrl.lineTypes.indexOf('SIT') > -1">{{empBenefitCtrl.calculateHours(emp.sickTimeEarned, emp.sickTimeUsed, empBenefitCtrl.offsets[emp.employeeId]['sickTimeOffset'])}}</td>
+                                            <td ng-if="empBenefitCtrl.lineTypes.indexOf('VCT') > -1">{{emp.vacationTimeEarned - emp.vacationTimeUsed}}</td>
+                                            <td ng-if="empBenefitCtrl.lineTypes.indexOf('VCT') > -1">
+                                                <input type="number" ng-model="empBenefitCtrl.offsets[emp.employeeId]['vacationTimeOffset']" style="width: 100%;" ng-blur="empBenefitCtrl.onBlur()">
+                                            </td>                                            
+                                            <td ng-if="empBenefitCtrl.lineTypes.indexOf('VCT') > -1">{{empBenefitCtrl.calculateHours(emp.vacationTimeEarned, emp.vacationTimeUsed, empBenefitCtrl.offsets[emp.employeeId]['vacationTimeOffset'])}}</td>
+                                            <td ng-if="empBenefitCtrl.lineTypes.indexOf('PRT') > -1">{{emp.personalTimeEarned - emp.personalTimeUsed}}</td>
+                                            <td ng-if="empBenefitCtrl.lineTypes.indexOf('PRT') > -1">
+                                                <input type="number" ng-model="empBenefitCtrl.offsets[emp.employeeId]['personalTimeOffset']" style="width: 100%;" ng-blur="empBenefitCtrl.onBlur()">
+                                            </td>
+                                            <td ng-if="empBenefitCtrl.lineTypes.indexOf('PRT') > -1">{{empBenefitCtrl.calculateHours(emp.personalTimeEarned, emp.personalTimeUsed, empBenefitCtrl.offsets[emp.employeeId]['personalTimeOffset'])}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div ng-show="empBenefitCtrl.employeeList.length">
+                            <div id="paginationButtons" class="text-right">
+                                <dir-pagination-controls boundary-links="true" 
+                                                         max-size="9"
+                                                         template-url="app/tpls/dirPagination.tpl.html" pagination-id="drinksPagination" on-page-change="empBenefitCtrl.pageChanged(newPageNumber)"></dir-pagination-controls>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

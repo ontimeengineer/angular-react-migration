@@ -1,0 +1,32 @@
+<form class="form-horizontal" role="form" name="RejectEmployee.RejectEmployeeModal" id="RejectEmployeeModal" novalidate>
+    <div class="modal-header">		
+        <h4 class="modal-title">Reject Caregivers</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Caregiver</label>
+            <div class="col-sm-10">
+                <script type="text/javascript">
+                    jQuery(document).ready(function ($)
+                    {
+                    setTimeout(function () {
+                    $("#employeeIds").select2({
+                    placeholder: 'Select Caregivers...',
+                    }).on('select2-open', function ()
+                    {
+                    // Adding Custom Scrollbar
+                    $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                    });
+                    }, 200);
+                    });</script>
+                <select multiple class="form-control" name ="employeeIds" id="employeeIds" ng-model="RejectEmployee.details.employeeIds" ng-options='emp.id as emp.label for emp in RejectEmployee.employeeList'>
+                    <option value="" selected hidden />
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="RejectEmployee.cancel();">Cancel</button>
+        <button type="submit" class="btn btn-success" ng-click="RejectEmployee.ok();">Submit</button>
+    </div>
+</form>

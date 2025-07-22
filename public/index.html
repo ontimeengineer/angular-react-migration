@@ -1,27 +1,70 @@
 <!doctype html>
-<html lang="en" ng-app="ngReactExample" class="no-js">
-  <head>
-    <base href="/">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <!--
-      Notice the use of %PUBLIC_URL% in the tag above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<html lang="en" ng-app="xenon-app" class="no-js">
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body class="main-app">
-    <a ui-sref="home" ui-sref-active="active">Home</a>
+<head>
+  <base href="/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
 
-    <ui-view></ui-view>
+  <title>:: Welcome ::</title>
+  <link rel="shortcut icon" href="assets/images/favicon.ico?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/download/font.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/fonts/linecons/css/linecons.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/fonts/fontawesome/css/font-awesome.min.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/js/datatables/dataTables.bootstrap.css?version=@BUILD_VERSION@" />
+  <link rel='stylesheet' href='assets/css/download/buttons.dataTables.min.css?version=@BUILD_VERSION@' />
+  <link rel="stylesheet" href="assets/js/multiselect/css/multi-select.css?version=@BUILD_VERSION@" />
+  <link rel="stylesheet" href="assets/css/bootstrap.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/xenon-core.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/xenon-forms.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/xenon-components.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/xenon-skins.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/fonts/meteocons/css/meteocons.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/custom.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/jquery.loadmask.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/js/cropper/cropper.min.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/calendar/angular-bootstrap-calendar.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet"
+    href="assets/css/angulartoggleswitch/angular-toggle-switch-bootstrap-3.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/css/main.css?version=@BUILD_VERSION@">
+  <link rel="stylesheet" href="assets/js/ng-ckeditor-master/ng-ckeditor.css?version=@BUILD_VERSION@">
 
-    <!--
+  <script src="assets/js/jquery-1.11.1.min.js?version=@BUILD_VERSION@"></script>
+
+  <script>
+    var appData = {};
+
+    var appHelper = {
+      // Vars (paths without trailing slash)
+      templatesDir: 'app/tpls',
+      moduleTemplatesDir: 'app',
+      assetsDir: 'assets',
+      mockPath: 'mockdata',
+      // Methods
+      viewTemplatePath: function (module, view_name) {
+        return this.moduleTemplatesDir + '/' + module + '/views/' + view_name + '.html';
+      },
+      templatePath: function (view_name) {
+        return this.templatesDir + '/' + view_name + '.html';
+      },
+      assetPath: function (file_path) {
+        return this.assetsDir + '/' + file_path;
+      },
+      dataConfigPath: function (file_path) {
+        return this.templatesDir + '/' + file_path
+      }
+    };
+  </script>
+</head>
+
+<body class="main-app">
+  <a ui-sref="home" ui-sref-active="active">Home</a>
+  <a ui-sref="login" ui-sref-active="active">Login</a>
+
+  <ui-view></ui-view>
+
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -31,5 +74,12 @@
       To begin the development, run `npm start`.
       To create a production bundle, use `npm run build`.
     -->
-  </body>
+  <!-- <script src="app/js/common/controllers.js?version=@BUILD_VERSION@"></script> -->
+
+  <script src="assets/js/jquery-validate/jquery.validate.min.js?version=@BUILD_VERSION@"></script>
+
+  <!-- <script src="app/login.controller.js?version=@BUILD_VERSION@"></script> -->
+
+</body>
+
 </html>

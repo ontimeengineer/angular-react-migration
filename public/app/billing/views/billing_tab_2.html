@@ -1,0 +1,563 @@
+
+<div class="page-body"> 
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">Manual Claim 1500</h1>
+            <p class="description">Generates Bills And EDI For Each Payer</p>
+        </div>
+    </div>
+    <form class="form-wizard validate" id="rootwizard" novalidate="" role="forl">
+        <ul class="tabs">
+            <li>
+                <a data-toggle="tab" href="#/app/billing_tab_1">
+                    Patient Information
+                    <span>
+                        1
+                    </span>
+                </a>
+            </li>
+            <li class="active">
+                <a data-toggle="tab" href="#/app/billing_tab_2">
+                    Insured Information
+                    <span>
+                        2
+                    </span>
+                </a>
+            </li>
+
+        </ul>
+        <div class="progress-indicator">
+            <span>
+            </span>
+        </div>
+    </form>
+    <!--PAGE TITLE END -->
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body pad_top0">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <form class="form-horizontal" id="add_patient_tab_1_form" name="add_patient_tab_1_form" role="form">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="pull-right btn-process">
+                                                    <button type="button" class="btn btn-info btn-single  pull-right">Process</button>
+                                                </div>
+                                                <button class="btn btn-info green_bt pull-right" type="submit">
+                                                    Save Changes
+                                                </button>
+                                                <button class="btn btn-info btn-single gray_bt pull-right" type="reset">
+                                                    Reset To Default
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-28">
+                                                Insured ID Number 
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="insuredIdNumber" name="insuredIdNumber" type="text" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-29">
+                                                Insured's Name
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input placeholder="First Name" class="form-control" id="field-29" name="FirstInitial" type="text">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input placeholder="Middle Name" class="form-control" id="field-29" name="MiddleInitial" type="text">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input placeholder="Last Name" class="form-control" id="field-29" name="LastInitial" type="text">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-32">
+                                                Date of Birth
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group" >
+                                                    <input class="form-control datepicker" data-format="mm/dd/yyyy" id="field-32" name="DateofBirth" type="text" >
+                                                    </input>
+                                                    <div class="input-group-addon">
+                                                        <a href="#">
+                                                            <i class="linecons-calendar">
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Gender
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <label class="cbr-inline">
+                                                        <input checked="" class="cbr cbr-primary" name="radio-2" type="radio">
+                                                        Male
+                                                        </input>
+                                                    </label>
+                                                    <label class="cbr-inline">
+                                                        <input class="cbr cbr-primary" name="radio-2" type="radio">
+                                                        Female
+                                                        </input>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-28">
+                                                Address
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input placeholder="Street" class="form-control" id="streen" name="street" type="text" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-28">
+                                                City
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input placeholder="Street" class="form-control" id="city" name="city" type="text" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-28">
+                                                {{terminologyBank.state}}
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="state" name="state">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-33">
+                                                Zip
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="zip" name="zip" type="text">
+                                                </input>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-33">
+                                                Phone
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="field-33" name="Phone" type="text">
+                                                </input>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Insured'S Policy Group Or FECA Number
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="field-34" name="CareCoordinator" type="text">
+                                                </input>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Other Claim ID 
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="field-34" name="CareCoordinator" type="text">
+                                                </input>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Insurance Plan Name Or Program Name 
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="field-34" name="CareCoordinator" type="text">
+                                                </input>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Is There Another Health Benefit Plan?
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <label class="cbr-inline">
+                                                        <input class="cbr cbr-primary" name="benefitPlan" type="radio" ng-model='benefitPlan' value='true'>
+                                                        Yes
+                                                    </label>
+                                                    <label class="cbr-inline">
+                                                        <input class="cbr cbr-primary" name="benefitPlan" type="radio" ng-model='benefitPlan'>
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div ng-if='benefitPlan'>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    Other Insured's Name
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <input placeholder="First Name" class="form-control" id="field-29" name="FirstInitial" type="text">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input placeholder="Middle Name" class="form-control" id="field-29" name="MiddleInitial" type="text">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input placeholder="Last Name" class="form-control" id="field-29" name="LastInitial" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group-separator">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    Other Insured's Policy Or Group
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control" id="field-29" name="insuredPolicy" type="text">
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group-separator">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">
+                                                    Insurance Plan Name Or Program Name 
+                                                </label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control" id="field-29" name="insuredPlan" type="text">
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group-separator">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-32">
+                                                Date of Current
+                                                Illness (First Symptom) or Injury (Accident) or Pregnancy (LMP) 
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group" >
+                                                    <input class="form-control datepicker" data-format="mm/dd/yyyy" id="field-32" name="DateOfCurrent" type="text" >
+                                                    <div class="input-group-addon">
+                                                        <a href="#">
+                                                            <i class="linecons-calendar">
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-32">
+                                                Other Date
+                                                Give First Date
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group" >
+                                                    <input class="form-control datepicker" data-format="mm/dd/yyyy" id="field-32" name="DateOfCurrent" type="text" >
+                                                    <div class="input-group-addon">
+                                                        <a href="#">
+                                                            <i class="linecons-calendar">
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-32">
+                                                Dates Patient Unable To Work In Current Occupation
+                                            </label>       
+                                            <div class="col-sm-9 pull-right element-align">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="field-68" class="col-sm-3 control-label">From</label>
+                                                        <div class="col-sm-9">
+                                                            <div class="input-group">
+                                                                <input type="text" id="field-68" class="form-control datepicker" data-format="mm/dd/yyyy">
+                                                                <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="field-69" class="col-sm-3 control-label">To</label>
+                                                        <div class="col-sm-9">
+                                                            <div class="input-group">
+                                                                <input type="text" id="field-69" class="form-control datepicker" data-format="mm/dd/yyyy">
+                                                                <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-29">
+                                                Name Of Referring Physician Or Other Source 
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input class="form-control" id="field-29" name="nameOfReferring1" type="text">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input class="form-control" id="field-29" name="nameOfReferring2" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-29">
+                                                Referring/Other Physician ID 
+                                            </label>
+                                            <div class="col-sm-4">
+                                                <input placeholder='PIN' class="form-control" id="field-29" name="pin" type="text">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input placeholder='NPI' class="form-control" id="field-29" name="npi" type="text">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-32">
+                                                Hospitalization Dates Related To Current Services
+                                            </label>       
+                                            <div class="col-sm-9 pull-right element-align">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label for="field-68" class="col-sm-3 control-label">From</label>
+                                                        <div class="col-sm-9">
+                                                            <div class="input-group">
+                                                                <input type="text" id="field-68" class="form-control datepicker" data-format="mm/dd/yyyy">
+                                                                <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 ">
+                                                    <div class="form-group">
+                                                        <label for="field-69" class="col-sm-3 control-label">To</label>
+                                                        <div class="col-sm-9">
+                                                            <div class="input-group">
+                                                                <input type="text" id="field-69" class="form-control datepicker" data-format="mm/dd/yyyy">
+                                                                <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Reserved For Local Use
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <textarea class='form-control'></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Remarks
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <textarea class='form-control'></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Select Speciality Option If Applicable
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="state" name="state">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Outside Lab?
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <div class="input-group">
+                                                    <label class="cbr-inline">
+                                                        <input class="cbr cbr-primary" name="outsideLab" type="radio" ng-model='outsideLab' value='true'>
+                                                        Yes
+                                                    </label>
+                                                    <label class="cbr-inline">
+                                                        <input class="cbr cbr-primary" name="outsideLab" type="radio" ng-model='outsideLab'>
+                                                        No
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-3 control-label">
+                                                $ Charges
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="field-29" name="charges" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Resubmission Code 
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="field-29" name="charges" type="text">
+                                            </div>
+                                            <label class="col-sm-3 control-label">
+                                                Original Ref. No.
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="field-29" name="charges" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Diagnosis Or Nature Of Illness Or Injury (Relate Items A-L to Item 24E)
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class='row'>
+                                                    <div class='col-sm-3'>
+                                                        A.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                    <div class='col-sm-3'>
+                                                        B.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                    <div class='col-sm-3'>
+                                                        C.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                    <div class='col-sm-3'>
+                                                        D.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-sm-3'>
+                                                        E.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                    <div class='col-sm-3'>
+                                                        F.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                    <div class='col-sm-3'>
+                                                        G.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                    <div class='col-sm-3'>
+                                                        H.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col-sm-3'>
+                                                        I.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                    <div class='col-sm-3'>
+                                                        J.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                    <div class='col-sm-3'>
+                                                        K.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                    <div class='col-sm-3'>
+                                                        L.  <input class="form-control" id="field-29" name="charges" type="text">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Prior Authorization Number
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="field-29" name="charges" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>          
+                                            
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit">
+                                                    Next »
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        cbr_replace();
+    });
+</script>

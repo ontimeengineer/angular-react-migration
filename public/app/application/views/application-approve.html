@@ -1,0 +1,102 @@
+<style>
+    .no-error{
+        border-color: #B0B0B0!important;
+    }
+    .hide-error #FluShotDate-error{
+        display: none
+    }
+</style>
+<form class="validate form-horizontal" name="approve_employee_popup" id="approve_employee_popup" role="form"
+      ng-submit="applicationApprove.approveApplication();">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="applicationApprove.close();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Approve Application</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Position
+            </label>
+            <div class="col-sm-9  form-control-static">
+                {{applicationApprove.position}}
+            </div>
+        </div>
+        <div class="form-group-separator">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Email
+            </label>
+            <div class="col-sm-9  form-control-static">
+                {{applicationApprove.email}}
+            </div>
+        </div>
+        <div class="form-group-separator">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Orientation Package
+            </label>
+            <div class="col-sm-9">
+                <div flow-init="applicationApprove.orientationFileUpload" flow-file-added="applicationApprove.orientationFileAdded($file, $flow)" flow-file-success="applicationApprove.orientationFileUploaded($message,$file,$flow)"
+                     flow-files-submitted="applicationApprove.orientationFileSelected($file,$flow)" flow-file-error="applicationApprove.orientationFileError( $file, $message, $flow )">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <button type='button' class='btn btn-single gray_bt' style="margin-bottom:0px !important" id="resume_file" ng-model="applicationApprove.applicationAdditionalDetail.orientationPacketFilePath"
+                                    flow-btn name="resume_file" ng-disabled="applicationApprove.disableFileUploadButton">Choose File</button>
+                        </div>
+                        <div class="col-sm-9">
+                            <label class="control-label" ng-show="applicationApprove.applicationAdditionalDetail.orientationPacketFilePath != null" >
+                                <a style="color: blue;text-decoration: underline" ng-href="{{applicationApprove.baseUrl}}file/download/{{applicationApprove.companyCode}}/aed/{{applicationApprove.applicationAdditionalDetail.orientationPacketFilePath}}">
+                                    orientation-packet{{applicationApprove.applicationAdditionalDetail.orientationPacketFilePath|extension}}</a>
+                                <a href=""><i class="fa fa-close" ng-click="applicationApprove.clearResume()"></i></a>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <div ng-show="applicationApprove.orientationFileObj.errorMsg != null && applicationApprove.orientationFileObj.errorMsg != ''">
+                            <span class="red">{{applicationApprove.orientationFileObj.errorMsg}}</span>
+                        </div> 
+                    </div>
+                    <div flow-transfers class="form-control-static" ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+                        <div ng-repeat="file in transfers">
+                            <div id="resumeProgress" class="progress"  ng-show="file.progress() < 1 && applicationApprove.showfileProgress">
+                                <div  class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{file.progress() * 100}}%;">
+                                    <!--{{file.progress() * 100 | number : 0}} %-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group-separator">
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Hire Date
+            </label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <input class="form-control datepicker" data-format="mm/dd/yyyy" name="StartDate" type="text"
+                           data-validate="required,date" data-message-required="Please enter Hire Date" ng-model="applicationApprove.applicationAdditionalDetail.hireDate">
+                    <div class="input-group-addon">
+                        <a href="#">
+                            <i class="linecons-calendar">
+                            </i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>      
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="applicationApprove.close();">Close</button>
+        <button type="submit" class="btn btn-success">Approve Application</button>
+    </div>
+</form>

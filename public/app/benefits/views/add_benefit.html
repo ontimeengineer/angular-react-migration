@@ -1,0 +1,75 @@
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">
+                {{manageBenefit.editMode?'Update Benefits':'Add Benefits'}}
+            </h1>
+            <p class="description">
+                {{manageBenefit.editMode?'Edit A Benefit By Following Information':'Create A Benefit Record By Following Information'}}
+            </p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <!-- FORM WIZARD WITH VALIDATION START HERE-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal validate" novalidate="" id="add_benifit_form" name="add_benifit_form" role="form" ng-submit="manageBenefit.saveBenifits()" ng-init="manageBenefit.initForm()">
+                        <div class="row">
+                            <div class="col-sm-12 pull-right">
+                                <button class="btn btn-info green_bt pull-right" type="submit" ng-disabled="manageBenefit.disableSaveButton">
+                                    Save Changes
+                                </button>
+                                <button class="btn btn-info btn-single gray_bt pull-right" type="reset" ng-click="manageBenefit.resetBenifits()">
+                                    Reset To Default
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-12">
+                                Benefit Package Name
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-12" name="packageName" type="text" ng-model="manageBenefit.benifitObj.packageName"
+                                       data-validate="required"  data-message-required="Please enter Package Name." maxlength="100">
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Benefits
+                            </label>
+                            <div class="col-sm-9">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        $("#multi-select").multiSelect({
+                                            afterInit: function ()
+                                            {
+                                                // Add alternative scrollbar to list
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function ()
+                                            {
+                                                // Update scrollbar size
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" ng-model='manageBenefit.selectedBenefits' ng-options="benefit.key as benefit.value for benefit in manageBenefit.benefitList"  id="multi-select" multiple="multiple" name="benefit" data-validate="required"  data-message-required="Please select Benefit." ng-change="manageBenefit.displayBenefitModal = true">        
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FORM WIZARD WITH VALIDATION END HERE-->
+</div>

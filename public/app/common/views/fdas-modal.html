@@ -1,0 +1,137 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="fdasModal.cancel();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title"> {{ fdasModal.title }}</h4>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default" style="padding: 0;">
+                <div class="panel-body ">
+
+                    <form class="validate form-horizontal ng-pristine ng-valid col-md-12" id="fdatype_form"
+                        name="fdatype_form" role="form" ng-submit="fdasModal.save()">
+
+                        <!-- CODE WILL BE USED ONCE WE INTEGRATE FDA BANK -->
+                        <!-- <div class="form-group">
+                            <label class="col-sm-2 control-label" for="field-1">Medication</label>
+
+                            <div class="col-sm-10">
+                                <input class='form-control col-lg-5 itemSearch' type='text'
+                                    placeholder='Type to search item / For new select other' required
+                                    ng-model="fdasModal.fdasModalForm.id"
+                                    ng-change=" fdasModal.medicationChangePopulateCall(fdasModal.fdasModalForm.id) ; fdasModal.fdasModalForm.id != 'Other'?  fdasModal.fdasModalForm.medicationOther='' : fdasModal.fdasModalForm.medicationOther " />
+                            </div>
+                        </div> -->
+
+<!-- 
+                        <div class="form-group" ng-if="fdasModal.fdasModalForm.id == 'Other'">
+                            <label for="medicationOther" class="control-label col-sm-2"></label>
+                            <div class="col-sm-10">
+                                <input type="text" id="medicationOther" name="medicationOther"
+                                    ng-model="fdasModal.fdasModalForm.medicationOther" class="form-control"
+                                    placeholder="Please enter medication name"
+                                    ng-required="fdasModal.fdasModalForm.id == 'Other' "
+                                    data-message-required="Please enter medication">
+                            </div>
+                        </div> -->
+
+                        <div class="form-group">
+                            <label for="medicationName" class="control-label col-sm-2">Medication</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="medicationName" name="medicationName"
+                                    ng-model="fdasModal.fdasModalForm.medicationOther" class="form-control"
+                                    placeholder="Please enter medication name"
+                                    data-message-required="Please enter medication" required>
+                            </div>
+                        </div>
+
+                        <div>
+
+                            <div class="form-group-separator"></div>
+
+                            <div class="form-group">
+                                <label for="dosageQuantity" class="control-label col-sm-2">Dosage</label>
+
+                                <div class="col-sm-10">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="text" decimalallowed numbers-only="true" name="dosageQuantity" id="dosageQuantity" required
+                                                data-message-required="Please enter dosage value." class="form-control"
+                                                ng-model="fdasModal.fdasModalForm.dosageQuantity"
+                                                placeholder="Quantity">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="dosageQuantityUnit">Unit</label>
+                                <div class="col-md-10">
+                                    <select name="dosageQuantityUnit" id="dosageQuantityUnit" required
+                                        class="form-control" ng-model="fdasModal.fdasModalForm.dosageQuantityUnit"
+                                        ng-change=" fdasModal.refreshUnit()"
+                                        ng-options="unit  for unit in fdasModal.unitList">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" for="type">Type</label>
+                                <div class="col-md-10">
+                                    <select name="type" id="type" required class="form-control"
+                                        ng-model="fdasModal.fdasModalForm.type" ng-change=" fdasModal.refreshType()"
+                                        ng-options="type for type in fdasModal.typeList">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div ng-if="false">
+
+                                <div class="form-group-separator"></div>
+
+                                <!-- Others purpose input field -->
+                                <div class="form-group">
+                                    <label for="purpose" class="control-label col-sm-2">Purpose</label>
+                                    <div class="col-sm-10">
+                                        <input id="purpose" name="purpose" type="text" class="form-control"
+                                            ng-model="fdasModal.fdasModalForm.purpose" />
+                                    </div>
+                                </div>
+                                <div class="form-group-separator"></div>
+
+                                <!-- Others sideEffects input field -->
+                                <div class="form-group">
+                                    <label for="sideEffects" class="control-label col-sm-2">Side Effects</label>
+                                    <div class="col-sm-10">
+                                        <input id="sideEffects" name="sideEffects" type="text" class="form-control"
+                                            ng-model="fdasModal.fdasModalForm.sideEffects" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group-separator"></div>
+
+                                <!-- Others contraindication input field -->
+                                <div class="form-group">
+                                    <label for="contraindication"
+                                        class="control-label col-sm-2">Contraindication</label>
+                                    <div class="col-sm-10">
+                                        <input id="contraindication" name="contraindication" type="text"
+                                            class="form-control" ng-model="fdasModal.fdasModalForm.contraindication" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" ng-click="fdasModal.cancel();">Close</button>
+                            <button type="submit" class="btn btn-info">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

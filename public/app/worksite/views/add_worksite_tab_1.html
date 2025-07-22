@@ -1,0 +1,214 @@
+<div class="row" ng-init="addWorksite.tab1DataInit()">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal validate" id="add_worksite_form" novalidate="" name="add_worksite_form" role="form" ng-submit="addWorksite.saveWorksite()">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" type="submit" ng-disabled="addWorksite.disableSaveButton" ng-click="addWorksite.setFromNext('tab1')">
+                                Save Changes
+                            </button>
+                            <button class="btn btn-info btn-single gray_bt pull-right" type="reset" ng-click='addWorksite.resetWorksite()'>
+                                Reset To Default
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-1">
+                            Worksite name
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" charactersonly id="field-1" name="WorksiteName" type="text" maxlength="50"
+                                   ng-model="addWorksite.worksite.name" data-validate="required" data-message-required="Please enter Worksite Name." />
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-2">
+                            Worksite Phone number
+                        </label>
+                        <div class="col-sm-9">
+                            <input numbers-only="true" maxlength="10" class="form-control" id="field-2" name="Phone" type="text" ng-model="addWorksite.worksite.phone" 
+                                   data-validate="required,number,minlength[10],maxlength[10]"
+                                   data-message-required="Please enter Phone Number." data-message-minlength="Phone Number must contain 10 digits" data-message-maxlength="Phone Number must contain 10 digits"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-3">
+                            Supervisor
+                        </label>
+                        <div class="col-sm-9">
+                            <script type="text/javascript">
+                                jQuery(document).ready(function ($)
+                                {
+                                    setTimeout(function () {
+                                        $("#employeeDropdown").select2({
+                                            //                                                        minimumResultsForSearch: -1,
+                                            placeholder: 'Select Supervisor...',
+                                            //                                                        minimumInputLength: 1,
+                                            //                                                        placeholder: 'Search',
+                                        }).on('select2-open', function ()
+                                        {
+                                            // Adding Custom Scrollbar
+                                            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                        });
+                                    }, 200);
+                                });</script>
+                            <select class="form-control" name ="employeeDropdown" id="employeeDropdown" ng-model="addWorksite.worksite.supervisorId" ng-options='emp.id as emp.label for emp in addWorksite.employeeList track by emp.id'>
+                                <option value="" selected hidden />
+                            </select>     
+                            <div ng-show='addWorksite.worksite.supervisorId == null && addWorksite.formSubmitted'>
+                                <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>Please select Supervisor.</span>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-4">
+                            Supervisor phone
+                        </label>
+                        <div class="col-sm-9">
+                            <input numbers-only="true" maxlength="10" class="form-control" id="field-4" name="supervisorPhone" type="text" ng-model="addWorksite.worksite.supervisorPhone" 
+                                   data-validate="required,number,minlength[10],maxlength[10]"
+                                   data-message-required="Please enter Supervisor Phone Number." data-message-minlength="Phone Number must contain 10 digits" data-message-maxlength="Phone Number must contain 10 digits"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Supervisor Email
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control" name="SupervisorEmail" type="email" maxlength="100"
+                                   ng-model="addWorksite.worksite.supervisorEmail"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="field-36">
+                            Supervisor Fax
+                        </label>
+                        <div class="col-sm-9">
+                            <input numbers-only="true" maxlength="10" class="form-control" id="field-36" name="Fax" type="text" ng-model="addWorksite.worksite.supervisorFax" 
+                                   data-validate="number,minlength[10],maxlength[10]"
+                                   data-message-minlength="Supervisor Fax must contain 10 digits" data-message-maxlength="Supervisor Fax must contain 10 digits"/>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Payer
+                        </label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="sboxit-1" name="InsuranceProvider"
+                                    ng-model="addWorksite.worksite.insuranceProviderId"
+                                    ng-options='ins.id as (ins.insuranceName) for ins in addWorksite.insuranceProviderList'>
+                                <option value="">
+                                    Select the Payer
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                     <div class="form-group-separator" ng-if="addWorksite.worksite.insuranceProviderId!=null">
+                    </div>
+                    <div class="form-group" ng-if="addWorksite.worksite.insuranceProviderId!=null">
+                    <label class="col-sm-3 control-label" for="thresholdHoursForLunchTimeCalculation">
+                            Threshold Hrs For Lunch Time Calculation
+                        </label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input class="form-control" name="thresholdHoursForLunchTimeCalculation" maxlength="5" numbers-only="true" 
+                                       decimalallowed type="text" ng-model="addWorksite.worksite.thresholdHoursForLunchTimeCalculation"> 
+                                <span class="input-group-addon">
+                                    <i>per day</i>
+                                </span>
+                                </input>
+                            </div>
+                        </div>
+                        <label class="col-sm-3 control-label" for="lunchHoursDeduction">
+                            Lunch Hours Deduction
+                        </label>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input class="form-control" name="lunchHoursDeduction" maxlength="4" numbers-only="true"
+                                       decimalallowed type="text" ng-model="addWorksite.worksite.lunchHoursDeduction"> 
+                                <span class="input-group-addon">
+                                    <i>per day</i>
+                                </span>
+                                </input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Position
+                        </label>
+                        <div class="col-sm-9">
+                            <div class='col-sm-12 pad_rg0'>
+                                <label class='text-right width100'>
+                                    <input class="cbr" id="allPositions" name="allPositions" type="checkbox" ng-change='addWorksite.allpositionsChanged()' ng-model="addWorksite.worksite.allPositions"/>
+                                    Allow to all positions
+                                </label>
+                            </div>
+                            <div>
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        $("#multi-select").multiSelect({
+                                            afterInit: function ()
+                                            {
+                                                // Add alternative scrollbar to list
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function ()
+                                            {
+                                                // Update scrollbar size
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" id="Positions" multiple="multiple" name="Positions"
+                                        data-validate="required" data-message-required="Please select Position." ng-disabled='addWorksite.worksite.allPositions' ng-model="addWorksite.positions"
+                                        ng-options="position.id as position.position for position in addWorksite.positionList">                                
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit" ng-click="addWorksite.setFromNext('tab2')">
+                                Next »
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    // validate
+    customJqueryValidation();
+
+    jQuery(document).ready(function ($) {
+
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+    }); // ready
+
+</script>

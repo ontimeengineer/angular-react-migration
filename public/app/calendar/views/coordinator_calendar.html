@@ -1,0 +1,110 @@
+<div class="page-title full-width" ng-if="layoutOptions.pageTitles" title="Calendar" description="Events management calendar">
+    <div class="title-env">
+        <h1 class="title">Coordinator Calendar</h1>
+        <p class="description">Events management calendar</p>
+    </div>
+</div>
+
+<div style="background:white;">
+
+    <div class="mwl-toolbar">
+        <div class="mwl-left input-group btn-date-group" style="padding-top:5px;">
+            <button type="button" class="btn btn-default btn-sm btn-date"  ng-click="coordinatorcalendar.showDatepicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+            <h2>{{ coordinatorcalendar.calendarTitle}}</h2>
+            <datepicker ng-model="coordinatorcalendar.calendarDay" show-weeks="true" class="well well-sm overly-datepicker" ng-click="coordinatorcalendar.selectDate($event)" ng-class="{'show':coordinatorcalendar.isOpen,'hide':!coordinatorcalendar.isOpen}"></datepicker>
+        </div>
+        <div class="mwl-right">
+            <span ng-if="coordinatorcalendar.viewPatient && coordinatorcalendar.viewPatient.status != 'd' && hasAccess('ADD_SCHEDULE')">
+                <a href="" ng-click="openModalCalendar(null, 'calendar-modal', 'lg', 'static');" class="btn btn-primary btn-single btn-sm">Add New Event</a>
+            </span>
+            <div class="mwl-button-group">
+                <button type="button" class="mwl-prev-button mwl-button mwl-state-default mwl-corner-left" mwl-date-modifier date="coordinatorcalendar.calendarDay" decrement="coordinatorcalendar.calendarView"><span class="mwl-icon mwl-icon-prev fa-angle-left" ></span></button>
+                <button type="button" class="mwl-next-button mwl-button mwl-state-default mwl-corner-right" mwl-date-modifier date="coordinatorcalendar.calendarDay" increment="coordinatorcalendar.calendarView"><span class="mwl-icon mwl-icon-next fa-angle-right"></span></button>
+            </div>
+        </div>
+        <div class="mwl-center"></div>
+        <div class="mwl-clear"></div>
+    </div>
+
+    <div class="mwl-panel-filter" style='background-color: transparent' ng-click="coordinatorcalendar.showDatepicker($event)">
+
+        <div class="mwl-panel-search">
+            <div class="row">
+                <div class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                    <div class="col-md-7">
+                        <h2 ng-if="coordinatorcalendar.viewPatient" style="margin:0;">{{coordinatorcalendar.viewPatient.label}}</h2>
+                    </div>
+                    <div class="col-md-5" style="padding-right:0px;">
+                        <div class="pull-right col-md-12" style="padding:0;">
+                            <script type="text/javascript">
+                                jQuery(document).ready(function ($)
+                                {
+                                    setTimeout(function () {
+                                        $("#patientdropdownIds").select2({
+                                            // minimumResultsForSearch: -1,
+                                            placeholder: 'Search Coordinator...',
+                                            // minimumInputLength: 1,
+                                            // placeholder: 'Search',
+                                        }).on('select2-open', function ()
+                                        {
+                                            // Adding Custom Scrollbar
+                                            $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                        });
+                                    }, 200);
+                                });</script>
+                            <select class="form-control" name="patientdropdownIds" ng-model="coordinatorcalendar.monthCoordinator" id="patientdropdownIds" ng-options='data as (data.label) for data in coordinatorcalendar.employeeCoordinateList' ng-change="navigateToMonthPage(coordinatorcalendar.monthCoordinator)">
+                                <option value="" selected hidden />
+                            </select>
+                        </div>
+                    </div>           
+                </div>
+            </div>
+        </div>
+        <div class="mwl-panel-filter row" style='background-color: transparent;'>
+            <div class=" col-md-12">
+                <div class="filter-checkbox pull-right" >
+                    <label>Show Time</label>
+                    <input type="checkbox" name="livein" ng-model="coordinatorcalendar.forShowTime">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <mwl-calendar
+        events="coordinatorcalendar.events"
+        view="coordinatorcalendar.calendarView"
+        view-title="coordinatorcalendar.calendarTitle"
+        current-day="coordinatorcalendar.calendarDay"
+        on-event-click="eventClicked(calendarEvent)"
+        type-id="coordinatorcalendar.patientId"
+        type="coordinator"
+        show-time="coordinatorcalendar.forShowTime"
+        list="coordinatorcalendar.employeeCoordinateList"
+        event-click-callback='coordinatorcalendar.eventClicked'>
+    </mwl-calendar>
+</div>
+<script type="text/ng-template" id="password-modal">
+    <form class="validate form-horizontal" name="popuppassword" id="popuppassword" >
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="passwordPopup.closePopup();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Authorization</h4>
+    </div>
+
+    <div class="modal-body">
+
+    <div class="row">
+    <label class="col-sm-4 control-label add-padding-modal" for="password">
+    Authorized Password
+    </label>
+    <div class="col-sm-8 add-padding-modal">
+    <input class="form-control" name="password" type="password" ng-model="passwordPopup.password" data-validate="required" data-message-required="Please enter Authorized Password." ng-required='true'> 
+    </div>
+    </div>
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="passwordPopup.closePopup();">Close</button>
+    <button type="submit" class="btn btn-success" ng-click="passwordPopup.save();">Save changes</button>
+    </div>
+    </form>
+</script>

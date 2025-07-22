@@ -1,0 +1,88 @@
+<style>
+    .has-scroll{
+        width: 98%;
+    }
+    .no-scroll{
+        width: 99%;
+    }
+    .pad_bt5{
+        padding-bottom: 5px !important;
+    }
+</style>
+<div class="row" ng-if="hasRetrieve">
+    <form role="form" name="NotesData" id="NotesData"  novalidate>
+        <div class="col-sm-3 pad_rg0" >
+            <div class="row">
+                <div class="col-md-12 pad_bt5">
+                    <select class="form-control" id="sboxit-1" name="Type" ng-model="data.noteType"
+                            ng-options="type as type for type in noteTypes" ng-change="onNoteTypeChange()">
+                        <option value="">
+                            Select type
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <select class="form-control col-md-12" id="sboxit-1" name="Category" ng-model="data.noteCategory"
+                            ng-options="Category as Category for Category in noteCategories" ng-if="noteCategories.length>0">
+                        <option value="">
+                            Select Category
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7 pad_rg0" >
+            <textarea ng-model="data.note" class="form-control" name="note" placeholder="Write new note..." required rows="3"></textarea>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-success" ng-click="addNote();" ng-if="!(data && data.id)">Add Note</button>
+            <button type="button" class="btn btn-success" ng-click="saveNote();" ng-if="data && data.id">Save Note</button>
+        </div>
+    </form>                
+</div>    
+<div class="row" ng-if="hasCreate">                        
+    <div class="col-md-12" ng-show="notes && notes.length > 0">
+        <hr>
+        <table class="table table-striped responsive" ng-class="{'has-scroll':hasScroll,'no-scroll':!hasScroll}" style="margin-top: -10px;margin-bottom: 0px">
+            <thead>
+                <tr>
+                    <th style="width: 15%">Created By</th>
+                    <th style="width: 11%">Created On</th>
+                    <th style="width: 15%">Type</th>
+                    <th style="width: 13%" ng-if="noteCategories.length>0">Category</th>
+                    <th>Notes</th>
+                    <th style="width: 9%">Actions</th>
+                </tr>
+            </thead>
+        </table>
+        <div id="my_div1" class="table-responsive" style="margin-top: 0px;display: block;max-height: 400px;overflow-y: auto;word-break: break-all;">
+            <table class="table table-striped responsive">
+                <tbody>
+                    <tr ng-repeat="note in notes|orderBy: 'id':true">                                                   
+                        <td width="15%">{{note.createdByName}}</td>
+                        <td width="11%">{{note.dateInserted|date:dateFormat}}</td>
+                        <td width="15%">{{note.noteType}}</td>
+                        <td width="13%" ng-if="noteCategories.length>0">{{note.noteCategory}}</td>
+                        <td><p  ng-bind-html="note.note | to_trusted"></p></td>
+                        <td width="9%">
+                            <a class="btn icon-left fa fa-pencil edit_button" ng-if="canEdit && note.type !== 'Deactivation' && note.noteType !== 'Need More Info'"  
+                               href="" ng-click="editNote(note)" tooltip="Edit"><span class="ed_b"></span></a> 
+                            <a class="btn icon-left fa fa-trash-o delete_button" ng-if="canEdit"
+                               href="" ng-click="deleteNote(note.id)" tooltip="Delete"><span class="ed_b"></span></a>   
+                        </td>
+                    </tr>     
+                    <tr ng-if="!loading && !allLoaded">
+                        <td colspan="4"><center><a href='' ng-click="loadMoreNotes()">Load More</a></center></td>
+                </tr>
+                <tr ng-if="loading && !allLoaded">
+                    <td colspan="4"><center>Loading...</center></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>                
+    <div class="col-md-12" ng-show="!(notes && notes.length > 0)">
+        <hr>
+        No Notes Found
+    </div>
+</div>

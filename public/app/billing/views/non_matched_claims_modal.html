@@ -1,0 +1,63 @@
+<style>
+    .text-allign-left{
+        text-align: left!important;
+    }
+    .has-error .input-group-addon {
+        color: #a94442;
+        border-color: #a94442;
+        background-color: #f2dede;
+    }
+    .has-error .form-control , .has-error .form-control:focus{
+        border-color: #a94442;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    }
+    #available-credits_filter{
+        display: none
+    }
+</style>
+<div class="modal-header">      
+    <h4 class="modal-title">Claims not mapped</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal validate" id="claim_credit_form" novalidate="" name="claim_credit_form" role="form">
+        <div class="row">
+            <div class="col-md-12 form-group">
+                <div class="border0 table-responsive scroll" ng-show="nonMatchedClaimCtrl.claimsNotMapped.length">
+                    <table id="available-credits" 
+                           class="table table-striped table-bordered  table table-small-font table-bordered table-striped" 
+                           cellspacing="0" datatable-setup display-print="false">
+                        <thead>
+                            <tr>
+                                <th nowrap><span class="">Insurance Id/ Medicaid</span></th>
+                                <th nowrap><span class="">Patient Name</span></th>
+                                <th nowrap><span class="">Date of Service</span></th>
+                                <th nowrap><span class="">Total Cost</span></th>
+                                <th nowrap><span class="">Paid Amount</span></th>
+                                <th nowrap><span class="">OrgCode</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>                            
+                            <tr style="cursor: pointer" ng-repeat="claim in nonMatchedClaimCtrl.claimsNotMapped" ng-if="nonMatchedClaimCtrl.claimsNotMapped.length > 0">                                
+                                <td>{{claim.insuranceOrMedicaid}}</td>
+                                <td>{{claim.patientLName}} {{claim.patientFName}}</td>
+                                <td>{{claim.dateOfService}}</td>
+                                <td>{{claim.claimCharge| currency:'$':2}}</td>
+                                <td>{{claim.claimPayment| currency:'$':2}}</td>
+                                <td>{{claim.orgCode}}</td>
+                            </tr>
+                            <tr ng-if="nonMatchedClaimCtrl.claimsNotMapped.length === 0">
+                                <td colspan="6" style="text-align: center;">
+                                    All claims are matched
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>    
+                </div>
+            </div>	
+        </div>
+    </form>            
+</div>   
+<div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="nonMatchedClaimCtrl.close();">Close</button>
+</div>

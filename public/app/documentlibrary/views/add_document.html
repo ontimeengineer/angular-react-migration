@@ -1,0 +1,102 @@
+<form role="form" class="form-horizontal" id="documentForm" novalidate
+      name="documentModel.documentForm" ng-submit="documentModel.save()">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="documentModel.closePopup();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title"> {{ documentModel.title}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default" style="padding: 0;">
+                    <div class="panel-body form-horizontal">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="field-1">Name</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="documentName" placeholder="Enter Name" name="documentName"
+                                       required ng-model="documentModel.document.name">
+                            </div>
+                        </div>
+
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" for="tagsinput-1">Type</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="type" id="type"
+                                        ng-model="documentModel.document.type">
+                                    <option selected>Application</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">
+                                Document
+                            </label>
+                            <div class="col-sm-10">
+                                <div flow-init="documentModel.documentUploadFile"
+                                     flow-file-added="documentModel.documentFileAdded($file, $flow)"
+                                     flow-file-success="documentModel.documentFileUploaded($message,$file,$flow)"
+                                     flow-files-submitted="documentModel.documentFileSelected($file,$flow)"
+                                     flow-file-error="documentModel.documentFileError( $file, $message, $flow )">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <button type='button' class='btn btn-single gray_bt'
+                                                    style="margin-bottom:0px !important" id="document_file"
+                                                    ng-model="documentModel.document.filePath"
+                                                    required
+                                                    data-validate="required"  data-message-required="Please enter file name."
+                                                    flow-btn name="document_file"
+                                                    ng-disabled="documentModel.disableDocumentUploadButton">
+                                                Choose File
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <label class="control-label"
+                                                   ng-show="documentModel.document.filePath != null">
+                                                <a style="color: blue;text-decoration: underline"
+                                                   ng-href="{{documentModel.baseUrl}}file/download/{{documentModel.companyCode}}/aed/{{documentModel.document.filePath}}?{{documentModel.document.name ? 'userFileName='+documentModel.document.name: ''}}">
+                                                    company-document{{documentModel.document.filePath|extension}}</a>
+                                                <a href=""><i class="fa fa-close"
+                                                              ng-click="documentModel.clearDocument()"></i></a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div ng-show="documentModel.documentFileObj.errorMsg != null && documentModel.documentFileObj.errorMsg != ''">
+                                            <span class="red">{{documentModel.documentFileObj.errorMsg}}</span>
+                                        </div>
+                                    </div>
+                                    <div flow-transfers class="form-control-static"
+                                         ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+                                        <div ng-repeat="file in transfers">
+                                            <div id="documentProgress" class="progress"
+                                                 ng-show="file.progress() < 1 && documentModel.documentShowfileProgress">
+                                                <div class="progress-bar" role="progressbar" aria-valuenow="100"
+                                                     aria-valuemin="0"
+                                                     aria-valuemax="100"
+                                                     style="width: {{file.progress() * 100}}%;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span style="color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;" ng-if="!documentModel.document.filePath && documentModel.formSubmitted">file upload is required.</span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" ng-click="documentModel.closePopup();">
+                                Close
+                            </button>
+                            <button type="submit" class="btn btn-info">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

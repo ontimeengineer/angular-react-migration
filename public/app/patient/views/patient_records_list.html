@@ -1,0 +1,162 @@
+<div class="page-title">
+    <div class="title-env">
+        <h1 class="title">Patient Records</h1>
+        <span class="description" ng-if="patientRecordsCtrl.search.title">
+            <ol class="breadcrumb bc-1 pad_lf0" xe-breadcrumb>
+                <li>
+                    <a href="#/app/patient_records"><i class="fa-home"></i>Patient Records</a>
+                </li>
+                <li class="active" ng-bind-html="sanitizeHtml(patientRecordsCtrl.search.title)"></li>
+            </ol>
+        </span>
+        <p class="description" ng-if="!patientRecordsCtrl.search.title">
+            Patient Records
+        </p>
+    </div>
+</div>
+<div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                 
+                    <div class="panel-heading" style="border-bottom: none;">
+                        <div class="">
+                            <div class="col-md-6 pull-right mar_bt10">
+                                    <script type="text/javascript">
+                                        jQuery(document).ready(function ($)
+                                        {
+                                            setTimeout(function () {
+                                                $("#sboxit-2").select2({
+                                                    placeholder: 'Select Patient...',
+                                                }).on('select2-open', function ()
+                                                {
+                                                    // Adding Custom Scrollbar
+                                                    $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                                });
+                                            }, 200);
+    
+                                        });
+                                    </script>
+                                <select class="form-control"  name ="sboxit-2" id="sboxit-2" 
+                                    ng-model="patientRecordsCtrl.search.patientId" 
+                                    ng-options='patient.id as patient.label for patient in patientRecordsCtrl.patientList'
+                                    ng-change="patientRecordsCtrl.navigateToTab()"
+                                    >
+                                    <option value="" selected hidden />
+                                </select>
+                            </div>
+                        </div>
+                        <div class="" ng-if="patientRecordsCtrl.patientId">
+                            <div class="col-sm-12 col-xs-12 text-right">
+                                <button type="button" class="btn btn-info btn-create"
+                                    ng-click="patientRecordsCtrl.openPatientAddRecord()">Add Record</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group"
+                        ng-if="patientRecordsCtrl.patientId">
+                        <div class="col-md-12">
+                            <div class="panel panel-default panel-table" style="padding: 0;"
+                                id="applicationEmployeeAttachments">
+                                <form class="form-horizontal">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="page-count-selector col-md-4 pull-left">
+                                                <label class="control-label nowrap"><span>Show Entries</span></label>
+                                                <div style="width:70px;">
+                                                    <select class="form-control input-sm" ng-model="patientRecordsCtrl.search.pageSize">
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                </div>
+                                </form>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-list table-attachments">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-md-3"> Record Name </th>
+                                                <th class="col-md-2"> Created By</th>
+                                                <th class="col-md-1"> Origin </th>
+                                                <th class="col-md-2"> Date Created </th>
+                                                <th class="col-md-1" style="text-wrap: nowrap;"> Expiration Date </th>
+                                                <th class="col-md-1"> Status </th>
+                                                <th class="col-md-3">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr pagination-id="patientRecordPagination"
+                                                dir-paginate="record in patientRecordsCtrl.patientRecords | itemsPerPage: patientRecordsCtrl.search.pageSize"
+                                                total-items="totalRecords"
+                                                        current-page="patientRecordsCtrl.search.pageNumber">
+                                                <td> {{record.type == 'Pdf_Record' ? record.recordName ? record.recordName : 'Patient Record' : patientRecordsCtrl.getRecordTitle(record.type)}}</td>
+                                                <td>{{record.origin === patientRecordsCtrl.patientRecordOrigin.MOBILE.value && record.createdByEmployeeName !==null ? record.createdByEmployeeName: record.createdByName}}</td>
+                                               <td >{{ patientRecordsCtrl.patientRecordOrigin[record.origin] ? patientRecordsCtrl.patientRecordOrigin[record.origin].label : '' }}</td>
+                                                <td>
+                                                    {{record.dateUpdated | dateOnly}}
+                                                </td>
+                                                <td> {{record.expiryDate}} </td>
+                                                <td> {{record.isDraft ? 'Draft': 'Final'}} </td>
+                                                <td>
+                                                    <a class="btn icon-left fa fa-pencil edit_button" tooltip="Edit"
+                                                        ng-if="record.attachmentType !== 'Ontime Application Form'"
+                                                        ng-click="patientRecordsCtrl.goToEditForm(record, 'Edit')"><span
+                                                            class="ed_b"></span></a>
+                                                    <a ng-if="hasAccess('DELETE_PATIENT_RECORD')" class="btn icon-left fa fa-trash-o delete_button" tooltip="Delete" ng-click="patientRecordsCtrl.openDeleteModal(record, 'deleteModel')"><span class="ed_b"></span></a>
+                                                    
+                                                    <a class="btn icon-left fa fa-check edit_button" href="" tooltip="Activate"><span class="ed_b"></span></a>
+                                                    <a ng-if="record.type != 'Patient_Consents'"  class="btn icon-left fa fa-download download_bt" href="" tooltip="Export as PDF" ng-click="patientRecordsCtrl.printForm(record)"><span class="ed_b"></span></a>
+                                                    <a ng-if="record.type != 'Patient_Consents'" class="btn icon-left fa fa-external-link download_bt" ng-click="patientRecordsCtrl.openPdf(record)" tooltip="View {{record.type == 'Pdf_Record' ? 'Patient Record' : patientRecordsCtrl.getRecordTitle(record.type)}}"><span class="ed_b"></span></a>
+
+
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="patientRecordsCtrl.patientId && patientRecordsCtrl.patientRecords.length === 0">
+                                                <td colspan="5" style="text-align: center;">
+                                                    No records found
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div id="patientRecordPaginationDiv" class="text-right">
+                                        <dir-pagination-controls boundary-links="true" max-size="9"
+                                             template-url="app/tpls/dirPagination.tpl.html"
+                                            pagination-id="patientRecordPagination" on-page-change="patientRecordsCtrl.pageChanged(newPageNumber)"></dir-pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"
+                        ng-if="patientRecordsCtrl.medicalEmployeeAttachments && patientRecordsCtrl.medicalEmployeeAttachments.length > 0">
+                    <div class="form-group-separator"
+                        ng-if="patientRecordsCtrl.medicalEmployeeAttachments && patientRecordsCtrl.medicalEmployeeAttachments.length > 0">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="deleteModel">
+    <div class="modal-header">
+    <h4 class="modal-title">{{deleteRecordModel.record.recordName + ' - ' + deleteRecordModel.record.patientName}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to delete this Patient Record?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="deleteRecordModel.delete(deleteRecordModel.record);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="deleteRecordModel.dismiss();">No</button>
+    </div>
+</script>

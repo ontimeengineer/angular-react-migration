@@ -1,0 +1,329 @@
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">
+                <span ng-if="!manualPunch.editTimesheet">Manual Punch</span>
+                <span ng-if="manualPunch.editTimesheet">Update Timesheet</span>
+            </h1>
+            <p class="description"  ng-if="!manualPunch.editTimesheet">
+                Make A Manual Punch Record In Case Of Missed Punches
+            </p>
+            <p class="description"  ng-if="manualPunch.editTimesheet">
+                Edit A Timesheet Record By Following Information
+            </p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <!-- FORM WIZARD WITH VALIDATION START HERE-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal validate" id="manual_punch_form" name="manual_punch_form" role="form" ng-submit='manualPunch.saveManualAttendance()'>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-info green_bt pull-right" type="submit">
+                                    Save Changes
+                                </button>
+                                <button class="btn btn-info btn-single gray_bt pull-right" type="button" ng-click="manualPunch.resetManualPunch()">
+                                    Reset To Default
+                                </button>
+                                <div class="pull-right" ng-if='hasAccess("WORKSITE_SCHEDULE") && !manualPunch.editTimesheet'>
+                                    <input type="checkbox" name="isWorkSite" ng-model="manualPunch.attendanceObj.isWorksitePunch" ng-change='manualPunch.worksiteSelected()'>
+                                    <label>Is Work Site Punch?&nbsp;</label>                                    
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Is Missed Punch?
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <label class="cbr-inline">
+                                        <input class="cbr cbr-primary" name="IsMissedPunch" type="radio" ng-value="true" ng-model="manualPunch.attendanceObj.isMissedPunch" ng-disabled="manualPunch.editTimesheet">
+                                        Yes
+                                        </input>
+                                    </label>
+                                    <label class="cbr-inline">
+                                        <input class="cbr cbr-primary" checked name="IsMissedPunch" type="radio" ng-value="false" ng-model="manualPunch.attendanceObj.isMissedPunch" ng-disabled="manualPunch.editTimesheet">
+                                        No
+                                        </input>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div ng-if='manualPunch.attendanceObj.isWorksitePunch'>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Worksite
+                                </label>
+                                <div class="col-sm-9">
+
+                                    <script type="text/javascript">
+                                        jQuery(document).ready(function ($)
+                                        {
+                                            setTimeout(function () {
+                                                $("#worksiteDropdown").select2({
+                                                    placeholder: 'Select Worksite...',
+                                                }).on('select2-open', function ()
+                                                {
+                                                    // Adding Custom Scrollbar
+                                                    $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                                });
+                                            }, 200);
+                                        });</script>
+                                    <select class="form-control" name ="worksiteDropdown" id="worksiteDropdown" ng-model="manualPunch.attendanceObj.workSiteId" ng-options='worksite.id as worksite.name for worksite in manualPunch.workSiteList' ng-change="manualPunch.retrieveWorkSite(true)">
+                                        <option value="" selected hidden />
+                                    </select>               
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                        </div>
+                        <div ng-if='!manualPunch.attendanceObj.isWorksitePunch'>
+                            <div class="form-group" ng-class="{ 'validate-has-error':manualPunch.attendanceObj.patientId == null && manualPunch.formSubmitted && manualPunch.patientMandatory}">
+                                <label class="col-sm-3 control-label">
+                                    Patient Name
+                                </label>
+                                <div class="col-sm-9" >
+                                    <script type="text/javascript">
+                                        jQuery(document).ready(function ($)
+                                        {
+                                            setTimeout(function () {
+                                                $("#sboxit-1").select2({
+                                                    //                                                        minimumResultsForSearch: -1,
+                                                    placeholder: 'Select Patient...',
+                                                    //                                                        minimumInputLength: 1,
+                                                    //                                                        placeholder: 'Search',
+                                                }).on('select2-open', function ()
+                                                {
+                                                    // Adding Custom Scrollbar
+                                                    $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                                });
+                                            }, 200);
+
+                                        });
+                                    </script>
+                                    <select class="form-control" id="sboxit-1" name="PatientName" 
+                                            ng-change="manualPunch.retrievePatient(true)" ng-model="manualPunch.attendanceObj.patientId" ng-options="pat.id as (pat.label) for pat in manualPunch.patientList track by pat.id" >
+                                        <option value="" selected hidden />
+                                    </select>
+                                    <div ng-show='manualPunch.attendanceObj.patientId == null && manualPunch.formSubmitted && manualPunch.patientMandatory'>
+                                        <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>Please select Patient Name.</span>
+                                    </div>
+                                    <!--<div class="form-control-static" ng-if="manualPunch.editTimesheet">{{manualPunch.patientObj.fName+" "+manualPunch.patientObj.lName}}</div>-->
+                                </div>
+                            </div>
+                            <div class="form-group-separator"></div>
+                            
+                        </div>
+                        <div ng-if='!manualPunch.attendanceObj.isWorksitePunch || manualPunch.workSiteHasPayer'>
+                            <div class="form-group"  ng-class="{ 'validate-has-error':manualPunch.attendanceObj.careTypeId == null && manualPunch.formSubmitted}">
+                                <label class="col-sm-3 control-label">Care Type</label>
+
+                                <div class="col-sm-9">
+                                    <select class="form-control" id="care" name="care" ng-model="manualPunch.attendanceObj.careTypeId" ng-options="care.id as care.careTypeTitle for care in manualPunch.careTypes" 
+                                            data-validate="required" data-message-required="Please select care type." ng-change="manualPunch.onCareTypeChange()">
+                                        <option value="">Select the care type</option>
+                                    </select>
+                                    <div ng-show='manualPunch.attendanceObj.careTypeId == null && manualPunch.formSubmitted'>
+                                        <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>Please select Care Type.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                        </div>
+                        <div class="form-group" ng-class="{ 'validate-has-error':manualPunch.attendanceObj.employeeId == null && manualPunch.formSubmitted}">
+                            <label class="col-sm-3 control-label">
+                                Employee Name
+                            </label>
+                            <div class="col-sm-9">
+                                <script type="text/javascript" ng-if="manualPunch.attendanceObj.isManualPunch">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        setTimeout(function () {
+                                            $("#sboxit-2").select2({
+//                                                        minimumResultsForSearch: -1,
+                                                placeholder: 'Select Employee...',
+//                                                        minimumInputLength: 1,
+//                                                        placeholder: 'Search',
+                                            }).on('select2-open', function ()
+                                            {
+                                                // Adding Custom Scrollbar
+                                                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                            });
+                                        }, 200);
+
+                                    });
+                                </script>
+                                <select ng-disabled="!manualPunch.attendanceObj.isWorksitePunch && manualPunch.attendanceObj.careTypeId == null"
+                                        ng-show="manualPunch.attendanceObj.isManualPunch" 
+                                        ng-change="manualPunch.retrieveEmployee(true)" 
+                                        class="form-control" id="sboxit-2" name="EmployeeName" 
+                                        ng-model="manualPunch.attendanceObj.employeeId" 
+                                        ng-options="emp.id as (emp.label) for emp in manualPunch.employeeList track by emp.id">
+                                    <option value="" selected hidden />
+                                </select>
+
+                                <div ng-show='manualPunch.attendanceObj.employeeId == null && manualPunch.formSubmitted'>
+                                    <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>Please select Employee Name.</span>
+                                </div>
+                                <div class="form-control-static" ng-if="manualPunch.attendanceObj.isManualPunch == null || manualPunch.attendanceObj.isManualPunch == false">{{manualPunch.empObj.fName + " " + manualPunch.empObj.lName}}</div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-65">
+                                Punch In Time
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="input-group input-group-minimal">
+                                    <input class="form-control punch-time-input"  ng-model='manualPunch.attendanceObj.punchInTime' id="field-65" name="PunchInTime" type="text" data-validate='required,time' data-message-required='Please enter Punch In Time.'/>
+                                    <div class="input-group-addon">
+                                        <i class="linecons-clock">
+                                        </i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-66">
+                                Punch Out Time
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="input-group input-group-minimal">
+                                    <input class="form-control timepicker punch-time-input"  ng-model='manualPunch.attendanceObj.punchOutTime' id="field-66" name="PunchOutTime" type="text"/>
+                                    <div class="input-group-addon">
+                                        <i class="linecons-clock">
+                                        </i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-67">
+                                Punch In Date
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control datepicker" data-format="mm/dd/yyyy" id="field-67" ng-model='manualPunch.attendanceObj.punchInDate' name="inDate" type="text" data-validate="required"  data-message-required="Please enter Punch In Date." max-date="manualPunch.attendanceObj.punchOutDate">
+                                    <div class="input-group-addon">
+                                        <a href="#">
+                                            <i class="linecons-calendar">
+                                            </i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-167">
+                                Punch Out Date
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <input class="form-control datepicker" data-format="mm/dd/yyyy" id="field-167" ng-model='manualPunch.attendanceObj.punchOutDate' name="outDate" type="text" min-date="manualPunch.attendanceObj.punchInDate">
+                                    <div class="input-group-addon">
+                                        <a href="#">
+                                            <i class="linecons-calendar">
+                                            </i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="tasks">
+                                Tasks
+                            </label>
+                            <div class="col-sm-9">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        $("#tasks").multiSelect({
+                                            afterInit: function ()
+                                            {
+                                                // Add alternative scrollbar to list
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function ()
+                                            {
+                                                // Update scrollbar size
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" id="tasks" multiple="multiple" name="tasks"
+                                        ng-model="manualPunch.attendanceObj.companyTaskIds"
+                                        ng-options="ct.id as ct.task for ct in manualPunch.taskList| orderBy:'task'">
+                                </select>
+                                <div ng-show="manualPunch.tasksErrorMsg !== null && manualPunch.formSubmitted">
+                                    <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>{{manualPunch.tasksErrorMsg}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FORM WIZARD WITH VALIDATION END HERE-->
+</div>
+<script type="text/ng-template" id="modal-5">
+    <form class="validate form-horizontal" name="taskForm" id="taskForm" >
+    <!--<div class="modal-header">
+    <button type="button" class="close" ng-click="taskModal.cancel();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">How did you find it?</h4>
+    </div>-->
+
+    <div class="modal-body">
+
+    <div>
+    <div class="form-group">
+    <!--<label class="col-sm-3 control-label" for="rate">
+    Rate
+    </label>-->
+    <div class="col-sm-12">
+    <select class="form-control" id="task_value" name="task_value" ng-model="taskModal.taskValue"
+    data-required="true"   ng-options="answerOption as answerOption for answerOption in taskModal.answerOptions">
+    <option value="" selected hidden />                
+    </select>
+
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="taskModal.cancel();">Close</button>
+    <button type="submit" class="btn btn-info" ng-click="taskModal.save();">Save</button>
+    </div>
+    </form>
+</script>
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        setTimeout(function () {
+            cbr_replace();
+        }, 100);
+    });
+</script>

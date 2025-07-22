@@ -1,0 +1,116 @@
+<style>
+    .no-error{
+        border-color: #B0B0B0!important;
+    }
+    .hide-error #FluShotDate-error{
+        display: none
+    }
+</style>
+<form class="validate form-horizontal" name="review_employee_popup" id="review_employee_popup" role="form"
+      ng-submit="reviewApplication.reviewApplication();">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="reviewApplication.close();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" ng-show="reviewApplication.showStatus">Review Application</h4>
+        <h4 class="modal-title" ng-show="!reviewApplication.showStatus && reviewApplication.status === 'rfo'">Mark Ready for Orientation</h4>
+        <h4 class="modal-title" ng-show="!reviewApplication.showStatus && reviewApplication.status === 'rejected'">Reject Application</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group" ng-show="reviewApplication.showStatus">
+            <label class="col-sm-3 control-label">
+                Status
+            </label> 
+            <div class="col-sm-9">
+                <select class="form-control" name="status" ng-model="reviewApplication.status"
+                        required>
+                    <option value="nmi">Need More Info</option>
+                    <option value="rfo">Ready For Orientation</option>
+                    <option value="rejected">Rejected</option>
+                </select>    
+            </div>
+        </div>
+        <div class="form-group" ng-show="reviewApplication.status === 'nmi' || reviewApplication.status === 'rejected'">
+            <div class="col-md-12 add-padding-modal">
+                <textarea ckeditor='reviewApplication.editorOptions' name="content" ng-model="reviewApplication.emailContent" ng-change="reviewApplication.content_not_filled = false;"></textarea>
+                <div ng-if="reviewApplication.content_not_filled === true">
+                    <span class="validate-has-error">Please fill content</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="reviewApplication.status === 'nmi'">
+            <label  class="col-sm-3 control-label">Documents</label>
+            <div class="col-md-9" >
+                <script type="text/javascript">
+                    jQuery(document).ready(function ($)
+                    {
+                        setTimeout(function () {
+                            $("#documentIds").select2({
+                                // minimumResultsForSearch: -1,
+                                placeholder: 'Select Documents...',
+                                // minimumInputLength: 1,
+                                // placeholder: 'Search',
+                            }).on('select2-open', function ()
+                            {
+                                // Adding Custom Scrollbar
+                                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                            });
+                        }, 200);
+                    });</script>
+                <select multiple class="form-control" name ="documentIds" id="documentIds" ng-model="reviewApplication.documentIds" ng-options='doc.id as doc.name for doc in reviewApplication.documentList'>
+                    <option value="" selected hidden />
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="reviewApplication.status === 'rfo'">
+            <div class="col-md-12 add-padding-modal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        Email
+                    </label> 
+                    <div class="col-sm-9">
+                        <input class="form-control" name="Email" type="email" maxlength="100"
+                               data-validate="required" data-message-required="Please enter Email."
+                               ng-model="reviewApplication.email"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        Date Of Birth
+                    </label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <input class="form-control datepicker" max-date="reviewApplication.maxBirthDate" data-format="mm/dd/yyyy" name="DateOfBirth" type="text" ng-model="reviewApplication.dateOfBirth"
+                                   data-validate="required,date" data-message-required="Please enter Date of Birth."/>
+                            <div class="input-group-addon">
+                                <a href="#">
+                                    <i class="linecons-calendar">
+                                    </i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="reviewApplication.position !== ''">
+                    <label class="col-sm-3 control-label">
+                        Position
+                    </label>
+                    <div class="col-sm-9  form-control-static">
+                        {{reviewApplication.position}}
+                    </div>
+                </div>
+                <div class="col-md-12 add-padding-modal">
+                <textarea ckeditor='reviewApplication.editorOptions' name="content" ng-model="reviewApplication.emailContent" ng-change="reviewApplication.content_not_filled = false;"></textarea>
+            </div>
+            </div>
+        </div>
+    </div>      
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="reviewApplication.close();">Close</button>
+        <button ng-if="reviewApplication.status === 'nmi'" type="submit" class="btn btn-success">Request More Info</button>
+        <button ng-if="reviewApplication.status === 'rejected'" type="submit" class="btn btn-success">Rejected</button>
+        <button ng-if="reviewApplication.status === 'rfo'" type="submit" class="btn btn-success">Mark For Orientation</button>
+    </div>
+</form>

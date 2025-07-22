@@ -1,0 +1,332 @@
+
+<div class="page-body">
+  
+  <div> 
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+      <div class="title-env">
+        <h1 class="title">Add Patient</h1>
+        <p class="description">Create A Patient Record By Entering Patient Information</p>
+      </div>
+    </div>
+    <!--PAGE TITLE END --> 
+    
+    <!-- FORM WIZARD WITH VALIDATION START HERE--> 
+    <script type="text/javascript">
+    jQuery(document).ready(function($){
+        $(".multi-select").multiSelect({
+            afterInit: function(){
+                // Add alternative scrollbar to list
+                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+            },
+            afterSelect: function(){
+                // Update scrollbar size
+                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+            }
+        });
+        
+        $(".selectboxit").selectBoxIt().on('open', function(){
+            // Adding Custom Scrollbar
+            $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+        });
+    });
+
+    // validate
+   customJqueryValidation();
+    jQuery(document).ready(function($) {
+        setTimeout(function() {
+            $(".fade-in-effect").addClass('in');
+         }, 1);
+
+
+        // Validation
+        $("#addPatientTab1CtrlForm-E").validate({
+            rules: {
+              FName: {
+                required: true
+              },
+              LName: {
+                required: true
+              },
+              middleInitial: {
+                required: true
+              },
+              nameSuffix: {
+                required: true
+              },
+              dateOfBirth: {
+                required: true
+              },
+              phone: {
+                required: true
+              },
+              staffingCordinatorId: {
+                required: true
+              },
+              nurseCaseManagerId: {
+                required: true
+              },
+              careCordinator: {
+                required: true
+              },
+              careCordinatorContact: {
+                required: true
+              },
+            },
+
+            messages: {
+              FName: {
+                required: 'Please enter First Name.'
+              },
+              LName: {
+                required: 'Please enter Last Name.'
+              },
+              middleInitial: {
+                required: 'Please enter Middle Initial.'
+              },
+              nameSuffix: {
+                required: 'Please enter Name Suffix.'
+              },
+              dateOfBirth: {
+                required: 'Please enter Date of Birth.'
+              },
+              phone: {
+                required: 'Please enter Phone.'
+              },
+              staffingCordinatorId: {
+                required: 'Please enter Staffing Coordinator.'
+              },
+              nurseCaseManagerId: {
+                required: 'Please enter Nurse Case Manager.'
+              },
+              careCordinator: {
+                required: 'Please enter Care Coordinator.'
+              },
+              careCordinatorContact: {
+                required: 'Please enter Care Coordinator Contact.'
+              },
+            },
+        });
+
+        // Set Form focus
+        $("#addPatientTab1CtrlForm-E .form-group:has(.form-control):first .form-control").focus();
+    });
+    </script>
+
+     <!-- Errors container -->
+    <div class="errors-container"> </div>
+    
+    <form role="forl" id="rootwizard" class="form-wizard validate ">
+      <ul class="tabs">
+        <li class="active"> <a href="#/app/add_patient_tab_1" data-toggle="tab"> Patient Information <span>1</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_2" data-toggle="tab"> Location Information <span>2</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_3" data-toggle="tab"> Insurance Information <span>3</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_4" data-toggle="tab"> Authorization Info <span>4</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_5" data-toggle="tab"> Insurance Subscriber Information <span>5</span> </a> </li>
+      </ul>
+      <div class="progress-indicator"> <span></span> </div>
+    </form>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <!--<form class="form-horizontal fade-in-effect validate" role="form" name='addPatientTab1CtrlForm' id='addPatientTab1CtrlForm' ng-controller='addPatientTab1Ctrl' ng-submit='submitHandler();'>-->
+            <form class="form-horizontal validate" role="form" name='addPatientTab1CtrlForm' id='addPatientTab1CtrlForm' ng-controller='addPatientTab1Ctrl' ng-submit='submitHandler();'>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button class="btn btn-info green_bt pull-right" type="submit">Save Changes</button>
+                  <button class="btn btn-info btn-single gray_bt pull-right" type="reset">Reset To Default</button>                  
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-28" class="col-sm-3 control-label">First Name</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-28" class="form-control" name='FName' ng-model='patient.patientInfo.FName' data-validate="required" data-message-required="Please enter First Name." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-29" class="col-sm-3 control-label">Middle Initial</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-29" class="form-control" name='middleInitial' ng-model='patient.patientInfo.middleInitial' data-validate="required" data-message-required="Please enter Middle Initial." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-30" class="col-sm-3 control-label">Last Name</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-30" class="form-control" name='LName' ng-model='patient.patientInfo.LName' data-validate="required" data-message-required="Please enter Last Name." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-31" class="col-sm-3 control-label">Name Suffix</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-31" class="form-control" name='nameSuffix' ng-model='patient.patientInfo.nameSuffix' data-validate="required" data-message-required="Please enter Name Suffix." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-32" class="col-sm-3 control-label">Date of Birth</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input id="field-32" type="text" class="form-control datepicker" data-format="mm/dd/yyyy" name='dateOfBirth' ng-model='patient.patientInfo.dateOfBirth' data-validate="required" data-message-required="Please enter Date of Birth." />
+                    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Gender</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <label class="cbr-inline">
+                      <input type="radio" name="gender" class="cbr" value='M' checked>
+                      Male </label>
+                    <label class="cbr-inline">
+                      <input type="radio" name="gender"  value='F' class="cbr">
+                      Female </label>
+
+                  </div>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-33" class="col-sm-3 control-label">Phone</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-33" class="form-control"  name='phone' value="{{patient.patientInfo.phone | tel}}" data-validate="required" data-message-required="Please enter Phone Number." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Staffing Coordinator</label>
+                <div class="col-sm-9"> 
+                  	<script type="text/javascript">
+						jQuery(document).ready(function($){
+							$("#sboxit-1").selectBoxIt().on('open', function(){
+								// Adding Custom Scrollbar
+								$(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+							});
+						});
+					</script>
+                  <select class="form-control" id="sboxit-1"  name='staffingCordinatorId' ng-model='patient.patientInfo.staffingCordinatorId' data-validate="required" data-message-required="Please select Staffing Coordinator.">
+                    <option value="0">Select</option>
+                    <option value="1">1</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Nurse Case Manager</label>
+                <div class="col-sm-9"> 
+                  	<script type="text/javascript">
+						jQuery(document).ready(function($){
+							$("#sboxit-2").selectBoxIt().on('open', function(){
+								// Adding Custom Scrollbar
+								$(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+							});
+						});
+					</script>
+                  <select class="form-control" id="sboxit-2"  name='nurseCaseManagerId' ng-model='patient.patientInfo.nurseCaseManagerId' data-validate="required" data-message-required="Please select Nurse Case Manager.">
+                    <option value="0">Select</option>
+                    <option value="1">1</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Care Coordinator </label>
+                <!-- 
+                <div class="col-sm-9"> 
+                  <script type="text/javascript">
+										jQuery(document).ready(function($)
+										{
+											$("#sboxit-3").selectBoxIt().on('open', function()
+											{
+												// Adding Custom Scrollbar
+												$(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+											});
+										});
+									</script>
+                  <select class="form-control" id="sboxit-3"  name='careCordinatorId' ng-model='patient.patientInfo.careCordinatorId'>
+                    <option value="0">Select</option>
+                    <option value="1" ng-selected="true">1</option>
+                  </select>
+                </div>
+              -->
+               <div class="col-sm-9">
+                  <input type="text" id="field-34" class="form-control"  name='careCordinator' ng-model='patient.patientInfo.careCordinator' data-validate="required" data-message-required="Please enter Care Coordinator or Emergency Contact Name." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group"> 
+                <label for="field-35" class="col-sm-3 control-label">Care Coordinator Contact</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-35" class="form-control"  name='careCordinatorContact' ng-model='patient.patientInfo.careCordinatorContact' data-validate="required" data-message-required="Please enter Care Coordinator or Emergency Contact Phone Number or Email Address." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button style="width:auto;" class="btn btn-info green_bt pull-right" type="submit">Next &raquo;</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FORM WIZARD WITH VALIDATION END HERE--> 
+  </div>
+</div>
+
+
+<script>
+function addPatientTab1Ctrl($scope, $rootScope, $http) {
+
+  $scope.submitHandler = function() {
+    if ($('#addPatientTab1CtrlForm').valid()) {
+      showLoadingBar(70); // Fill progress bar to 70% (just a given value)
+
+      var jsonObject = $('#addPatientTab1CtrlForm').serializeObject();
+      var jsonStr = JSON.stringify(jsonObject);
+      console.log('----'+jsonStr)
+      
+      $http({
+        url: "/OnTime/api/patient/savePatientInfo",
+        method: 'POST',
+        data: {},
+        headers: {
+          // 'Content-Type': 'application/json',
+          'payload': jsonStr,
+          'requestToken': appData.authResult.token,
+          'userName': appData.authResult.un,
+        },
+      }).success(function(data, status, headers, config) {
+        showLoadingBar({
+          delay: .5,
+          pct: 100,
+          finish: function() {
+            if (data.id) {
+              $rootScope.patient = {
+                mode:  $rootScope.patient ? $rootScope.patient.mode : 'add',
+                patientInfo: data
+              };
+              
+              window.location.hash = '#/app/add_patient_tab_2';
+            }
+          }
+        }); // showLoadingBar
+
+      }).error(function(data, status, headers, config) {
+
+      }); // http
+
+
+
+    } // isValid
+  }; // end of submitHandler
+
+}; // end of addPatientTab1Ctrl
+</script>

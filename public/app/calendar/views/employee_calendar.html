@@ -1,0 +1,487 @@
+<div class="page-title full-width" ng-if="layoutOptions.pageTitles" title="Calendar" description="Events management calendar">
+    <div class="title-env" ng-if='!calendar.isEmployeeSearchPage && !calendar.isWorksiteSchedulePage'>
+        <h1 class="title">Employee Calendar</h1>
+        <p class="description">Events management calendar</p>
+    </div>
+    <div class="title-env" ng-if='calendar.isEmployeeSearchPage'>
+        <h1 class="title">Search Employee</h1>
+        <p class="description">Search employee by location</p>
+    </div>
+    <div class="title-env" ng-if='calendar.isWorksiteSchedulePage'>
+        <h1 class="title">Worksite Calendar</h1>
+        <p class="description">Events management calendar</p>
+    </div>
+</div>
+
+<div style="background:white;">
+    <div class="mwl-toolbar">
+        <div class="mwl-left input-group col-sm-12 col-md-4" style="padding-top:5px;">
+
+            <h2><button type="button" class="btn btn-default btn-sm btn-date"  ng-click="calendar.showDatepicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>{{ calendar.calendarTitle}}</h2>
+            <datepicker ng-model="calendar.calendarDay" show-weeks="true" class="well well-sm overly-datepicker" ng-click="calendar.selectDate($event)" ng-class="{
+                    'show'
+                            :calendar.isOpen, 'hide':!calendar.isOpen}"></datepicker>
+        </div>
+        <form>
+            <div class="col-md-8 col-sm-12 no-padding">
+                <div class='col-md-5 col-sm-12 form-group' ng-if='calendar.isEmployeeSearchPage' ng-class="{ 'validate-has-error':calendar.searchParams.patientId == null && calendar.dispatchClicked}">    
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                        setTimeout(function () {
+                        $("#patientDropdown").select2({
+                        //                                                        minimumResultsForSearch: -1,
+                        placeholder: 'Select Patient...',
+                                //                                                        minimumInputLength: 1,
+                                //                                                        placeholder: 'Search',
+                        }).on('select2-open', function ()
+                        {
+                        // Adding Custom Scrollbar
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                        });
+                        }, 200);
+                        });</script>
+                    <select class="form-control" name ="patientDropdown" id="patientDropdown" ng-model="calendar.patientObj" ng-options='pat as (pat.lName + ", " + pat.fName + " " + pat.middleInitial) for pat in calendar.patientList track by pat.id' ng-change="calendar.patientChanged(calendar.patientObj)">
+                        <option value="" selected hidden />
+                    </select>       
+                    <div ng-show='calendar.searchParams.patientId == null && calendar.dispatchClicked'>
+                        <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>Please select Patient to issue dispatch.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 pad0">
+                <div class='col-sm-12 text-right pad0 pull-right'>
+                    <a ng-if="!calendar.isEmployeeSearchPage && hasAccess('ADD_SCHEDULE')" href="" ng-click="openModalCalendar(null, 'calendar-modal', 'lg', 'static');" class="btn btn-primary btn-single btn-sm" style="">Add New Event</a>
+                    <a ng-if='calendar.isEmployeeSearchPage' href="" ng-click="calendar.dispatchConfirmModal()" class="btn btn-success btn-single btn-sm" style="">Dispatch</a>
+                    <div class="mwl-button-group" ng-if='!calendar.isWorksiteSchedulePage'>
+                        <button type="button" class="mwl-month-button mwl-button mwl-state-default" ng-click="calendar.changeToMonth()" ng-class="{
+                            'mwl-state-active'
+                                    : calendar.calendarView == 'month'}">month</button>
+                        <button type="button" class="mwl-agendaWeek-button mwl-button mwl-state-default" ng-click="calendar.changeToWeek()" ng-class="{
+                            'mwl-state-active'
+                                    : calendar.calendarView == 'week'}">week</button>
+                    </div>
+                    <div class="mwl-button-group">
+                        <button type="button" class="mwl-prev-button mwl-button mwl-state-default mwl-corner-left" mwl-date-modifier date="calendar.calendarDay" decrement="calendar.calendarView"><span class="mwl-icon mwl-icon-prev fa-angle-left" ></span></button>
+                        <button type="button" class="mwl-next-button mwl-button mwl-state-default mwl-corner-right" mwl-date-modifier date="calendar.calendarDay" increment="calendar.calendarView"><span class="mwl-icon mwl-icon-next fa-angle-right"></span></button>
+                    </div>
+                </div>
+                <div ng-if='calendar.isEmployeeSearchPage' class='col-sm-12 col-lg-12 pull-left pad_top5'>
+                    <input type="checkbox" name="showPatientsVyDistance" ng-model="calendar.showPatientsVyDistance"
+                           ng-change="calendar.onChangeShowPatientsByDistnace()" class="ng-pristine ng-valid">
+                    <label>Show Patients</label>
+                </div>
+                </div>
+        </form>
+        <div class="mwl-center"></div>
+        <div class="mwl-clear"></div>
+    </div>
+    <div class="col-sm-12" ng-show='calendar.isEmployeeSearchPage'>
+        <input id="pac-input" class="controls" type="text"
+               placeholder="Enter a location" ng-model='calendar.location'> 
+        <div id="map-1" class="map_panel"></div>
+    </div>
+    <div class="mwl-panel-filter" ng-if='!calendar.isWorksiteSchedulePage' style='background-color: transparent' ng-click="calendar.showDatepicker($event)">
+        <div class="mwl-panel-search" ng-if="calendar.calendarView == 'month'">
+            <div class="row">
+                <div class="col-md-12" style="padding-left:0px;padding-right:0px;">
+                    <div class="col-md-7">
+                        <h2 ng-if="calendar.viewEmployee" style="margin:0;">{{calendar.viewEmployee.lName}}, {{calendar.viewEmployee.fName}} <small>{{calendar.positionMap[calendar.viewEmployee.companyPositionId]}}</small></h2>
+                    </div>
+                    <div class="col-md-5" style="padding-right:0px;">
+                        <div class="pull-right col-md-12" style="padding:0;">
+                            <script type="text/javascript">
+                                jQuery(document).ready(function ($)
+                                {
+                                setTimeout(function () {
+                                $("#employeedropdownIds").select2({
+                                // minimumResultsForSearch: -1,
+                                placeholder: 'Search Employee...',
+                                        // minimumInputLength: 1,
+                                        // placeholder: 'Search',
+                                }).on('select2-open', function ()
+                                {
+                                // Adding Custom Scrollbar
+                                $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                                });
+                                }, 200);
+                                });</script>
+                            <select class="form-control" name ="employeedropdownIds" id="employeedropdownIds" ng-model="calendar.monthEmployee" ng-options='emp as emp.label for emp in calendar.employeeList' ng-change="navigateToMonthPage(calendar.monthEmployee)">
+                                <option value="" selected hidden />
+                            </select>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        <div  class="mwl-panel-filter row" style='background-color: transparent;padding-left: 23px' ng-if="calendar.calendarView == 'week'" ng-form="filterForm">
+            <div class="row">
+
+            </div>
+            <div class="row">
+                <div class="col-md-2" ng-if='calendar.isEmployeeSearchPage'>
+                    <label>Distance in Miles</label>
+                    <input class="form-control" placeholder="Distance" name="Distance" type="text" maxlength="20" 
+                           ng-model="calendar.searchParams.distance" numbers-only negativeallowed="false" decimalallowed="true" ng-blur="calendar.distanceChanged()"/>
+                </div>
+                <div class="col-md-2" ng-if='calendar.isEmployeeSearchPage'>
+                    <label>Available Time</label>
+                    <input class="form-control" placeholder="Available Time" name="AvailableTime" type="text" maxlength="20" 
+                           ng-model="calendar.searchParams.availableTime" numbers-only negativeallowed="false" decimalallowed="true" ng-blur="calendar.availableTimeChanged()"/>
+                </div>
+                <div class="col-md-4" ng-if='!calendar.isEmployeeSearchPage'>
+                    <label>Employees</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                        setTimeout(function () {
+                        $("#employeeIds").select2({
+                        // minimumResultsForSearch: -1,
+                        placeholder: 'Select Employee...',
+                                // minimumInputLength: 1,
+                                // placeholder: 'Search',
+                        }).on('select2-open', function ()
+                        {
+                        // Adding Custom Scrollbar
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                        });
+                        }, 200);
+                        });</script>
+                    <select multiple class="form-control" name ="employeeIds" id="employeeIds" ng-model="calendar.searchParams.employeeIds" ng-options='emp.id as emp.label for emp in calendar.employeeList'>
+                        <option value="" selected hidden />
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Position</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                        setTimeout(function () {
+                        $("#positions").select2({
+                        placeholder: 'Select Position...',
+                        }).on('select2-open', function ()
+                        {
+                        // Adding Custom Scrollbar
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                        });
+                        }, 200);
+                        });</script>
+                    <select multiple class="form-control" name ="positions" id="positions" ng-model="calendar.searchParams.positionIds" ng-options='position.id as position.position for position in calendar.positions'>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Languages</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                        setTimeout(function () {
+                        $("#languages").select2({
+                        placeholder: 'Select Language...',
+                        }).on('select2-open', function ()
+                        {
+                        // Adding Custom Scrollbar
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                        });
+                        }, 200);
+                        });</script>
+                    <select multiple name ="languages" id="languages" class="form-control" ng-model="calendar.searchParams.languages" ng-options="key as value for (key,value) in languages">
+                    </select>
+                </div>
+            </div>
+            <div class="row" ng-if="!calendar.isEmployeeSearchPage">
+                <div class="col-md-4">
+                    <label>Available From</label>
+                    <div class="input-group">
+                        <input type="text" id="field-68" name='fromDate' class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="calendar.searchParams.availableStartDate" max-date="calendar.searchParams.availableEndDate">
+                        <div class="input-group-addon" style="padding: 6px 7px"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Available To</label>
+                    <div class="input-group">
+                        <input type="text" id="field-69" class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="calendar.searchParams.availableEndDate" min-date="calendar.searchParams.availableStartDate">
+                        <div class="input-group-addon" style="padding: 6px 7px"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Patient' compatibility</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                        setTimeout(function () {
+                        $("#patientIdsForCompatibility").select2({
+                        // minimumResultsForSearch: -1,
+                        placeholder: 'Select Patient...',
+                                // minimumInputLength: 1,
+                                // placeholder: 'Search',
+                        }).on('select2-open', function ()
+                        {
+                        // Adding Custom Scrollbar
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                        });
+                        }, 200);
+                        });</script>
+                    <select multiple class="form-control" name ="patientIdsForCompatibility" id="patientIdsForCompatibility" ng-model="calendar.searchParams.patientIdsForCompatibility" ng-options='pat.id as (pat.lName +  ", " +  pat.fName +  " " +  pat.middleInitial) for pat in calendar.patientList'>
+                        <option value="" selected hidden />
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="row" ng-if="calendar.isEmployeeSearchPage">
+                <div class="col-md-2">
+                    <label>Available From</label>
+                    <div class="input-group">
+                        <input type="text" id="field-68" name='fromDate' class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="calendar.searchParams.availableStartDate" max-date="calendar.searchParams.availableEndDate">
+                        <div class="input-group-addon" style="padding: 6px 7px"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Available To</label>
+                    <div class="input-group">
+                        <input type="text" id="field-69" class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="calendar.searchParams.availableEndDate" min-date="calendar.searchParams.availableStartDate">
+                        <div class="input-group-addon" style="padding: 6px 7px"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label>Gender</label>
+                    <div>
+                        <select name ="languages" id="languages" class="form-control" ng-model="calendar.searchParams.sex">
+                            <option value="">Select Gender</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2" style="padding-top:20px;">
+                </div>
+                <div class="col-md-4">
+                    <label>Preferred Counties</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                        setTimeout(function () {
+                        $("#PreferredCounties").select2({
+                        // minimumResultsForSearch: -1,
+                        placeholder: 'Select Preferred Counties...',
+                                // minimumInputLength: 1,
+                                // placeholder: 'Search',
+                        }).on('select2-open', function ()
+                        {
+                        // Adding Custom Scrollbar
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                        });
+                        }, 200);
+                        });</script>
+                    <select multiple class="form-control" name ="PreferredCounties" id="PreferredCounties" 
+                            ng-model="calendar.searchParams.preferredCounties" ng-options='county as county for county in nyStateCountyList'>
+                        <option value="" selected hidden />
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8" style="padding-top:20px;">
+                    <label>Live In?</label>
+                    <input type="checkbox" name="livein" ng-model="calendar.searchParams.forLiveIn" >
+                    <label style="padding-left: 10px">New Hires?</label>
+                    <input type="checkbox" name="newhires" ng-model="calendar.searchParams.newHires" >
+                    <label style="padding-left: 10px">Can Drive?</label>
+                    <input type="checkbox" name="candrive" ng-model="calendar.searchParams.drives">
+                    <label style="padding-left: 10px">Include Inactive?</label>
+                    <input type="checkbox" name="includeInactive" ng-model="calendar.searchParams.includeInactive">
+                    <label style="padding-left: 10px">Covid Vaccinated?</label>
+                    <input type="checkbox" name="covidVaccinated" ng-model="calendar.searchParams.covidVaccinated">
+                </div>
+            </div>
+            <div class="row" ng-if="calendar.calendarView == 'week'" style="padding-top:10px;">
+                <div class="page-count-selector col-md-3 pull-left pad-rg-xs-15">
+                    <label class="control-label nowrap"><span>Show Entries</span></label>
+                    <div style="width:70px;">
+                        <select class="form-control input-sm" ng-model="calendar.searchParams.limit" ng-change="calendar.applySearch()">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3" style="padding-top: 7px;">
+                    <label>Show Time</label>
+                    <input type="checkbox" name="livein" ng-model="calendar.forShowTime">
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-info green_bt pull-right" ng-click="calendar.applySearch()" >Submit</button>
+                    <button class="btn btn-info btn-single gray_bt pull-right" type="button" ng-click="calendar.resetFilters()">
+                        Reset Filters
+                    </button>                        
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if='calendar.isWorksiteSchedulePage' class="mwl-panel-filter" style='background-color: transparent' ng-click="calendar.showDatepicker($event)">        
+        <div class="mwl-panel-filter row" style='background-color: transparent;padding-left: 23px' ng-if="calendar.calendarView == 'week'" ng-form="filterForm">
+            <div class="row">
+
+            </div>
+            <div class="row">          
+                <div class="col-md-4">
+                    <label>Worksite</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                        setTimeout(function () {
+                        $("#worksiteDropdown").select2({
+                        placeholder: 'Select Worksite...'
+                        }).on('select2-open', function ()
+                        {
+                        // Adding Custom Scrollbar
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                        });
+                        }, 200);
+                        });</script>
+                    <select class="form-control" name ="worksiteDropdown" id="worksiteDropdown" ng-model="calendar.searchParams.workSiteId" ng-options='worksite.id as worksite.name for worksite in calendar.workSiteList track by worksite.id' ng-change="calendar.retrieveAllEmployees()">                
+                        <option value="" selected hidden />
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label>Employees</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                        setTimeout(function () {
+                        $("#employeeIds").select2({
+                        // minimumResultsForSearch: -1,
+                        placeholder: 'Select Employee...',
+                                // minimumInputLength: 1,
+                                // placeholder: 'Search',
+                        }).on('select2-open', function ()
+                        {
+                        // Adding Custom Scrollbar
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                        });
+                        }, 200);
+                        });</script>
+                    <select multiple class="form-control" name ="employeeIds" id="employeeIds" ng-model="calendar.searchParams.employeeIds" ng-options='emp.id as emp.label for emp in calendar.employeeList'>
+                        <option value="" selected hidden />
+                    </select>
+                </div>                
+                <div class="col-md-4">
+                    <label>Languages</label>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function ($)
+                        {
+                        setTimeout(function () {
+                        $("#languages").select2({
+                        placeholder: 'Select Language...',
+                        }).on('select2-open', function ()
+                        {
+                        // Adding Custom Scrollbar
+                        $(this).data('select2').results.addClass('overflow-hidden').perfectScrollbar();
+                        });
+                        }, 200);
+                        });</script>
+                    <select multiple name ="languages" id="languages" class="form-control" ng-model="calendar.searchParams.languages" ng-options="key as value for (key,value) in languages">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>Available From</label>
+                    <div class="input-group">
+                        <input type="text" id="field-68" name='fromDate' class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="calendar.searchParams.availableStartDate" max-date="calendar.searchParams.availableEndDate">
+                        <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Available To</label>
+                    <div class="input-group">
+                        <input type="text" id="field-69" class="form-control datepicker" data-format="mm/dd/yyyy" ng-model="calendar.searchParams.availableEndDate" min-date="calendar.searchParams.availableStartDate">
+                        <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                    </div>
+                </div>
+                   <!-- <div class="col-md-4 filter-checkbox row"> -->
+                    <!-- <div class="col-md-6">                       
+                    </div> -->
+                    <div class="col-lg-12 pull-right" style="padding-top:20px;">
+                        <button class="btn btn-single gray_bt pull-right" type="button" ng-click="calendar.resetFilters()">Reset Filters</button>
+                    <!-- </div> -->
+                    <!-- <div class="col-md-3" style="padding-top:20px;"> -->
+                        <button type="button" class="btn btn-success  green_bt pull-right mar_bt5 mar_lf5"  ng-click="calendar.applySearch()">Submit</button>
+                    </div>
+                <!-- </div> -->
+
+                <div class="col-md-12 filter-checkbox row" style="margin-top: 30px;">
+                    <div class="page-count-selector col-md-3 pull-left pad-rg-xs-15">
+                        <label class="control-label nowrap"><span>Show Entries</span></label>
+                        <div style="width:70px;">
+                            <select class="form-control input-sm" ng-model="calendar.searchParams.limit" ng-change="calendar.applySearch()">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2" style="padding-top: 7px;">
+                        <label>Show Time</label>
+                        <input type="checkbox" name="livein" ng-model="calendar.forShowTime">
+                    </div>
+                    <div class="col-md-3" style="padding-top: 7px;" ng-if='calendar.isWorksiteSchedulePage'>
+                        <label>Scheduled Only</label> 
+                        <input type="checkbox" name="schduledOnly" ng-model="calendar.searchParams.scheduledOnly" ng-change="calendar.applySearch()">
+                    </div>
+                </div>
+            </div>                       
+        </div>
+    </div>
+    <mwl-calendar
+        events="calendar.events"
+        view="calendar.calendarView"
+        view-title="calendar.calendarTitle"
+        current-day="calendar.calendarDay"
+        on-event-click="eventClicked(calendarEvent)"
+        type-id="calendar.employeeId"
+        type="employee"
+        show-time="calendar.forShowTime"
+        list="calendar.employee_list"
+        event-click-callback='calendar.eventClicked'>
+    </mwl-calendar>
+    <div ng-if="calendar.calendarView == 'week' && calendar.employee_list.length > 0">
+        <div pagination-id="employeePagination" dir-paginate="e in calendar.employee_list | itemsPerPage: calendar.searchParams.limit" total-items="totalRecords" current-page="calendar.pageNo">
+        </div>
+        <div id="paginationButtons" class="text-right" style="padding-right: 10px">
+            <dir-pagination-controls boundary-links="true" 
+                                     max-size="9"
+                                     template-url="app/tpls/dirPagination.tpl.html" 
+                                     pagination-id="employeePagination" 
+                                     on-page-change="calendar.pageChanged(newPageNumber)">
+            </dir-pagination-controls>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="password-modal">
+    <form class="validate form-horizontal" name="popuppassword" id="popuppassword" >
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="passwordPopup.closePopup();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Authorization</h4>
+    </div>
+
+    <div class="modal-body">
+
+    <div class="row">
+    <label class="col-sm-4 control-label add-padding-modal" for="password">
+    Authorized Password
+    </label>
+    <div class="col-sm-8 add-padding-modal">
+    <input class="form-control" name="password" type="password" ng-model="passwordPopup.password" data-validate="required" data-message-required="Please enter Authorized Password." ng-required='true'> 
+    </div>
+    </div>
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="passwordPopup.closePopup();">Close</button>
+    <button type="submit" class="btn btn-success" ng-click="passwordPopup.save();">Save changes</button>
+    </div>
+    </form>
+</script>

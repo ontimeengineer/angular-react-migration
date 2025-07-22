@@ -1,0 +1,38 @@
+<style>
+    @media print {
+        .page-title {
+            display: block !important;
+            margin: 0px !important;
+            padding-bottom: 0 !important;
+        }
+
+        .title-env {
+            padding-left: 15px !important;
+        }
+
+        .breadcrumb>li+li:before {
+            content: "";
+            padding: 0;
+        }
+    }
+</style>
+<div class="page-title pad_bt0">
+    <div class="title-env">
+        <h1 class="title">{{recordName}}</h1>
+        <span class="description">
+            <ol class="breadcrumb bc-1 pad_lf0" xe-breadcrumb>
+                <li class="hidden-print">
+                    <a href="#/app/patient_records"><i class="fa-home"></i>Patient Records</a>
+                </li>
+                <li class="hidden-print">
+                    <a href="#/app/patient_records/{{patient.id}}/list">Records List</a>
+                </li>
+                <li class="active">
+                    <span><strong>Patient Name: </strong>{{patient.lName}}, {{patient.fName}}, {{patient.middleInitial}}
+                        &nbsp;&nbsp;<strong>DOB: </strong>{{patient.dateOfBirth}} &nbsp;&nbsp;<strong>MRN: </strong>
+                        {{patient.mrnNumber}}</span>
+                </li>
+            </ol>
+        </span>
+    </div>
+</div>

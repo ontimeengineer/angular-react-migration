@@ -1,0 +1,237 @@
+<style>
+    .print-btn{
+        margin-left: 20px
+    }
+</style>
+<div class="page-body"> 
+
+
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">Billing Session</h1>
+            <p class="description" ng-if="!billingSession.processdMode">Run New Billing Session For Your Patients</p>
+            <p class="description" ng-if="billingSession.processdMode">View Billing Session For Your Patients</p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal" role="form">
+                        <div class=" row" ng-if="!billingSession.processdMode">
+                            <div class="col-sm-12 pull-right wd_full">
+                                <div class="form-group">
+                                    <label class="col-sm-5 control-label">Payer :</label>
+                                    <div class="col-sm-7 insurance_pd"> 
+                                        <select class="form-control" id="sboxit-1" name="InsuranceProvider" ng-model="billingSession.searchParams.insuranceProviderId"
+                                                ng-options='ins.id as (ins.insuranceName) for ins in billingSession.insuranceProviderList'>
+                                            <option value="">
+                                                Select the Payer
+                                            </option>
+                                        </select>
+                                        <div ng-if="billingSession.errorMsg.insuranceProvider" class="text-danger">
+                                            Please enter a Payer.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" row" ng-if="!billingSession.processdMode">
+                            <div class="col-lg-12 ">
+                                <div class="col-sm-4 pull-right wd_full">
+                                    <div class="form-group">
+                                        <label for="field-61" class="col-sm-3 control-label nowrap pad-lf-xs-0">To :</label>
+                                        <div class="col-sm-9 pad0">
+                                            <div class="input-group">
+                                                <input type="text" id="field-94" class="form-control datepicker" enabled='S' data-format="mm/dd/yyyy" ng-model="billingSession.searchParams.toDate" min-date="billingSession.searchParams.fromDate" max-date='todayDate'/>
+                                                <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                            </div>
+                                            <div ng-if="billingSession.errorMsg.toDate" class="text-danger">
+                                                Please enter to date.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 pull-right pad0 wd_full">
+                                    <div class="form-group pad0">
+                                        <label for="field-60" class="col-sm-3 control-label nowrap">From :</label>
+                                        <div class="col-sm-9 ">
+                                            <div class="input-group" ng-if='billingSession.searchParams.toDate != null'>
+                                                <input type="text" id="field-93" class="form-control datepicker" enabled='M' data-format="mm/dd/yyyy" ng-model="billingSession.searchParams.fromDate" max-date="billingSession.searchParams.toDate"/>
+                                                <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                            </div>
+                                            <div class="input-group" ng-if='billingSession.searchParams.toDate == null'>
+                                                <input type="text" id="field-93" class="form-control datepicker" enabled='M' data-format="mm/dd/yyyy" ng-model="billingSession.searchParams.fromDate"  max-date='todayDate'/>
+                                                <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+                                            </div>
+                                            <div ng-if="billingSession.errorMsg.fromDate" class="text-danger">
+                                                Please enter from date.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 pad0">
+                            <div class="pull-right" ng-if="!billingSession.processdMode">
+                                <button ng-if="billingSession.criteriaSelected && (billingSession.billingSessions && billingSession.billingSessions.length > 0)" type="button" class="btn btn-info btn-single process_bt pull-right" ng-click="billingSession.processSession();">Process</button>
+                                <button type="button" class="btn btn-info green_bt  pull-right" ng-click="billingSession.filterSessions()">Review</button>
+                                <button class="btn btn-info btn-single gray_bt pull-right" type="button" ng-click="billingSession.resetFilters()">
+                                    Reset Filters
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel-body pad_top0">
+                    <div class="form-group col-sm-3 pull-left" ng-if="billingSession.billingSessions.length && billingSession.processdMode">
+                        <label class="control-label pull-left" style="min-width:110px;margin-top: 7px;"><span style="float:left;">Show Entries</span></label>
+                        <div style="width:70px; float:left">
+                            <select class="form-control input-sm" ng-model="billingSession.viewRecords" ng-change="billingSession.changeViewRecords()">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pull-right col-sm-9 pad0" ng-if="billingSession.processdMode">
+                        <div>
+                            <a ng-if="billingSession.billingSessions[0].claimType !== 'WORKSITE'" style="margin-left: 0px" type="button" class="btn btn-info green_bt  pull-right" 
+                               ng-href="{{billingSession.baseUrl}}billing/session/{{billingSession.sessionId}}/edi/download">Download EDI</a>
+                            <a ng-if="billingSession.anyClaimResubmitted === true" style="margin-left: 0px" type="button" class="btn btn-info green_bt  pull-right" 
+                               ng-href="{{billingSession.baseUrl}}billing/session/{{billingSession.sessionId}}/edi/download?editedOnly=true">Edited Claim EDI</a>
+                            <a ng-if="billingSession.anyClaimResubmitted === true && hasAccess('RESET_BILLING_BATCH')" style="margin-left: 0px" type="button" class="btn btn-info green_bt  pull-right" 
+                               ng-click="billingSession.openResetModal($event)">Reset Batch</a>
+                            <a ng-if="billingSession.billingSessions[0].claimType == 'UB04'" style="margin-left: 0px" type="button" class="btn btn-info green_bt  pull-right" 
+                               ng-href="{{billingSession.baseUrl}}billing/download/batch/{{billingSession.sessionId}}" download>Download UB04</a>
+                            <a ng-if="billingSession.billingSessions[0].claimType == 'WORKSITE'" style="margin-left: 0px" type="button" class="btn btn-info green_bt  pull-right" 
+                               ng-href="{{billingSession.baseUrl}}billing/download/batch/{{billingSession.sessionId}}" download>Download Invoice</a>
+                        </div>
+                        <div class="text-left">
+                            Billing Batch Number: {{billingSession.sessionId}} <a ng-if="billingSession.billingSessions[0].claimType !== 'WORKSITE'" style="margin: 10px" type="button" class="fa fa-file" 
+                               ng-href="{{billingSession.baseUrl}}billing/download/batch/{{billingSession.sessionId}}/fidelis-csv" download title="Download CSV for HHAX integration"></a>
+                            <br/>
+                            Payer: {{billingSession.insuranceProvider}}
+                            <br/>
+                            <span ng-if="billingSession.sessionStartDate && billingSession.sessionEndDate">Date Range: {{billingSession.sessionStartDate|date :dateFormat}} - {{billingSession.sessionEndDate|date :dateFormat}}</span>
+                        </div>
+
+                    </div>
+                    <div class="clearfix"></div>
+                    <div>
+                        <div class="border0" ng-class='{"dataTables_length_hide":billingSession.processdMode}'>
+                            <table id="example-1" class="table table-striped table-bordered  table table-small-font table-bordered table-striped" cellspacing="0" ng-if="billingSession.billingSessions.length" datatable-setup display-print="{{billingSession.processdMode?'true':'false'}}" datatable-obj="billingSession.datatableObj">
+                                <thead>
+                                    <tr>
+                                        <th nowrap ng-if="billingSession.workSiteBilling"><span class="">Worksite Name</span></th>
+                                        <th nowrap ng-if="!billingSession.workSiteBilling"><span class="">Patient Name</span></th>
+                                        <th nowrap ng-if="billingSession.processdMode"><span class="">Claim<br>Number</span></th>
+                                        <th nowrap ng-if="!billingSession.workSiteBilling"><span class="">Date Of Birth</span></th>
+                                        <th nowrap><span class="">Service Lines</span></th>
+
+                                        <th nowrap><span class="">Billed</span></th>
+                                        <th nowrap ng-if="billingSession.processdMode && !billingSession.workSiteBilling"><span class="">Paid</span></th>
+                                        <th nowrap ng-if="!billingSession.workSiteBilling" class="text-center"><span class="">Authorized Codes</span></th>
+                                        <th nowrap class='nosorting text-center'>
+                                            <span class="">Actions</span>
+                                        </th>
+                                        <!--                                        <th nowrap class='nosorting text-center' ng-if="billingSession.processdMode">
+                                                                                    <span class="">Download EDI</span>
+                                                                                </th>-->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="cursor: pointer" ng-repeat="session in billingSession.billingSessions">
+                                        <td ng-if="!billingSession.workSiteBilling">{{session.patientName}}</td>
+                                        <td ng-if="billingSession.workSiteBilling">{{session.workSiteName}}</td>
+                                        <td ng-if="billingSession.processdMode" ng-click="billingSession.openClaim1500(session, $event);">
+                                            <span class="fa-ban" tooltip="Rejected" 
+                                                  ng-click="payrollSession.openPayrollModal(session, 'payrollModal', 'lg')" ng-if="session.isRejected"></span>
+                                            <span class="fa-pencil" tooltip="Edited" 
+                                                  ng-click="payrollSession.openPayrollModal(session, 'payrollModal', 'lg')" ng-if="session.isEdited && !session.isRejected"></span>
+                                            <b>{{session.id}}</b>
+                                        </td>
+                                        <!-- span with ng-hide for sorting in data table -->
+                                        <td  ng-if="!billingSession.workSiteBilling"><span class="ng-hide">{{session.patientBirthDate|date:'yyyyMMdd'}}</span>{{session.patientBirthDate|date:dateFormat}}</td>
+                                        <td>{{session.totalServiceLines ? session.totalServiceLines: 0}}</td>
+                                        <td>${{session.totalCosts ? (session.totalCosts | number:2): 0}}</td>
+                                        <td ng-if="billingSession.processdMode && !billingSession.workSiteBilling">${{session.paidAmount ? (session.paidAmount | number:2): 0}}</td>
+                                        <td  ng-if="!billingSession.workSiteBilling" class="text-center">{{session.authorizedCodes}}</td>
+                                        <td class="text-center">
+                                            <div class="center">
+                                                
+                                                <a ng-if="!billingSession.workSiteBilling && billingSession.processdMode && session.isRejected !== true && hasAccess('DELETE_BILLING_CLAIM')" 
+                                                   class="btn icon-left fa fa-pencil edit_button" tooltip="Edit Claim" tooltip-append-to-body="true"
+                                                   ng-click="billingSession.openClaim1500ForEdit(session);"><span class="ed_b"></span></a>
+                                                <a class="btn icon-left fa fa-ban deactivate_bt" href="" ng-if="!billingSession.workSiteBilling && session.isRejected !== true && hasAccess('DELETE_BILLING_CLAIM') && billingSession.processdMode" 
+                                                   ng-click="billingSession.openRejectModal(session, $event)" tooltip="Reject"><span class="ed_b"></span></a>
+                                                <a class="btn icon-left fa fa-check edit_button" href="" ng-if="!billingSession.workSiteBilling && session.isRejected === true && hasAccess('DELETE_BILLING_CLAIM') && billingSession.processdMode" 
+                                                   ng-click="billingSession.openRejectModal(session, $event)" tooltip="Open"><span class="ed_b"></span></a> 
+                                                <a ng-if="!billingSession.workSiteBilling && hasAccess('DELETE_BILLING_CLAIM') && billingSession.processdMode" class="btn icon-left fa fa-trash-o delete_button" 
+                                                   href="" ng-click="billingSession.openDeleteModal(session, $event)" tooltip="Delete"><span class="ed_b"></span></a>                                                  
+                                                <a ng-if="billingSession.processdMode" 
+                                                   class="btn icon-left fa fa-search view_task_button" tooltip="View Claim" tooltip-append-to-body="true"
+                                                   ng-click="billingSession.openClaim1500(session, $event);"><span class="ed_b"></span></a>
+                                                <a ng-if="!billingSession.processdMode" 
+                                                   class="btn icon-left fa fa-file-text-o edit_button" tooltip="View Claim" tooltip-append-to-body="true" ng-click="billingSession.openClaim1500(session, $event);"><span class="ed_b"></span></a>
+                                            </div>
+                                        </td>
+                                        <!--                                        <td class="text-center" ng-if="billingSession.processdMode">
+                                                                                    <div class="center">
+                                                                                        <a class="btn icon-left fa fa-download download_bt" tooltip="Download EDI" tooltip-append-to-body="true" ng-href="{{billingSession.baseUrl}}billing/claim/{{session.id}}/edi/download"><span class="ed_b"></span></a>
+                                                                                    </div>
+                                                                                </td>-->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div ng-if="(billingSession.billingSessions == null || billingSession.billingSessions.length == 0) && billingSession.dataRetrieved && billingSession.criteriaSelected === true">
+                                No billings are available for selected date range and Payer.
+                            </div>
+                            <div ng-if="billingSession.criteriaSelected == false && !billingSession.processdMode && !billingSession.processClicked">
+                                Please select all filters to review billings.
+                            </div>
+                            <div ng-if="billingSession.criteriaSelected == false && !billingSession.processdMode && billingSession.processClicked">
+                                Please review billings to process sessions.
+                            </div>
+                            <div class="clearfix"></div>
+                            <div>&nbsp;</div>
+                            <div class="row" ng-if="billingSession.billingSessions.length">
+                                <div class="col-sm-6">
+                                    Total Claims {{billingSession.totalClaims}}
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    Total Charges: ${{billingSession.totalCharges| number:2}}
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        <div ng-if="billingSession.processdMode">
+                                                    <div class="col-sm-6">
+                                                        Total Employees: {{billingSession.processedSessionObj.totalEmployees}}
+                                                    </div>
+                                                    <div class="col-sm-6 text-right">
+                                                        Total Gross Pay: ${{billingSession.totalGrossPay| number:2}}
+                                                    </div>
+                                                </div>-->
+                        <script type="text/javascript">
+                            // This JavaScript Will Replace Checkboxes in dropdown toggles
+                            jQuery(document).ready(function ($)
+                            {
+                                setTimeout(function ()
+                                {
+                                    $(".checkbox-row input").addClass('cbr');
+                                    cbr_replace();
+                                }, 0);
+                            });</script>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

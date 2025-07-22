@@ -1,0 +1,226 @@
+<style>
+  .consent-data {
+    border: 1px solid #B0B0B0;
+    display: block;
+    padding: 0.5em;
+  }
+</style>
+
+<!--================== HEADER ====================-->
+<div class="page-title full-width" title="Native Elements"
+  description="Plain text boxes, select dropdowns and other basic form elements">
+  <div class="title-env block-sm-60">
+    
+    <h1 class="title ng-binding">Consents Types</h1>
+    <p class="description ng-binding">Listing of Consents Types</p>
+  </div>
+  <div class="title-env title-env block-sm-40">
+    <!-- ///// need to change access hasAccess('CREATE_CONSENTS') -->
+    <a class="btn btn-secondary pull-right mar_lf10 mar_top10" ng-click="consentsList.OrderSetConsentPopUp()"
+      ng-if="hasAccess('MANAGE_CONSENTS_TYPES')">Set Order</a>
+    <a class="btn btn-secondary pull-right mar_top10" ng-click="consentsList.addEditPopup()" ng-if="hasAccess('MANAGE_CONSENTS_TYPES')">Add New Consent Type</a>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-body table-responsive">
+
+    <table class="table table-bordered table-striped" id="example-2">
+      <thead>
+        <tr>
+          <th width="20%">Consent</th>
+          <th width="55%">Description</th>
+          <th width="10%">Input Type</th>
+          <th width="10%">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody class="middle-align">
+        <tr role="row" class="odd" ng-repeat="consenttype in consentsList.consentTypeList" total-items="totalRecords">
+          <td>{{consenttype.title}}</td>
+          <td>
+            <div ng-if="!consenttype.consentsDescription" class="consent-data">
+            <p>This will be used for text input!</p>
+            </div>
+            <span class="consent-data" ng-if="consenttype.consentsDescription" ng-bind-html="sanitizeHtml(consenttype.consentsDescription)"></span>
+          </td>
+          <td>
+            {{ consenttype.inputType === 'TEXT_INPUT' ? 'Text Input' : 'Selection' }}
+          </td>
+          <td>
+            <div class="center">
+              <a class="btn icon-left fa fa-pencil edit_button ng-scope" ng-if="hasAccess('MANAGE_CONSENTS_TYPES')"
+                ng-click="consentsList.addEditPopup(consenttype);" tooltip="Edit"><span class="ed_b"></span></a>
+              <a class="btn icon-left fa fa-ban deactivate_bt " href=""
+                ng-if="hasAccess('MANAGE_CONSENTS_TYPES') && !consenttype.isActive "
+                ng-click="consentsList.activateDeactivatePopup(consenttype, 'consentTypeActivateModal', 'activate')"
+                tooltip="Activate"><span class="ed_b"></span></a>
+              <a class="btn icon-left fa fa-check edit_button" href=""
+                ng-if="hasAccess('MANAGE_CONSENTS_TYPES') && consenttype.isActive "
+                ng-click="consentsList.activateDeactivatePopup(consenttype, 'consentTypeActivateModal', 'deactivate')"
+                tooltip="Deactivate"><span class="ed_b"></span></a>
+              <a class="btn icon-left fa-trash-o delete_button" href="" ng-if="hasAccess('MANAGE_CONSENTS_TYPES')"
+                ng-click="consentsList.deletePopUp(consenttype, 'deleteModal', 'delete')" tooltip="Delete"><span
+                  class="ed_b"></span></a>
+
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+<script type="text/ng-template" id="consentsModal">
+	<div class="modal-header">
+        <button type="button" class="close" ng-click="consentsModal.cancel();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" > {{ consentsModal.title }}</h4>
+    </div>
+
+    <div class="modal-body">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default" style="padding: 0;">
+				<div class="panel-body form-horizontal">
+
+					<form role="form" class="form-horizontal ng-pristine ng-valid col-md-12" id="consenttype_form" name="consentsModal.consenttype_form" role="form"  ng-submit="consentsModal.save()" >
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="field-1">Title</label>
+
+							<div class="col-sm-10">
+								<input type="text" class="form-control" id="title" placeholder="Enter Title" ng-required='true' ng-model="consentsModal.consenttype.title" data-validate="required" data-message-required="Please enter Title.">
+              </div>
+						</div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Input Type:</label>
+          
+              <div class="col-sm-10  d-flex " style="padding: 7px 15px 0">
+
+                  <!-- Selection Radio -->
+                   <div class="d-flex text-center" >
+                    <label for="SELECTION">Selection</label>
+                    <input style="margin-top:2.5px;margin-left:5px" id="SELECTION" type="radio" ng-model="consentsModal.consenttype.inputType" value="SELECTION" class="d-radio" ng-required="!consentsModal.consenttype.inputType">
+
+                  </div>
+
+                  <!-- Text Input Radio -->
+                   <div class="d-flex" style="margin-left:20px">
+                    <label for="TEXT_INPUT">Text Input</label>
+                   <input style="margin-top:2.5px; margin-left:5px" type="radio" id="TEXT_INPUT" ng-model="consentsModal.consenttype.inputType" class="d-radio" value="TEXT_INPUT" ng-required="!consentsModal.consenttype.inputType">
+
+                   </div>
+                                          
+              </div>
+          </div>
+            <div class="form-group-separator" ng-show="consentsModal.consenttype.inputType === 'SELECTION'"></div>
+
+						<div class="form-group" ng-show="consentsModal.consenttype.inputType === 'SELECTION'">
+							<label class="col-sm-2 control-label" for="field-2">Description</label>
+
+							<div class="col-sm-10" >
+                <textarea 
+                  class="form-control" 
+                  id="editor3" 
+                  name="editor3"
+                  ng-model="consentsModal.consenttype.consentsDescription" 
+                ></textarea>
+              </div>
+						</div>
+
+						<div class="modal-footer">
+	                        <button type="button" class="btn btn-white" ng-click="consentsModal.cancel();">Close</button>
+	                        <button type="submit" class="btn btn-info" >Save changes</button>
+	          </div>
+					</form>
+			</div>
+		</div>
+	</div>
+	</div>
+</script>
+
+<script type="text/ng-template" id="consentTypeActivateModal">
+    <div class="modal-header">      
+    <h4 class="modal-title"> {{ consentTypeActivateModal.title }}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to {{consentTypeActivateModal.action}} this Consent Type?
+    
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="consentTypeActivateModal.confirm(consentTypeActivateModal.consenttype);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="consentTypeActivateModal.dismiss();">No</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="consentsOrderModal">
+	<div class="modal-header">
+    <button type="button" class="close" ng-click="consentsOrderModal.closePopup();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" > {{ consentsOrderModal.title }}</h4>
+  </div>
+
+  <div class="modal-body">
+	  <div class="row">
+		  <div class="col-md-12">
+		  	<div class="panel panel-default" style="padding: 0;">
+			  	<div class="panel-body form-horizontal">
+
+            <form role="form" class="form-horizontal ng-pristine ng-valid col-md-12" id="consentOrderType_form" name="consentsOrderModal.consentOrderType_form" role="form"  ng-submit="consentsOrderModal.saveOrdersWithId()" >
+
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="field-2">Order</label>
+
+                <div class="col-sm-10" >
+
+                <ul class="uk-nestable grouped-nestables" id="nestable-list-1">
+                  <li ng-repeat="consent in consentsOrderModal.consentTypeListOrder" data-item="{{consent.id}}">
+                    <div class="uk-nestable-item">
+                        <div class="uk-nestable-handle"></div>
+                        <div data-nestable-action="toggle"></div>
+                        <div class="list-label">{{consent.title}}</div>
+                    </div>
+                  </li>
+                </ul>
+
+                </div>
+
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-white" ng-click="consentsOrderModal.closePopup();">Close</button>
+                <button type="submit" class="btn btn-info" >Save changes</button>
+              </div>
+              
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</script>
+
+<script type="text/ng-template" id="deleteModal">
+  <div class="modal-header">      
+    <button type="button" class="close" ng-click="deleteModal.dismiss();" aria-hidden="true">&times;</button>
+  <h4 class="modal-title"> {{ deleteModal.title }}</h4>
+  </div>
+
+  <div class="modal-body">
+
+  Are you sure you want to delete this Consent Type?
+  
+  </div>
+
+  <div class="modal-footer">
+  <button type="button" class="btn btn-success" ng-click="deleteModal.confirm(deleteModal.consenttype);">Yes</button>
+  <button type="button" class="btn btn-red" ng-click="deleteModal.dismiss();">No</button>
+  </div>
+</script>

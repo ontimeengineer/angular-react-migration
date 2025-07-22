@@ -1,0 +1,55 @@
+<div class="page-title full-width" ng-if="layoutOptions.pageTitles" title="Native Elements" description="Plain text boxes, select dropdowns and other basic form elements">
+	<div class="title-env" style="width:80%">
+		<h1 class="title ng-binding">Tasks</h1>
+		<p class="description ng-binding">Listing of Tasks</p>
+	</div>
+	<div class="title-env" style="width:20%">
+		<a class="btn btn-secondary pull-right" ng-click="viewTask.addPopup();" ng-if="hasAccess('CREATE_TASK')" style="margin-top: 10px;">Add New Task</a>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body table-responsive">
+		<table class="table table-bordered table-striped responsive-md" id="example-2">
+			<thead>
+				<tr>
+					<th width="20%">Title</th>
+					<th width="13%">Options</th>
+					<th width="20%">Company Position</th>
+					<th width="20%">Actions</th>
+				</tr>
+			</thead>
+			
+			<tbody class="middle-align">
+				<tr role="row" class="odd" ng-repeat="task in viewTask.taskList" total-items="totalRecords">
+					<td>{{task.task}}</td>
+					<td>{{task.options}}</td>
+					<td>{{task.companyPositionsString}}</td>
+					<td>
+						<div class="center">
+							<a class="btn icon-left fa fa-pencil edit_button ng-scope" ng-if="hasAccess('UPDATE_TASK')" ng-click="viewTask.editPopup(task);" tooltip="Edit"><span class="ed_b"></span></a> 
+							<a class="btn icon-left fa fa-ban deactivate_bt" href="" ng-if="hasAccess('UPDATE_TASK') && task.status == 'a'" ng-click="viewTask.activateDeactivatePopup(task, 'taskActivateModal', 'deactivate')" tooltip="Deactivate"><span class="ed_b"></span></a>
+                            <a class="btn icon-left fa fa-check edit_button" href="" ng-if="hasAccess('UPDATE_TASK') && task.status == 'i'" ng-click="viewTask.activateDeactivatePopup(task, 'taskActivateModal', 'activate')" tooltip="Activate"><span class="ed_b"></span></a>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<script type="text/ng-template" id="taskActivateModal">
+    <div class="modal-header">      
+    <h4 class="modal-title"> {{ taskActivateModal.title }}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    	Are you sure you want to {{taskActivateModal.action}} this Task?
+    
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="taskActivateModal.confirm(taskActivateModal.task);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="taskActivateModal.dismiss();">No</button>
+    </div>
+</script>

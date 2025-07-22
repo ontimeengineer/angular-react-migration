@@ -1,0 +1,261 @@
+
+<div class="page-body"> 
+  <div> 
+        <!--PAGE TITLE START -->   
+			<div class="page-title">
+				<div class="title-env">
+					<h1 class="title">Add Patient</h1>
+					<p class="description">Create A Patient Record By Entering Patient Information</p>
+				</div>
+			</div>
+        <!--PAGE TITLE END --> 
+
+			<!-- FORM WIZARD WITH VALIDATION START HERE--> 
+			<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				$(".multi-select").multiSelect({
+					afterInit: function() {
+						// Add alternative scrollbar to list
+						this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+					},
+					afterSelect: function() {
+						// Update scrollbar size
+						this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+					}
+				});
+
+				$(".selectboxit").selectBoxIt().on('open', function() {
+					// Adding Custom Scrollbar
+					$(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+				});
+			});
+
+			// validate
+   customJqueryValidation();
+			jQuery(document).ready(function($) {
+				setTimeout(function() {
+					$(".fade-in-effect").addClass('in');
+				}, 1);
+
+				// Validation
+				$("#addPatientTab3CtrlForm-E").validate({
+					rules: {
+						insuranceProviderId: {
+							required: true
+						},
+						planName: {
+							required: true
+						},
+						policyNumber: {
+							required: true
+						},
+						mrnNumber: {
+							required: true
+						},
+						isSubscriber: {
+							required: true
+						},
+						insuranceId: {
+							required: true
+						},
+					},
+
+					messages: {
+						insuranceProviderId: {
+							required: 'Please enter Payer.'
+						},
+						planName: {
+							required: 'Please enter Plan Name.'
+						},
+						policyNumber: {
+							required: 'Please enter Policy Number.'
+						},
+						mrnNumber: {
+							required: 'Please enter MRN Number.'
+						},
+						isSubscriber: {
+							required: 'Please enter Is Patient The Subscriber.'
+						},
+						insuranceId: {
+							required: 'Please enter Insurance ID.'
+						},
+					},
+
+				});
+
+				// Set Form focus
+				$("#addPatientTab3CtrlForm-E .form-group:has(.form-control):first .form-control").focus();
+			});
+			</script>
+			
+			<form role="forl" id="rootwizard" class="form-wizard validate" novalidate>
+				
+				<ul class="tabs">
+					 <li> <a href="#/app/add_patient_tab_1" data-toggle="tab"> Patient Information <span>1</span> </a> </li>
+			        <li> <a href="#/app/add_patient_tab_2" data-toggle="tab"> Location Information <span>2</span> </a> </li>
+			        <li class="active"> <a href="#/app/add_patient_tab_3" data-toggle="tab"> Insurance Information <span>3</span> </a> </li>
+			        <li> <a href="#/app/add_patient_tab_4" data-toggle="tab"> Authorization Info <span>4</span> </a> </li>
+			        <li> <a href="#/app/add_patient_tab_5" data-toggle="tab"> Insurance Subscriber Information <span>5</span> </a> </li>
+				</ul>
+				
+				<div class="progress-indicator">
+					<span></span>
+				</div>
+			</form>
+            
+            <div class="row">
+                	<div class="col-sm-12">
+                    	<div class="panel panel-default">
+                        	<div class="panel-body">
+                                <form class="form-horizontal validate" role="form" name='addPatientTab3CtrlForm' id='addPatientTab3CtrlForm'  ng-controller='addPatientTab3Ctrl' ng-submit='submitHandler();'>
+                                <div class="row">
+                                	<div class="col-sm-12">
+                                    	<button class="btn btn-info green_bt pull-right" type="submit">Save Changes</button>
+                                    	<button class="btn btn-info btn-single gray_bt pull-right" type="reset">Reset To Default</button>
+                                    </div>
+                                </div>
+			
+								<div class="form-group-separator"></div>
+			
+								<div class="form-group">
+									<label class="col-sm-3 control-label">Payer</label>
+									<div class="col-sm-9">
+										<!--<script type="text/javascript">
+										jQuery(document).ready(function($){
+											$("#sboxit-1").selectBoxIt().on('open', function(){
+												// Adding Custom Scrollbar
+												$(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+											});
+										});
+										</script>-->
+										<select class="form-control" id="sboxit-1" name="insuranceProviderId" data-validate="required" data-message-required="Please select Payer.">
+										<option value="">Select Insurance</option>
+										<option value="1">Company Name</option>
+									</select>
+									</div>
+								</div>
+			
+								<div class="form-group-separator"></div>
+			
+								<div class="form-group">
+									<label for="field-41" class="col-sm-3 control-label">Plan Name</label>
+			
+									<div class="col-sm-9">
+										<input type="text" id="field-41" class="form-control" name="planName" />
+									</div>
+								</div>
+			
+								<div class="form-group-separator"></div>
+                                
+                                
+                                <div class="form-group">
+									<label for="field-42" class="col-sm-3 control-label">Policy Number</label>
+			
+									<div class="col-sm-9">
+										<input type="text" id="field-42" class="form-control" name="policyNumber" />
+									</div>
+								</div>
+								<div class="form-group-separator"></div>
+                                
+                                <div class="form-group">
+									<label for="field-43" class="col-sm-3 control-label">Insurance ID</label>
+									<div class="col-sm-9">
+										<input type="text" id="field-43" class="form-control" name="insuranceId" />
+									</div>
+								</div>
+								<div class="form-group-separator"></div>
+                                
+                                <div class="form-group">
+									<label for="field-44" class="col-sm-3 control-label">MRN Number</label>
+			
+									<div class="col-sm-9">
+										<input type="text" id="field-44" class="form-control" name="mrnNumber" />
+									</div>
+								</div>
+								<div class="form-group-separator"></div>
+                                
+                                <div class="form-group">
+									<label class="col-sm-3 control-label">Is Patient The Subscriber</label>
+			
+									<div class="col-sm-9">
+										<div class="input-group">
+											<label class="cbr-inline">
+												<input type="radio" class="cbr" checked name="isSubscriber" value="true">
+												Yes
+											</label>
+                                            <label class="cbr-inline">
+												<input type="radio" class="cbr" name="isSubscriber" value="false">
+												No
+											</label>
+											
+									</div>
+								</div>
+								</div>
+								<div class="form-group-separator"></div>
+	 							
+	 							<div class="row">
+	                                <div class="col-sm-12">
+	                                    <button style="width:auto;" class="btn btn-info green_bt pull-right" type="submit">Next &raquo;</button>
+	                                    <a style="width:auto;" class="btn btn-info green_bt pull-right" href='#/app/add_patient_tab_2'>&laquo; Previous</a>
+	                                </div>
+	              				</div>
+
+							</form> 
+                            
+                            </div>
+                        </div>
+                    
+                    
+                    </div>
+                </div>
+            <!-- FORM WIZARD WITH VALIDATION END HERE--> 
+	</div>
+</div>
+
+<script>
+function addPatientTab3Ctrl($scope, $rootScope, $http) {
+
+  $scope.submitHandler = function() {
+    if ($('#addPatientTab3CtrlForm').valid()) {
+      showLoadingBar(70); // Fill progress bar to 70% (just a given value)
+
+      var jsonObject = $('#addPatientTab3CtrlForm').serializeObject();
+      $.extend(jsonObject, $rootScope.patient.patientInfo);
+      var jsonStr = JSON.stringify(jsonObject);
+      $http({
+        url: "/OnTime/api/patient/savePatientInsurance",
+        method: 'POST',
+        data: {},
+        headers: {
+          // 'Content-Type': 'application/json',
+          'payload': jsonStr,
+          'requestToken': appData.authResult.token,
+          'userName': appData.authResult.un,
+        },
+        // transformRequest: function(data) {
+        //   return $.param(data); // jquery util
+        // }
+      }).success(function(data, status, headers, config) {
+        showLoadingBar({
+          delay: .5,
+          pct: 100,
+          finish: function() {
+            if (data.id) {
+              $rootScope.patient.patientInfo = data;
+
+              window.location.hash = '#/app/add_patient_tab_4';
+            }
+          }
+        }); // showLoadingBar
+
+      }).error(function(data, status, headers, config) {
+
+      }); // http
+
+
+
+    } // isValid
+  }; // end of submitHandler
+
+}; // end of addPatientTab3Ctrl
+</script>

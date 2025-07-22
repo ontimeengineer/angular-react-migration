@@ -1,0 +1,268 @@
+<div class="modal-body">
+    <div class="row">
+        <div class="user_panel col-md-12">
+            <div class="emp_user_hd">
+                <div class="emp_user_name">{{Patientinfo.patient.lName}}, {{Patientinfo.patient.fName}} {{Patientinfo.patient.middleInitial}}</div>
+                <p>{{Patientinfo.patient.insuranceProviderName}}</p>
+            </div>
+            <button type="button" class="close" ng-click="Patientinfo.close();" aria-hidden="true">&times;</button>
+        </div>
+
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Gender</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.gender==='M'?'Male':'Female'}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.insuranceProviderName">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Payer</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.insuranceProviderName}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.insuranceId">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Insurance ID</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.insuranceId}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.phone">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Phone Number</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.phone| tel}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.phone2">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Phone 2</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.phone2| tel}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.secondaryContactType && 
+                (Patientinfo.patient.secondaryContactNumber || Patientinfo.patient.secondaryContactName)">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label class="control-label col-md-4">
+                    <strong>{{Patientinfo.patient.secondaryContactType==='P'?'Proxy':'Emergency'}} Contact</strong>
+                </label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.secondaryContactName}}{{Patientinfo.patient.secondaryContactNumber?' - ':''}}{{Patientinfo.patient.secondaryContactNumber| tel}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.languagesSpoken">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Languages Spoken</strong></label>
+                <div class="col-md-8">
+                    <span ng-if="Patientinfo.patient.languagesSpoken == null || Patientinfo.patient.languagesSpoken.length == 0">N/A</span>
+                    <span ng-repeat="language in Patientinfo.patient.languagesSpoken">{{languages[language]}}<label ng-if="$index < Patientinfo.patient.languagesSpoken.length - 1">, </label>
+                    </span>
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.patientAideSkills">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Aide Skill Capacities</strong></label>
+                <div class="col-md-8">
+                    <span ng-if="Patientinfo.patient.patientAideSkills == null || Patientinfo.patient.patientAideSkills.length == 0">N/A</span>
+                    <span ng-repeat="language in Patientinfo.patient.patientAideSkills">{{Patientinfo.capacitiesKeyValue[language]}}<label ng-if="$index < Patientinfo.patient.patientAideSkills.length - 1">, </label>
+                    </span>
+                </div>
+            </div>	
+        </div>
+    </div>
+
+    <div class="row" ng-if="Patientinfo.patient.patientAddress">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Address</strong></label>
+                <div class="col-md-8" ng-show="Patientinfo.patient.patientAddress">
+                    {{Patientinfo.patient.patientAddress.address1}}
+                    <div ng-if="Patientinfo.patient.patientAddress.address2 != null">
+                        {{Patientinfo.patient.patientAddress.address2}}
+                    </div> 
+                    <div>{{Patientinfo.patient.patientAddress.city}}, {{Patientinfo.patient.patientAddress.state}}, {{Patientinfo.patient.patientAddress.zipcode}}</div>
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.dateOfBirth">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Date Of Birth</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.dateOfBirth|date :dateFormat}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.staffingCordinatorName">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Coordinator</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.staffingCordinatorName}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.nurseCaseManagerName">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Nurse Case Manager</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.nurseCaseManagerName}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.careCordinator">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Care Coordinator</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.careCordinator}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.careCordinatorContact">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>C.C. Phone</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.careCordinatorContact| tel}} 
+                    <span ng-if="Patientinfo.patient.careCordinatorExtension"> ext. {{Patientinfo.patient.careCordinatorExtension}}</span>
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.careCordinatorEmail">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>C.C. Email</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.careCordinatorEmail}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.careCordinatorFax">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>C.C. Fax</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.careCordinatorFax| tel}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.authorizationStartDate">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label col-md-4"><strong>Start Date</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.authorizationStartDate}} 
+                </div>
+            </div>	
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.lastDateOfService">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label col-md-4"><strong>Last Date of Service</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.lastDateOfService}} 
+                </div>
+            </div>	
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.diagnosisCode">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label col-md-4"><strong>Diagnosis Code</strong></label>
+                <div class="col-md-8">
+                    {{Patientinfo.patient.diagnosisCode}} 
+                </div>
+            </div>	
+        </div>
+    </div>
+    <div class="row" ng-if="Patientinfo.patient.patientCareTypeCollection && Patientinfo.patient.patientCareTypeCollection.length > 0">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Authorized Services</strong></label>
+                <div class="col-md-8">
+                    <span ng-repeat="care in Patientinfo.patient.patientCareTypeCollection">
+                        {{care.insuranceCareTypeId.companyCaretypeId.careTypeTitle}}
+                        <span ng-if="care.authorizedHours">
+                            ( {{care.authorizedHours}} hours )
+                        </span>
+                        <br>
+                    </span>
+                </div>
+            </div>	
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="Patientinfo.close();">Close</button>
+</div>

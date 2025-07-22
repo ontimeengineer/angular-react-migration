@@ -1,0 +1,280 @@
+
+  <div class="page-body"> 
+    
+    
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+      <div class="title-env">
+        <h1 class="title">Billing Session</h1>
+        <p class="description">Generates Bills And EDI For Each Payer</p>
+      </div>
+    </div>
+    <!--PAGE TITLE END -->
+    
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+        	<div class="panel-body">            	
+                <form class="form-horizontal" role="form">
+                				
+                                <div class=" row">
+                                	<div class="col-sm-12 pull-right wd_full">
+                                	<div class="form-group">
+									<label class="col-sm-5 control-label">Payer :</label>
+									<div class="col-sm-7 insurance_pd">
+										<script type="text/javascript">
+										jQuery(document).ready(function($)
+										{
+											$("#sboxit-1").selectBoxIt().on('open', function()
+											{
+												// Adding Custom Scrollbar
+												$(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+											});
+										});
+									</script>
+										<select class="form-control" id="sboxit-1">
+										<option value="al">Select</option>
+										<option value="au">1</option>
+									</select>
+									</div>
+								</div>
+                                </div>
+                                </div>
+                                
+                                <div class=" row">
+                                	<div class="col-lg-12 ">
+                                	<div class="col-sm-4 pull-right wd_full">
+                                    	<div class="form-group">
+									<label for="field-59" class="col-sm-3 control-label">To :</label>
+			
+									
+										<div class="col-sm-9 pad0">
+										<div class="input-group">
+											<input type="text" id="field-59" class="form-control datepicker" data-format="mm/dd/yyyy">
+											
+											<div class="input-group-addon">
+												<a href="#"><i class="linecons-calendar"></i></a>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+                                    </div>
+                                    
+                                    <div class="col-sm-4 pull-right pad0 wd_full">
+                                    	<div class="form-group pad0">
+									<label for="field-58" class="col-sm-3 control-label ">From :</label>
+			
+									
+										<div class="col-sm-9 ">
+										<div class="input-group">
+											<input type="text" id="field-58" class="form-control datepicker" data-format="mm/dd/yyyy">
+											
+											<div class="input-group-addon">
+												<a href="#"><i class="linecons-calendar"></i></a>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+                                    </div>
+                                </div>
+                                </div>
+                                
+                                <div class="col-sm-12 pad0">
+                                <div class="pull-left" style="padding-left:0px; padding-top:12px;"><strong>Batch no:</strong> 1286</div>
+                                <div class="pull-right">
+                                	<button type="button" class="btn btn-info btn-single  pull-right">Process</button>
+                               		<button type="button" class="btn btn-info green_bt pull-right" style="width:auto;">Review</button>
+              	
+                            </div>
+                
+                				</div>
+                                
+                                
+							</form> 
+                            
+                            
+                            
+            </div>
+        
+          
+          
+          <div class="panel-body pad_top0">
+            <div id="example-1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+
+              
+              
+              <div class="table-responsive scroll" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
+              <script type="text/javascript">
+					jQuery(document).ready(function($)
+					{
+						$("#example-1").dataTable({
+							aLengthMenu: [
+								[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+							]
+						});
+					});
+					</script>
+							
+								<table id="example-1" class="table table-striped table-bordered  table table-small-font table-bordered table-striped" cellspacing="0">
+									<thead>
+										<tr>
+											
+                                            <th class="sorting" tabindex="0" rowspan="1" colspan="1"  aria-label="Position: activate to sort column ascending">Claim No.</th>
+                                            <th class="sorting_asc" tabindex="0" rowspan="1" colspan="1"  aria-sort="ascending" aria-label="Name: activate to sort column ascending">Patient MRN</th>
+                                            
+                                            <th class="sorting" tabindex="0" rowspan="1" colspan="1"  aria-label="Position: activate to sort column ascending">Date Of Birth</th>
+                                            <th class="sorting" tabindex="0" rowspan="1" colspan="1"  aria-label="Position: activate to sort column ascending">Billed($)</th>
+                                            <th class="sorting" tabindex="0" rowspan="1" colspan="1"  aria-label="Position: activate to sort column ascending">First Name</th>
+                                            <th class="sorting" tabindex="0" rowspan="1" colspan="1"  aria-label="Position: activate to sort column ascending">Last Name</th>
+											<th data-priority="6">Authorized Codes</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>
+                                        <tr>
+											<th>1286</th>
+											<td>1586</td>
+											<td>2008/11/28</td>
+											<td>$ 33</td>
+											<td>Airi</td>
+											<td>Satou </td>
+											<td></td>
+										</tr>		
+												
+												
+										
+									</tbody>
+								</table>
+							
+							</div>
+                            
+                            <script type="text/javascript">
+							// This JavaScript Will Replace Checkboxes in dropdown toggles
+							jQuery(document).ready(function($)
+							{
+								setTimeout(function()
+								{
+									$(".checkbox-row input").addClass('cbr');
+									cbr_replace();
+								}, 0);
+							});
+							</script>
+
+              
+              <div class="row">
+                <div class="col-xs-6">
+                  <div class="dataTables_info"><strong>Total Number Of Claims:</strong> 100</div>
+                </div>
+                <div class="col-xs-6 pull-right">
+                  <div class="dataTables_info" style="text-align:right;"><strong>Total Billed:</strong> $1,700.56</div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+ </div>

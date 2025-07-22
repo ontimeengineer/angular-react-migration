@@ -1,0 +1,97 @@
+<div class="modal-body">
+    <div class="row">
+        <div class="user_panel col-md-12">
+            <div class="emp_user_hd">
+                <div class="emp_user_name">Dispatch Details</div>
+            </div>
+            <button type="button" class="close" ng-click="DispatchInfoModal.close();" aria-hidden="true">&times;</button>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Patient</strong></label>
+                <div class="col-md-8">
+                    {{DispatchInfoModal.dispatch.patientName}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Service</strong></label>
+                <div class="col-md-8">
+                    {{DispatchInfoModal.dispatch.careType}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Total recipients</strong></label>
+                <div class="col-md-8">
+                    {{DispatchInfoModal.dispatch.totalRecipient}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Created On</strong></label>
+                <div class="col-md-8">
+                    {{DispatchInfoModal.dispatch.dispatchCreatedOn}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Status</strong></label>
+                <div class="col-md-8">
+                    {{DispatchInfoModal.dispatch.status}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row" ng-if="DispatchInfoModal.dispatch.assignedEmployeeName">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Assigned To</strong></label>
+                <div class="col-md-8">
+                    {{DispatchInfoModal.dispatch.assignedEmployeeName}} 
+                </div>
+            </div>	
+        </div>
+    </div>
+    <div class="row" ng-if="DispatchInfoModal.dispatch.assignedByName">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Assigned By</strong></label>
+                <div class="col-md-8">
+                    {{DispatchInfoModal.dispatch.assignedByName}}
+                </div>
+            </div>	
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="DispatchInfoModal.close();">Close</button>
+</div>

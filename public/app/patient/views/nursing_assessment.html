@@ -1,0 +1,582 @@
+<!--================== HEADER ====================-->
+<patient-breadcrumb patient="editPatient.patient" record-name="Patient Record - Nursing Assessment"></patient-breadcrumb>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel">
+            <form name="edit_patient_form" class="form-horizontal validate" ng-submit="editPatient.submitForm()"
+                novalidate="" id="edit_patient_form" role="form">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-info btn-single gray_bt pull-right" ng-click="editPatient.resetForm()"
+                            type="button">
+                            Reset To Default
+                        </button>
+                        <button ng-if="editPatient.formData.isDraft" class="btn btn-info btn-single gray_bt pull-right" ng-click="editPatient.submitDraft()" type="button">Save to Draft</button>
+                    </div>
+                </div>
+
+                <!-- STATIC PATIENT INFO -->
+                <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-3">Name of Patient</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" readonly ng-value="editPatient.patient.lName + ', ' + editPatient.patient.fName + ', ' + editPatient.patient.middleInitial">
+                    </div>
+                </div>
+                <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-3">Date of Birth</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" readonly ng-value="editPatient.patient.dateOfBirth"> 
+                    </div>
+                </div>
+                <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-3">Gender</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" readonly ng-value="editPatient.patient.gender == 'F' ? 'Female':'Male'">
+                    </div>
+                </div>
+                <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-3">MRN</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" readonly ng-value="editPatient.patient.mrnNumber">
+                    </div>
+                </div>
+                <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label for="" class="control-label col-sm-3">Address</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" readonly ng-value="editPatient.patient.patientAddress.address1 + ', ' + editPatient.patient.patientAddress.address2 + ', ' + editPatient.patient.patientAddress.city + ', ' + editPatient.patient.patientAddress.state + ', ' + editPatient.patient.patientAddress.zipcode">
+                    </div>
+                </div>
+
+                <!-- track by field.id -->
+                <div ng-repeat="field in editPatient.formDefinition " class="form-group">
+
+                    <div class="form-group-separator" ng-hide="field.mergeSection"></div>
+                    <!-- MULTIGROUP -->
+                    <div class="multigroup" ng-if="field.multigroup">
+                        <div ng-repeat="multifield in field.fields">
+                            <div class="form-group">
+                                <label for="{{'field' + multifield.id}}"
+                                    class="control-label col-sm-3">{{multifield.label}}</label>
+                                <div class="col-sm-9" ng-switch="multifield.type">
+                                    <select class="form-control" name="{{multifield.name}}"
+                                        id="{{'field' + multifield.id}}" ng-switch-when="select"
+                                        ng-model="editPatient.formData[multifield.name]"
+                                        itemid="Payroll Company Code A">
+                                        <option value="" selected hidden>Please Select</option>
+                                        <option value="{{option.value}}" ng-repeat="option in multifield.options">
+                                            {{option.title}}
+                                        </option>
+                                    </select>
+
+                                    <input class="form-control" type="{{ multifield.type }}"
+                                        placeholder="{{multifield.placeholder}}" ng-switch-default
+                                        ng-model="editPatient.formData[multifield.name]" name="{{multifield.name}}"
+                                        ng-required="multifield.required">
+                                </div>
+                            </div>
+                            <div class="form-group-separator"></div>
+                        </div>
+
+
+                    </div>
+
+                    <!-- NOT MULTIGROUP -->
+                    <div class="not-multigroup" ng-if="!field.multigroup">
+                        <h3 ng-if="field.heading" class="text-center" style="margin-bottom: 16px; padding-block: 16px 4px; border-bottom: thin solid;">{{field.heading}}</h3>
+                        <label ng-class="{'col-sm-3': !field.withoutLabelFlow, 'col-sm-0': field.withoutLabelFlow}"
+                            class=" control-label" for="{{'field' + field.id}}">{{ field.label }}</label>
+                        <div class=" "
+                            ng-class="{'col-sm-9': !field.withoutLabelFlow, 'col-sm-12': field.withoutLabelFlow}">
+                            <div ng-switch="field.type">
+                                <!--================== SELECT BOX ====================-->
+                                <select class="form-control" name="{{field.name}}" id="" ng-switch-when="select"
+                                    ng-model="editPatient.formData[field.name]" onblur="setValidationMessage(this)"
+                                    itemid="{{field.label}}" ng-required="field.required"
+                                    ng-options="option.value as option.title for option in field.options">
+                                    <option value="" selected hidden>Please Select</option>
+                                </select>
+                                <!--================== DATE ====================-->
+                                <div class="input-group" ng-switch-when="date">
+                                    <input type="text" class="form-control datepicker" enabled='M'
+                                        data-format="mm/dd/yyyy" ng-model="editPatient.formData[field.name]"
+                                        ng-required="field.required" />
+                                    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a>
+                                    </div>
+                                </div>
+                                <!--================== INPUT DEFAULT ====================-->
+                                <input class="form-control" type="{{ field.type }}" placeholder="{{field.placeholder}}"
+                                    ng-switch-default ng-model="editPatient.formData[field.name]" name="{{field.name}}"
+                                    ng-required="{{field.required}}"
+                                    ng-change="editPatient.checkCustomValidation(field.name)">
+                                <!--================== PHONE ====================-->
+                                <input class="form-control" type="text" numbers-only="true" maxlength="10" placeholder="{{field.placeholder}}"
+                                    ng-switch-when="phone" ng-model="editPatient.formData[field.name]" name="{{field.name}}" 
+                                    ng-change="editPatient.checkCustomValidation(field.name)">
+                                <!--================== TEXT AREA ====================-->
+                                <textarea ng-switch-when="textarea" ng-model="editPatient.formData[field.name]"
+                                    name="{{field.name}}" placeholder="{{field.placeholder}}" data-validate="required"
+                                    data-message-required="Please enter note" class="form-control"
+                                    id="{{'field' + field.id}}" cols="30" rows="10"
+                                    ng-required="field.required"></textarea>
+                                <!--================== RADIO CHECK ====================-->
+                                <div ng-switch-when="radiocheck">
+                                    <!-- oneselector -->
+                                    <div class="row">
+                                        <div class="col-sm-12 pad_top7" ng-if="field.oneSelector">
+                                            <div class="option-field" style="align-items: unset;">
+                                                <input class="d-check m-0" type="{{field.oneSelector.type}}"
+                                                    name="{{field.name}}" id="{{field.oneSelector.id}}"
+                                                    placeholder="{{field.oneSelector.placeholder}}"
+                                                    ng-value="{{field.oneSelector.value}}"
+                                                    ng-model="editPatient.oneSelectors[field.oneSelector.id]"
+                                                    ng-change="editPatient.oneSelectorChanged(field.oneSelector.id, editPatient.oneSelectors[field.oneSelector.id], field)"
+                                                    ng-checked="field.oneSelector.selected">
+                                                <label for="{{field.oneSelector.id}}">{{field.oneSelector.label}}</label>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="pad_top7 options-grid" ng-class="editPatient.formData[field.relativeField][field.relativeFieldTotal] >= field.highScore ? 'alert':''">
+                                        <div ng-repeat="option in field.options" class="pad_lf0 option-parent"
+                                            ng-if="(!option.showwhen || editPatient.showSibs[option.id] == option.id) ">
+                                            <!-- radio -->
+                                            <div ng-if="field.subtype == 'radio'">
+                                                <div class="option-field">
+                                                    <input type="radio" class="d-radio mar_top0"
+                                                        ng-checked="option.selected"
+                                                        ng-model="editPatient.selectedRadios[field.name]"
+                                                        id="{{option.id}}"
+                                                        ng-change="editPatient.radioChanged(field.name, option, editPatient.selectedRadios[field.name]);option.group ? editPatient.groupCaller(option.group_member, field.name, option, editPatient.selectedRadios[field.name], field):''"
+                                                        ng-value="option.value" name="{{field.label}}">
+                                                    <label for="{{option.id}}" class="m-0">{{option.title}}</label>
+                                                </div>
+                                                <div
+                                                    ng-if="field.subtype == 'radio'? editPatient.selectedRadios[field.name] == option.value && option.subfield : editPatient.checkBoxSubs[option.id] === option.id && option.subfield">
+                                                    <div
+                                                        ng-if="option.subfield.type != 'select' && option.subfield.type != 'date' && option.subfield.type != 'multiInput' && option.subfield.type != 'tags' ">
+                                                        <!-- if type is text or not given then show this text field as default-->
+                                                        <input class="subfield" type="{{option.subfield.type}}"
+                                                            name="{{option.subfield.name}}"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]"
+                                                            ng-chang="field.subtype == 'radio' ? editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name]) : editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name])"
+                                                            placeholder="{{option.subfield.placeholder}}">
+                                                    </div>
+                                                    <div ng-if="option.subfield.type == 'date'">
+                                                        <input class="subfield" type="{{option.subfield.type}}"
+                                                            name="{{option.subfield.name}}"
+                                                            max="{{option.subfield.date_limit ? editPatient.setMaxDate(option.subfield.date_limit) : ''}}"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]"
+                                                            ng-change="editPatient.subFieldDateChanged(option.subfield); field.subtype == 'radio' ? editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name]) : editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name])"
+                                                            placeholder="{{option.subfield.placeholder}}">
+                                                    </div>
+                                                    <div ng-if="option.subfield.type == 'select'">
+                                                        <select name="{{field.name}}" id="" class="subfield"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]"
+                                                            ng-change="editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name])"
+                                                            ng-options="opt.value as opt.title for opt in option.subfield.options">
+                                                            <option value="" selected hidden>Select</option>
+                                                        </select>
+                                                    </div>
+                                                    <!--===== add MULTIIMPUT in subtype ======-->
+                                                    <div ng-if="option.subfield.type == 'multiInput'">
+                                                        <input tagsinput data-role="tagsinput" class="subfield"
+                                                            name="{{option.subfield.name}}" id="{{option.subfield.id}}"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]"/>
+                                                    </div>
+                                                    <!-- ng-change="editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name]); editPatient.multiInput2(option.subfield.name, editPatient.subFields[option.subfield.name])"  -->
+                                                    <!--========= add TAGS in subtype =========-->
+                                                    <div ng-if="option.subfield.type == 'tags'">
+                                                        <select multiple class="subfield"
+                                                            name="{{option.subfield.name}}" id="{{option.subfield.id}}"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]"
+                                                            ng-options="opt.value as opt.title for opt in option.subfield.options"
+                                                            ng-change="editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name]); editPatient.tagsGenerator(option.subfield, editPatient.subFields[option.subfield.name])">
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- checkbox -->
+                                            <div ng-if="field.subtype == 'checkbox'">
+                                                <div class="option-field" style="align-items: unset;">
+                                                    <input type="checkbox" class="d-check m-0" ng-checked="option.checked"
+                                                        ng-value="option.checked" name="{{field.name}}"
+                                                        ng-disabled="editPatient.oneSelectors[field.oneSelector.id]"
+                                                        id="{{option.id}}" ng-model="editPatient.checkBoxes[option.id]"
+                                                        ng-change="editPatient.handleCheckboxChange(editPatient.checkBoxes[option.id], field.dbType, field.name, option); option.subfield ? editPatient.showSubField(option):''">
+                                                    <label for="{{option.id}}">{{option.title}}</label>
+                                                </div>
+
+                                                <div
+                                                    ng-if="field.subtype == 'radio'? editPatient.selectedRadios[field.name] == option.value && option.subfield : editPatient.checkBoxSubs[option.id] === option.id && option.subfield">
+                                                    <div
+                                                        ng-if="option.subfield.type != 'select' && option.subfield.type != 'date' && option.subfield.type != 'multiInput' && option.subfield.type != 'tags' ">
+                                                        <!-- if type is text or not given then show this text field as default-->
+                                                        <input class="subfield" type="{{option.subfield.type}}"
+                                                            name="{{option.subfield.name}}"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]"
+                                                            ng-chang="field.subtype == 'radio' ? editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name]) : editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name])"
+                                                            placeholder="{{option.subfield.placeholder}}">
+                                                    </div>
+                                                    <div ng-if="option.subfield.type == 'date'">
+                                                        <input class="subfield" type="{{option.subfield.type}}"
+                                                            name="{{option.subfield.name}}"
+                                                            max="{{option.subfield.date_limit ? editPatient.setMaxDate(option.subfield.date_limit) : ''}}"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]"
+                                                            ng-chang="field.subtype == 'radio' ? editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name]) : editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name])"
+                                                            placeholder="{{option.subfield.placeholder}}">
+                                                    </div>
+                                                    <div ng-if="option.subfield.type == 'select'">
+                                                        <select name="{{field.name}}" id="" class="subfield"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]"
+                                                            ng-change="editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name])"
+                                                            ng-options="opt.value as opt.title for opt in option.subfield.options">
+                                                            <option value="" selected hidden>Select</option>
+                                                        </select>
+                                                    </div>
+                                                    <!--===== add MULTIIMPUT in subtype ======-->
+                                                    <div ng-if="option.subfield.type == 'multiInput'">
+                                                        <input tagsinput data-role="tagsinput" class="subfield"
+                                                            name="{{option.subfield.name}}" id="{{option.subfield.id}}"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]" />
+                                                    </div>
+                                                    <!-- ng-change="editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name]); editPatient.multiInput2(option.subfield.name, editPatient.subFields[option.subfield.name])" -->
+                                                    <!--========= add TAGS in subtype =========-->
+                                                    <div ng-if="option.subfield.type == 'tags'">
+                                                        <select multiple class="subfield"
+                                                            name="{{option.subfield.name}}" id="{{option.subfield.id}}"
+                                                            ng-required="option.subfield.required"
+                                                            ng-model="editPatient.subFields[option.subfield.name]"
+                                                            ng-options="opt.value as opt.title for opt in option.subfield.options"
+                                                            ng-change="editPatient.subFieldChanged(option.subfield.name, editPatient.subFields[option.subfield.name]); editPatient.tagsGenerator(option.subfield, editPatient.subFields[option.subfield.name])">
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--================== MULTI ARRAY medicine====================-->
+                                <div ng-switch-when="nestedarrayMedicine" class="">
+                                    <!-- ADD MEDICATION -->
+                                    <div class="med-array"
+                                        ng-repeat="med in editPatient.medicalReconciliationForm.medications track by $index">
+
+                                        <div class="row">
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-9">
+                                                <h4 class="">Medication # {{$index + 1}}</h4>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="datePrescribed{{$index}}">Date Prescribed</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input class="form-control datepicker"
+                                                        data-format="mm/dd/yyyy" id="datePrescribed{{$index}}" name="datePrescribed{{$index}}" type="text"
+                                                        ng-model="med.datePrescribed" data-validate="required,date" max-date="editPatient.currentDate" 
+                                                        data-message-required="Please enter prescribed date for medication" />
+                                                    <div class="input-group-addon">
+                                                        <a href="#">
+                                                            <i class="linecons-calendar">
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3"
+                                                for="medication{{$index}}">Medication</label>
+                                            <div ng-class="{'col-sm-9': !$last, 'col-sm-8': $last}">
+                                                <input class='form-control col-lg-5 itemSearch{{$index}}' type='text'
+                                                placeholder='Type to search item / For new select other' required
+                                                ng-model="med.id"
+                                                ng-change="editPatient.medicationChangePopulateCall($index, med, false)" />
+                                            </div>
+
+                                            <div class="col-sm-1" ng-if="$last">
+                                                <button ng-if="$last" class="btn btn-info pull-right green_bt add_med_btn" type="button"
+                                                    ng-click="editPatient.addFdaMedication()">+</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="med.id == 'Other'">
+                                            <label for="medicationOther{{$index}}"
+                                                class="control-label col-sm-3"></label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="medicationOther{{$index}}"
+                                                    name="medicationOther{{$index}}" ng-model="med.medicationOther"
+                                                    class="form-control" placeholder="Please enter medication name"
+                                                    ng-required="med.medication == 'Other' " data-validate="required"
+                                                    data-message-required="Please enter medication">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3">Frequency</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" name="frequency{{$index}}"
+                                                    id="frequency{{$index}}" required data-validate="required"
+                                                    data-message-required="Please select frequency"
+                                                    ng-model="med.frequency"
+                                                    ng-change="med.frequency != 'Other'?  med.frquencyOther='' : med.frquencyOther" ng-options="freqOpt.key as (freqOpt.value) for freqOpt in editPatient.medicationFrequency">
+                                                    <option value="" selected hidden>Please select Frequency</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="med.frequency == 'Other'">
+                                            <label for="frequencyOther{{$index}}"
+                                                class="control-label col-sm-3"></label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="frequencyOther{{$index}}"
+                                                    name="frequencyOther{{$index}}" ng-model="med.frquencyOther"
+                                                    class="form-control" placeholder="Please enter frequency"
+                                                    ng-required="med.frequency == 'Other' " data-validate="required"
+                                                    data-message-required="Please enter frequency">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Frequency order
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div>
+                                                    <label class=" radio col-sm-3">
+                                                        <input value="withMeals" name="freqOrder{{$index}}" id="freqOrder{{$index}}" type="radio" class="d-radio mar_top0" ng-model="med.freqOrder" />
+                                                        With Meals
+                                                    </label>
+                                                    <label class=" radio col-sm-3">
+                                                        <input value="onEmptyStomach" name="freqOrder{{$index}}" id="freqOrder{{$index}}" type="radio" class="d-radio mar_top0" ng-model="med.freqOrder" />
+                                                        On empty stomach
+                                                    </label>
+                                                    <label class=" radio col-sm-3">
+                                                        <input value="N/A" name="freqOrder{{$index}}" id="freqOrder{{$index}}" type="radio" class="d-radio mar_top0" ng-model="med.freqOrder" />
+                                                        N/A
+                                                    </label>
+                                                    <label class=" radio col-sm-3">
+                                                        <input name="freqOrderComments{{$index}}" id="freqOrderComments{{$index}}" type="checkbox" class="d-check" ng-model="med.freqOrderComments" ng-change="med.freqOrderOther=''" />
+                                                        Additional comments
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" ng-if="med.freqOrderComments == true">
+                                            <label for="freqOrderOther{{$index}}"
+                                                class="control-label col-sm-3"></label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="freqOrderOther{{$index}}"
+                                                    name="freqOrderOther{{$index}}" ng-model="med.freqOrderOther"
+                                                    class="form-control"
+                                                    placeholder="Please enter frequency order comments"
+                                                    ng-required="med.freqOrderComments == true" data-validate="required"
+                                                    data-message-required="Please enter comments" maxlength="20">
+                                                    <p class="length-message hidden-print" style="text-align: end; margin-top: 3px;">
+                                                        {{med.freqOrderOther.length || 0}}/20
+                                                    </p>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                                        <div class="form-group">
+                                            <label for="routes{{$index}}" class="col-sm-3 control-label">Route</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" name="routes{{$index}}"
+                                                    id="routes{{$index}}" required data-validate="required"
+                                                    data-message-required="Please select route." ng-model="med.route" ng-options="routeOpt.key as (routeOpt.value) for routeOpt in editPatient.medicationRoutes">
+                                                    <option value="" hidden selected>Please select Route</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                                        <div class="form-group">
+                                            <label for="purpose{{$index}}"
+                                                class="control-label col-sm-3">Purpose</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="purpose{{$index}}" name="purpose{{$index}}"
+                                                    class="form-control" ng-model="med.purpose">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                                        <div class="form-group">
+                                            <label for="sideEffects{{$index}}" class="control-label col-sm-3">Side
+                                                Effects</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="sideEffects{{$index}}"
+                                                    name="sideEffects{{$index}}" class="form-control"
+                                                    ng-model="med.sideEffects">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                                        <div class="form-group">
+                                            <label for="contraindication{{$index}}"
+                                                class="control-label col-sm-3">Contraindication</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" id="contraindication{{$index}}"
+                                                    name="contraindication{{$index}}" class="form-control"
+                                                    ng-model="med.contraindication">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+
+                                                <button ng-if="$last" class="btn btn-info pull-right green_bt"
+                                                    type="button" ng-click="editPatient.addMedication($index+1)">+
+                                                    Medication</button>
+
+                                                <button class="btn btn-info btn-single delet_bt pull-right"
+                                                    ng-if="$last && editPatient.medicalReconciliationForm.medications.length > 1"
+                                                    type="button"
+                                                    ng-click="editPatient.removeMedication($index)">Remove</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!--================== TAGS ====================-->
+                                <div ng-switch-when="tags">
+
+                                    <select multiple class="form-control" name="{{field.name}}" id="{{field.id}}"
+                                        ng-required="field.required" ng-model="editPatient.formData[field.name]"
+                                        ng-options="option.value as option.title for option in field.options"
+                                        ng-change="editPatient.tagsGenerator(field, editPatient.formData[field.name])">
+                                    </select>
+
+                                </div>
+
+                                <!--================== MULTIIMPUT ====================-->
+                                <div ng-switch-when="multiInput">
+                                    <input tagsinput data-role="tagsinput" class="form-control" name="{{field.name}}"
+                                        id="{{field.id}}" ng-required="field.required"
+                                        ng-model="editPatient.formData[field.name]"/>
+                                </div>
+                                <!-- ng-change="editPatient.multiInputGenerator(field, editPatient.formData[field.name])" -->
+
+                                <!--================== LISTING ====================-->
+                                <div ng-switch-when="listing" class="listing pad_top7">
+                                    <div class="row" ng-repeat="(optionIndex, option) in field.options">
+                                        <label ng-if="field.subtype == 'score'" for="{{option.id}}"
+                                            class="col-md-11">{{option.title}} ({{
+                                            option.points}} {{option.points <= 1 ? 'point' :'points'}})</label>
+                                                <label for="{{option.id}}"
+                                                    ng-if="field.subtype == 'radioselector'" class="col-md-9">{{option.title}}</label>
+                                                <div ng-if="field.subtype == 'score'" class="d-check col-md-1"><input
+                                                        type="checkbox" class="d-check"
+                                                        ng-model="editPatient.listChecks[option.id]"
+                                                        ng-checked="option.checked"
+                                                        ng-change="editPatient.listCheckChanged(editPatient.listChecks[option.id], option, field)"
+                                                        id="{{option.id}}">
+                                                </div>
+                                                <div ng-if="field.subtype == 'radioselector'" class="col-md-3">
+                                                    <div class="row">
+                                                        <div ng-repeat="subOpt in option.suboptions"
+                                                        class="col-md-4 p-0">
+                                                        <input type="radio" class="d-radio mar_top0"
+                                                            value="{{subOpt.value}}" ng-checked="subOpt.selected"
+                                                            ng-model="editPatient.formData[field.name][option.value]"
+                                                            id="{{subOpt.id}}" name="{{option.id}}">
+                                                        <label for="{{subOpt.id}}">{{subOpt.title}}</label>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                    </div>
+                                    <div class="row" ng-if="field.subtype == 'score'">
+                                        <p class="col-md-11">Total Score</p>
+                                        <div class="col-md-1">{{editPatient.formData[field.name][field.total]}}</div>
+                                    </div>
+                                    <div class="risk-caution-box" ng-if="field.subtype == 'score'">
+                                        <div ng-bind-html="sanitizeHtml(field.details)"></div>
+                                        <p ng-hide="editPatient.formData[field.name][field.total] < field.highScore"
+                                            ng-bind-html="sanitizeHtml(field.riskText)"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line"></div>
+                    </div>
+                </div>
+
+                <div class="form-group-separator"></div>
+
+                <div class="form-group">
+                    <label for="" class="col-sm-3 control-label">Nurse Signature</label>
+                    <div class="col-sm-9">
+                        <signature-pad width="550" height="175" style="border:1px solid #B0B0B0"
+                            dataurl="editPatient.formData.signature" accept="editPatient.accept"
+                            clear="clear"></signature-pad>
+                        <button type="button" class="btn btn-default mar_top7 btn-default-bootstrap"
+                            ng-click="clear(); editPatient.clearSignatureCall()">Clear signature</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-info green_bt pull-right" type="submit">Save</button>
+                        <button ng-if="editPatient.formData.isDraft" class="btn btn-info btn-single gray_bt pull-right"
+                            ng-click="editPatient.submitDraft()" type="button">Save to Draft</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- BOTTOM SCRIPT START -->
+<script type="text/javascript">
+    function setValidationMessage(element) {
+        var elementName = element.getAttribute("name") + "-error";
+        var itemId = element.getAttribute("itemid");
+        $("#" + elementName).text('Please enter ' + itemId + '.');
+        console.error(elementName, itemId);
+        console.info($('#' + elementName));
+
+        //var errorMessage = 'Please enter ' + itemId + '.';
+        // Remove any existing error message
+        //$("#" + elementName).remove();
+        // Add the error message element below the field
+        //$(element).after('<div id="' + elementName + '" style="color: red;">' + errorMessage + '</div>');
+
+    }
+</script>

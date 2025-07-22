@@ -1,0 +1,54 @@
+<style>
+    .pad_top5{
+        padding: 5px 0px 0px 0px !important;
+    }
+    .pad_bt0{
+        padding-bottom: 0px !important;
+    }
+</style>
+<div ng-controller="BillingReconciliationCtrl as billingReconciliation">
+    <div class="page-title" ng-class="{'pad_bt0':billingReconciliation.search.title}">
+        <div class="title-env">
+            <h1 class="title">Billing Reconciliations</h1>
+            <span class="description" ng-if="billingReconciliation.search.title">
+                <ol class="breadcrumb bc-1 pad_top5" xe-breadcrumb>
+                            <li>
+                                <a href="#/app/billing_reconciliation/list"><i class="fa-home"></i>Billing Reconciliation</a>
+                            </li>
+                            <li class="active">
+                                <strong>{{billingReconciliation.search.title}}</strong>
+                            </li>
+                </ol>
+            </span>
+            <p class="description" ng-if="!billingReconciliation.search.title">
+                Billing Reconciliations
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default pad_bt0 pad_top0">
+                <div class="panel-body">        
+                    <div class="form-group">
+                        <div class="col-sm-3 pad_lf0 mar_bt10">
+                            <select class="form-control" id="type" name="type" ng-model="billingReconciliation.search.type">
+                                <option value="">
+                                    Select a type
+                                </option>
+                                <option value="app.billing_reconciliation_new">
+                                    New Reconciliation
+                                </option>
+                                <option value="app.billing_reconciliation_list">
+                                    View Reconciliations
+                                </option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" ng-disabled="!billingReconciliation.search.type" ng-click="billingReconciliation.navigateToTab()">
+                            Go
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

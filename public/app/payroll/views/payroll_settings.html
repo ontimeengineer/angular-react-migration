@@ -1,0 +1,363 @@
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">
+                Payroll Settings
+            </h1>
+            <p class="description">
+                Set Payroll Conditions
+            </p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal validate" id="payroll_settings_form" name="payroll_settings_form" role="form">
+                        <div class="row">
+                            <div class="col-sm-12 pull-right">
+                                <button class="btn btn-info green_bt pull-right" type="submit" ng-click="payrollSet.saveSettings()">
+                                    Save Changes
+                                </button>
+                                <button class="btn btn-info btn-single gray_bt pull-right" type="button" ng-click="payrollSet.resetPayroll()">
+                                    Reset To Default
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                Payroll Provider
+                            </label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="payrollSet.payrollObj.payrollProvider" id="payrollProvider" name="payrollProvider">
+                                    <option value="">
+                                        Select
+                                    </option>
+                                    <option value="ADP - Work Force Now">
+                                        ADP - Work Force Now
+                                    </option>
+                                    <option value="ADP - Run">
+                                        ADP - Run
+                                    </option>
+                                    <option value="Paychex">
+                                        Paychex
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                Payroll Company Code A
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="companyCodeA" type="text" maxlength="20"
+                                       ng-model="payrollSet.payrollObj.payrollCompanyCodeA" onblur="setValidationMessage(this)" itemid="Payroll Company Code A"/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                Payroll Company Code B
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="companyCodeB" type="text" maxlength="20"
+                                       ng-model="payrollSet.payrollObj.payrollCompanyCodeB" 
+                                       onblur="setValidationMessage(this)" itemid="Payroll Company Code B"/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                Payroll Company Code C
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="companyCodeC" type="text" maxlength="20"
+                                       ng-model="payrollSet.payrollObj.payrollCompanyCodeC" \
+                                       onblur="setValidationMessage(this)" itemid="Payroll Company Code C"/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="field-95">
+                                Overtime Threshold (Per Week)
+                            </label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input class="form-control" ng-model="payrollSet.payrollObj.overtimeThreshhold" id="field-95" name="OvertimeThresholdPerWeek" type="text" data-validate="required"  data-message-required="Please enter Overtime Threshold (Per Week)." maxlength="5" numbers-only="true" decimalallowed required>
+                                    <span class="input-group-addon">
+                                        <i>
+                                            hours/week
+                                        </i>
+                                    </span>
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label" for="field-95">
+                                Allowed Schedule Hours (Per Week)
+                            </label>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <input class="form-control" ng-model="payrollSet.payrollObj.authorizedEmployeeHours" id="field-95" name="OvertimeThresholdPerWeek" type="text" data-validate="required"  data-message-required="Please enter Overtime Threshold (Per Week)." maxlength="5" numbers-only="true" decimalallowed required>
+                                    <span class="input-group-addon">
+                                        <i>
+                                            hours/week
+                                        </i>
+                                    </span>
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                Vacation Time Rate
+                            </label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="payrollSet.payrollObj.vaccationRate" ng-options="rate.key as rate.value for rate in payrollRates" id="sboxit-1" name="VacationRate" data-validate="required"  data-message-required="Please select Vacation Rate." required>
+                                    <option value="">
+                                        Select
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                Sick Time Rate
+                            </label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="sboxit-2" ng-model="payrollSet.payrollObj.sickRate" ng-options="rate.key as rate.value for rate in payrollRates" name="SickRate" data-validate="required"  data-message-required="Please select Sick Rate." required>
+                                    <option value="">
+                                        Select
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                Personal Time Rate
+                            </label>
+                            <div class="col-sm-8">
+
+                                <select class="form-control" id="sboxit-3" ng-model="payrollSet.payrollObj.personalRate" ng-options="rate.key as rate.value for rate in payrollRates" name="PersonalRate" data-validate="required"  data-message-required="Please select Personal Rate." required>
+                                    <option value="">
+                                        Select
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                OT Rate Factor
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="OTRate" type="text" ng-model="payrollSet.payrollObj.otRateFactor" required
+                                       numbers-only="true" decimalallowed onblur="setValidationMessage(this)" itemid="OT Rate Factor">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                HD Rate Factor
+                            </label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="HDRate" type="text" ng-model="payrollSet.payrollObj.hdRateFactor" required
+                                       numbers-only="true" decimalallowed onblur="setValidationMessage(this)" itemid="HD Rate Factor">
+                                </input>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">
+                                Holiday Rate
+                            </label>
+                            <div class="col-sm-8">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        $("#multi-select").multiSelect({
+                                            afterInit: function ()
+                                            {
+                                                // Add alternative scrollbar to list
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function ()
+                                            {
+                                                // Update scrollbar size
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" id="multi-select" ng-model="payrollSet.payrollObj.holidays" ng-options="holiday.name for holiday in payrollSet.holidays track by holiday.name" multiple="multiple" name="HolidayRate" data-validate="required"  data-message-required="Please select Holiday Rate." ng-change="payrollSet.displayHolidayModal = true">
+                                    <!--                                    <option value="Christmas">
+                                                                            Christmas
+                                                                        </option>
+                                                                        <option value="Columbus Day">
+                                                                            Columbus Day
+                                                                        </option>
+                                                                        <option value="Independence Day">
+                                                                            Independence Day
+                                                                        </option>
+                                                                        <option value="Labor">
+                                                                            Labor
+                                                                        </option>
+                                                                        <option value="Memorial Day">
+                                                                            Memorial Day
+                                                                        </option>
+                                                                        <option value="MLK Birthday">
+                                                                            MLK Birthday
+                                                                        </option>
+                                                                        <option value="New Year’s Day">
+                                                                            New Year’s Day
+                                                                        </option>
+                                                                        <option value="Thanks giving Day">
+                                                                            Thanks giving Day
+                                                                        </option>
+                                                                        <option value="Veterans Day">
+                                                                            Veterans Day
+                                                                        </option>
+                                                                        <option value="Washington’s Birthday">
+                                                                            Washington’s Birthday
+                                                                        </option>-->
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal 7 (Ajax Modal)-->
+<div class="modal fade" id="modal-7"  data-keyboard="false" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+                    ×
+                </button>
+                <h4 class="modal-title">
+                    Holiday Rate
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="payroll_settings_form" name="payroll_settings_form" role="form">
+                    <div class="row">
+                        <div style="width:100%; float:left;">
+                            <div class="col-sm-12">
+                                <strong>
+                                    You Have Selected 2 Rates
+                                </strong>
+                                <br>
+                                </br>
+                            </div>
+                            <div class="col-sm-12 ">
+                                <table cellspacing="0" class="table table-small-font table-bordered table-striped" style="margin-top:15px;" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="left">
+                                                Silky Door
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                The Absent Twilight
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-white" data-dismiss="modal" type="button">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Imported styles on this page -->
+<!--BOTTOM SCRIPTS START -->
+<script type="text/javascript">
+    function setValidationMessage(element) {
+        var elementName = element.getAttribute("name") + "-error";
+        var itemId = element.getAttribute("itemid");
+        $("#" + elementName).text('Please enter ' + itemId + '.');
+    }
+    function showAjaxModal()
+    {
+        jQuery('#modal-7').modal('show', {backdrop: 'static'});
+
+        setTimeout(function ()
+        {
+            jQuery.ajax({
+                url: "data/ajax-content.txt",
+                success: function (response)
+                {
+                    jQuery('#modal-7 .modal-body').html(response);
+                }
+            });
+        }, 800); // just an example
+    }
+</script>
+<script type="text/ng-template" id="modal-5">
+    <form class="validate form-horizontal" name="holidayRateForm" id="holiday_rate_form" >
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="holidayRateModal.cancel();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Select Date For {{holidayRateModal.holiday.name}}</h4>
+    </div>
+    <div class="modal-body">
+
+    <div class="row">
+    <div class="form-group">
+    <div class="col-sm-8 col-sm-offset-3">
+    <div id="holidayDate" style="margin-left:25px"></div>
+    </div>
+    </div>
+    </div>
+    <div class="row">
+    <div class="form-group">
+
+    <div class="col-sm-9 col-sm-offset-3">
+    <label class="checkbox-inline">
+    <input type="checkbox" ng-model="holidayRateModal.holiday.isRepeatAnnually">
+    Indicates holiday date repeats annually. 
+    </label>
+    </div>
+
+    </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="holidayRateModal.cancel();">Close</button>
+    <button type="button" class="btn btn-red" ng-show="holidayRateModal.showRemove" ng-click="holidayRateModal.remove();">Remove</button>
+    <button type="submit" class="btn btn-success" ng-click="holidayRateModal.save();">Save</button>
+    </div>
+    </form>
+</script>
+

@@ -1,0 +1,53 @@
+
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">Forms Setting</h1>
+            <p class="description"></p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal validate" novalidate="" ng-submit="formCtrl.saveFormSetting()" role="form" id='formsetting_form' name="formsetting_form">
+                        <div class="row adjust-row-padding">
+                            <div class="col-sm-2 element-align sm-flex-align">
+                            </div>
+                            <div class="col-sm-10">
+                                <div class="row">
+                                    <div class="">
+                                        <div class="form-group sm-layout-align">
+                                            <label for="formType" class="control-label col-sm-6">Form Type</label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="formType" 
+                                                    ng-model='formCtrl.formType' name="formType"
+                                                    ng-change="formCtrl.typeChange()"
+                                                    ng-options='form.id as (form.label) for form in formCtrl.formTypeList'>
+                                                    <option value="">Select the form type</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mar_top10" ng-show="formCtrl.formType == 'complaintform'">
+                                    <div class="form-group sm-layout-align">
+                                        <label for="field-101" class="col-sm-6 control-label">Complaint Policy Resolution Time - Days</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" name="complaintResDays" data-validate="required" data-message-required="Please enter resolution days" id="field-101" numbers-only="true" ng-model="formCtrl.complaintResDays" placeholder="Number of Days" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mar_top10" ng-show="formCtrl.formType">
+                                        <button class="btn btn-info green_bt pull-right" type="submit">Save</button>
+                                </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

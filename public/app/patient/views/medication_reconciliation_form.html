@@ -1,0 +1,334 @@
+<!--================== HEADER ====================-->
+<div class="row" ng-init="medOrder.dataInit()">
+<div class="col-sm-12">
+    <patient-breadcrumb patient="medRecon.patient" record-name="Patient Record - Medication Reconciliation"></patient-breadcrumb>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel">
+            <form name="myForm" class="form-horizontal validate" role="form" id="medication_reconciliation_form"
+                ng-submit="medRecon.submitForm()" novalidate="">
+                <div class="row hidden-print">
+                    <div class="col-sm-12">
+                        <button class="btn btn-info btn-single gray_bt pull-right"
+                            ng-click="medRecon.resetForm()" type="reset" >
+                            Reset To Default
+                        </button>
+                        <button ng-if="medRecon.medicalReconciliationForm.isDraft" class="btn btn-info btn-single gray_bt pull-right" ng-click="medRecon.submitDraft()" type="button">Save to Draft</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="visitDate">Visit Date</label>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <input class="form-control datepicker"
+                                data-format="mm/dd/yyyy" id="visitDate" name="visitDate" type="text"
+                                ng-model="medRecon.medicalReconciliationForm.visitDate" data-validate="required,date" max-date="medRecon.currentDate" 
+                                data-message-required="Please enter visit date"/>
+                            <div class="input-group-addon">
+                                <a href="#">
+                                    <i class="linecons-calendar">
+                                    </i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <!-- ADD MEDICATION -->
+                <div style="margin-block: 20px;" ng-repeat="med in medRecon.medicalReconciliationForm.medications track by $index">
+
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-9">
+                            <h4 class="">Medication # {{$index +  1}}</h4>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator" ></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="datePrescribed{{$index}}">Date Prescribed</label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input class="form-control datepicker"
+                                    data-format="mm/dd/yyyy" id="datePrescribed{{$index}}" name="datePrescribed{{$index}}" type="text"
+                                    ng-model="med.datePrescribed" data-validate="required,date" max-date="medRecon.currentDate" 
+                                    data-message-required="Please enter prescribed date for medication"/>
+                                <div class="input-group-addon">
+                                    <a href="#">
+                                        <i class="linecons-calendar">
+                                        </i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="medication{{$index}}"></label>
+                        <div ng-class="{'col-sm-9': !$last, 'col-sm-8': $last}">
+                            <input class='form-control col-lg-5 itemSearch{{$index}}' type='text'
+                            placeholder='Type to search item / For new select other' required
+                            ng-model="med.id"
+                            ng-change="medRecon.medicationChangePopulateCall($index, med, false)" />
+                        </div>
+
+                        <div class="col-sm-1" ng-if="$last">
+                            <button ng-if="$last" class="btn btn-info pull-right green_bt add_med_btn mar_rg0" type="button"
+                                ng-click="medRecon.addFdaMedication()">+</button>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Frequency</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="frequency{{$index}}" id="frequency{{$index}}" required
+                                data-validate="required" data-message-required="Please select frequency"
+                                ng-model="med.frequency"
+                                ng-change="med.frequency != 'Other'?  med.frquencyOther='' : med.frquencyOther" ng-options="freqOpt.key as (freqOpt.value) for freqOpt in medRecon.medicationFrequency">
+                                <option value="" selected hidden>Please select Frequency</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7" ng-show="med.frequency == 'Other'"></div> -->
+
+                    <div class="form-group" ng-if="med.frequency == 'Other'">
+                        <label for="frequencyOther{{$index}}" class="control-label col-sm-3"></label>
+                        <div class="col-md-9">
+                            <input type="text" id="frequencyOther{{$index}}" name="frequencyOther{{$index}}"
+                                ng-model="med.frquencyOther" class="form-control" placeholder="Please enter frequency"
+                                ng-required="med.frequency == 'Other' " data-validate="required" data-message-required="Please enter frequency">
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Frequency order
+                        </label>
+                        <div class="col-sm-9">
+                            <div>
+                                <label class="radio col-sm-3">
+                                    <input value="withMeals" name="freqOrder{{$index}}" id="freqOrder{{$index}}" type="radio" class="d-radio mar_top0" ng-model="med.freqOrder" />
+                                    With Meals
+                                </label>
+                                <label class=" radio col-sm-3">
+                                    <input value="onEmptyStomach" name="freqOrder{{$index}}" id="freqOrder{{$index}}" type="radio" class="d-radio mar_top0" ng-model="med.freqOrder" />
+                                    On empty stomach
+                                </label>
+                                <label class=" radio col-sm-3">
+                                    <input value="N/A" name="freqOrder{{$index}}" id="freqOrder{{$index}}" type="radio" class="d-radio mar_top0" ng-model="med.freqOrder" />
+                                    N/A
+                                </label>
+                                <label class=" checkbox col-sm-3">
+                                    <input name="freqOrderComments{{$index}}" id="freqOrderComments{{$index}}" type="checkbox" class="d-check mar_top0" ng-model="med.freqOrderComments" ng-change="med.freqOrderOther=''"/>
+                                    Additional comments
+                                </label>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <div class="form-group" ng-if="med.freqOrderComments == true ">
+                        <label for="freqOrderOther{{$index}}" class="control-label col-sm-3"></label>
+                        <div class="col-md-9">
+                            <input type="text" id="freqOrderOther{{$index}}" name="freqOrderOther{{$index}}"
+                                ng-model="med.freqOrderOther" class="form-control" placeholder="Please enter frequency order comments"
+                                ng-required="med.freqOrderComments == true" data-validate="required" data-message-required="Please enter comments" maxlength="20">
+                                <p class="length-message hidden-print" style="text-align: end; margin-top: 3px;">
+                                    {{med.freqOrderOther.length || 0}}/20
+                                </p>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                    <div class="form-group">
+                        <label for="routes{{$index}}" class="col-sm-3 control-label">Route</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="routes{{$index}}" id="routes{{$index}}" required
+                                data-validate="required" data-message-required="Please select route." ng-model="med.route" ng-options="routeOpt.key as (routeOpt.value) for routeOpt in medRecon.medicationRoutes">
+                                <option value="" hidden selected>Please select Route</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                    <div class="form-group">
+                        <label for="purpose{{$index}}" class="control-label col-sm-3">Purpose</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="purpose{{$index}}" name="purpose{{$index}}" class="form-control"
+                                ng-model="med.purpose">
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                    <div class="form-group">
+                        <label for="sideEffects{{$index}}" class="control-label col-sm-3">Side Effects</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="sideEffects{{$index}}" name="sideEffects{{$index}}" class="form-control"
+                                ng-model="med.sideEffects">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group-separator col-sm-9 col-sm-offset-3 mar_top7"></div>
+
+                    <div class="form-group">
+                        <label for="contraindication{{$index}}" class="control-label col-sm-3">Contraindication</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="contraindication{{$index}}" name="contraindication{{$index}}" class="form-control"
+                                ng-model="med.contraindication">
+                        </div>
+                    </div>
+
+
+                     <div class="row">
+                        <div class="col-sm-12">
+
+                            <button ng-if="$last" class="btn btn-info pull-right green_bt" type="button"
+                            ng-click="medRecon.addMedication($index+1)">+ Medication</button>
+
+                            <button class="btn btn-info btn-single delet_bt pull-right"
+                            ng-if="$last && medRecon.medicalReconciliationForm.medications.length > 1" type="button"
+                            ng-click="medRecon.removeMedication($index)">Remove</button>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+
+                    <!-- Allergies -->
+                    <div class="form-group">
+                        <label for="dmeSupplies" class="control-label col-sm-3">Allergies</label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class="radio col-sm-3" for="nkaAllergy">
+                                    <input class="d-radio" ng-change="medRecon.allergyChanged()" id="nkaAllergy" name="allergies" type="radio"
+                                        ng-model="medRecon.medicalReconciliationForm.allergies" value="nka" />
+                                    NKA
+                                </label>
+                                <label class="radio col-sm-3" for="enterOtherAllergies">
+                                    <input class="d-radio" ng-change="medRecon.allergyChanged()" id="enterOtherAllergies" name="allergies" type="radio"
+                                        ng-model="medRecon.medicalReconciliationForm.allergies" value="other" />
+                                    Enter Allergies
+                                </label>
+                                <label class="radio col-sm-3" for="unableToObtain">
+                                    <input class="d-radio" ng-change="medRecon.allergyChanged()" id="unableToObtain" name="allergies" type="radio"
+                                        ng-model="medRecon.medicalReconciliationForm.allergies" value="not-obtained" />
+                                    Unable To Obtain
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Others Allergies input field -->
+                    <div class="form-group" ng-show="medRecon.medicalReconciliationForm.allergies == 'other'">
+                        <label for="otherAllergies" class="control-label col-sm-3">Other Allergies</label>
+                        <div class="col-sm-9">
+                            <input id="otherAllergies" name="otherAllergies" type="text" class="form-control"
+                                ng-model="medRecon.medicalReconciliationForm.otherAllergies" data-role="tagsinput" tagsinput />
+                        </div>
+                    </div>
+                    <!--  information Source -->
+                    <div class="form-group" ng-if="medRecon.medicalReconciliationForm.allergies == 'other'">
+                        <label for="informationSource" class="control-label col-sm-3">Information Source</label>
+                        <div class="col-sm-9">
+                            <select name="informationSource" id="information_source" class="form-control" ng-model="medRecon.medicalReconciliationForm.allergyInfoSource" required>
+                             <option value="" selected disabled>-- Select One --</option>
+                             <option value="Self">Self</option>
+                             <option value="PCP">PCP</option>
+                             <option value="Medical Records">Medical Records</option>
+                             <option value="Proxy">Proxy</option>
+                         </select>
+                        </div>
+                    </div>
+
+                   <!-- Unable To Obtain input field -->
+                    <div class="form-group" ng-if="medRecon.medicalReconciliationForm.allergies == 'not-obtained'">
+                        <label for="UnableToObtain" class="control-label col-sm-3">Unable To Obtain</label>
+                        <div class="col-sm-9">
+                            <input id="Unable_To_Obtain" required name="unableToObtain" type="text" class="form-control"
+                                maxlength="14" placeholder="Enter Reason" ng-model="medRecon.medicalReconciliationForm.allergyMissingReason"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group-separator  mar_top7"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        Medication Education
+                    </label>
+                    <div class="col-sm-9">
+                        <div style="padding-left: 5px;">
+                            <label class="checkbox col-sm-3" ng-repeat="education in medRecon.medEducationOptionsKeyValue">
+                                <input class="mar_top0 d-check" id="education{{$index}}" name="education{{$index}}" type="checkbox" ng-model="education.value" value="true"/>
+                                {{education.key}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group-separator  mar_top7"></div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Note</label>
+                    <div class="col-sm-9">
+                        <textarea name="medicationNote" id="medicationNote" class="form-control" id="" cols="30"
+                            rows="5" ng-model="medRecon.medicalReconciliationForm.nurseNote"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group-separator  mar_top7"></div>
+
+                <div class="form-group">
+                    <label for="" class="col-sm-3 control-label">Nurse Signature</label>
+                    <div class="col-sm-9">
+                        <signature-pad width="550" height="175" class=""
+                            ng-class="(medRecon.medicalReconciliationForm.nurseSignature  == '' || medRecon.medicalReconciliationForm.nurseSignature  == null) && medRecon.showSignError ? 'border-danger-1':'punch-time-input'"
+                            dataurl="medRecon.medicalReconciliationForm.nurseSignature" clear="clear"></signature-pad>
+                        <button type="button" class="btn btn-default mar_top7 btn-default-bootstrap"
+                            ng-click="clear(); medRecon.clearNurseSignature()" ng-disabled="!medRecon.medicalReconciliationForm.nurseSignature">Clear signature</button>
+                            <div class="" ng-if="(medRecon.medicalReconciliationForm.nurseSignature  == '' || medRecon.medicalReconciliationForm.nurseSignature  == null) && medRecon.showSignError">
+                                <span class="validate-has-error">
+                                    Please enter signature
+                                </span>
+                            </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group-separator mar_top7"></div>
+
+                <div class="form-group">
+                    <label for="" class="col-sm-3 control-label">Patient Signature</label>
+                    <div class="col-sm-9">
+                        <signature-pad width="550" height="175" class="punch-time-input"
+                            dataurl="medRecon.medicalReconciliationForm.patientSignature" clear="clearPatientSignature"></signature-pad>
+                        <button type="button" class="btn btn-default mar_top7 btn-default-bootstrap"
+                            ng-click="clearPatientSignature(); medRecon.clearPatientSignature()" >Clear signature</button>
+                    </div>
+                </div>
+
+                <div class="form-group-separator  mar_top7"></div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-info green_bt pull-right" type="submit">Save</button>
+                        <button ng-if="medRecon.medicalReconciliationForm.isDraft" class="btn btn-info btn-single gray_bt pull-right" ng-click="medRecon.submitDraft()" type="button">Save to Draft</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

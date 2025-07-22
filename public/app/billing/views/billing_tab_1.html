@@ -1,0 +1,336 @@
+<div class="page-body"> 
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">Manual Claim 1500</h1>
+            <p class="description">Generates Bills And EDI For Each Payer</p>
+        </div>
+    </div>
+    <form class="form-wizard validate" id="rootwizard" novalidate="" role="forl">
+        <ul class="tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#/app/billing_tab_1">
+                    Patient Information
+                    <span>
+                        1
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#/app/billing_tab_2">
+                    Insured Information
+                    <span>
+                        2
+                    </span>
+                </a>
+            </li>
+           
+        </ul>
+        <div class="progress-indicator">
+            <span>
+            </span>
+        </div>
+    </form>
+    <!--PAGE TITLE END -->
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body pad_top0">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <form class="form-horizontal" id="add_patient_tab_1_form" name="add_patient_tab_1_form" role="form">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="pull-right btn-process">
+                                                    <button type="button" class="btn btn-info btn-single  pull-right">Process</button>
+                                                </div>
+                                                <button class="btn btn-info green_bt pull-right" type="submit">
+                                                    Save Changes
+                                                </button>
+                                                <button class="btn btn-info btn-single gray_bt pull-right" type="reset">
+                                                    Reset To Default
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Payor
+                                            </label>
+
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="payor" name="payor">
+                                                    <option value="">Select</option>
+
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Group
+                                            </label>
+
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="group" name="group">
+                                                    <option value="">Select</option>
+                                                    <option value="MEDICARE">MEDICARE</option>
+                                                    <option value="MEDICARE">MEDICAID</option>
+                                                    <option value="MEDICARE">TRICARE CHAMPUS</option>
+                                                    <option value="MEDICARE">CHAMPVA</option>
+                                                    <option value="MEDICARE">GROUP HEALTH PLAN</option>
+                                                    <option value="MEDICARE">FECA BLK LUNG</option>
+                                                    <option value="MEDICARE">BLUE CROSS</option>
+                                                    <option value="MEDICARE">BLUE SHEILD</option>
+                                                    <option value="MEDICARE">BCBS</option>
+                                                    <option value="MEDICARE">OTHER</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-29">
+                                                Patient's Name
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input placeholder="First Name" class="form-control" id="field-29" name="FirstInitial" type="text">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input placeholder="Middle Name" class="form-control" id="field-29" name="MiddleInitial" type="text">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input placeholder="Last Name" class="form-control" id="field-29" name="LastInitial" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-32">
+                                                Date of Birth
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group" >
+                                                    <input class="form-control datepicker" data-format="mm/dd/yyyy" id="field-32" name="DateofBirth" type="text" >
+                                                    </input>
+                                                    <div class="input-group-addon">
+                                                        <a href="#">
+                                                            <i class="linecons-calendar">
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Gender
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <label class="cbr-inline">
+                                                        <input checked="" class="cbr cbr-primary" name="radio-2" type="radio">
+                                                        Male
+                                                        </input>
+                                                    </label>
+                                                    <label class="cbr-inline">
+                                                        <input class="cbr cbr-primary" name="radio-2" type="radio">
+                                                        Female
+                                                        </input>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-28">
+                                                Address
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input placeholder="Street" class="form-control" id="streen" name="street" type="text" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-28">
+                                                City
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="city" name="city" type="text" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-28">
+                                                {{terminologyBank.state}}
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control" id="state" name="state">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-33">
+                                                Zip
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="zip" name="zip" type="text">
+                                                </input>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-33">
+                                                Phone
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="field-33" name="Phone" type="text">
+                                                </input>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">
+                                                Patient Relationship To Insured 
+                                            </label>
+                                            <div class="input-group col-sm-9 col-xs-12">
+                                                <label class="col-md-3 col-xs-3 sm-radio-btn-align">
+                                                    <input checked="" class="cbr cbr-primary" name="relation" type="radio">
+                                                    Self
+                                                    </input>
+                                                </label>
+                                                <label class="col-md-3 col-xs-3 sm-radio-btn-align">
+                                                    <input class="cbr cbr-primary" name="relation" type="radio">
+                                                    Spouse
+                                                    </input>
+                                                </label>
+                                                <label class="col-md-3 col-xs-3 sm-radio-btn-align">
+                                                    <input class="cbr cbr-primary" name="relation" type="radio">
+                                                    Child
+                                                    </input>
+                                                </label>
+                                                <label class="col-md-3 col-xs-3 sm-radio-btn-align">
+                                                    <input class="cbr cbr-primary" name="relation" type="radio">
+                                                    Other
+                                                    </input>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-33">
+                                                Is Patient's Condition Related To
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class="col-md-7 element-align">
+                                                <div class="row">
+                                                    <label class="col-sm-5 form-control-static" for="field-33">
+                                                        Employment?
+                                                    </label>
+                                                    <div class="col-sm-7">
+                                                        <div class="input-group">
+                                                            <label class="cbr-inline">
+                                                                <input checked="" class="cbr cbr-primary" name="employment" type="radio">
+                                                                Yes
+
+                                                            </label>
+                                                            <label class="cbr-inline">
+                                                                <input class="cbr cbr-primary" name="employment" type="radio">
+                                                                No
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">    
+                                                    <label class="col-sm-5 form-control-static" for="field-33">
+                                                        Auto Accident? 
+                                                    </label>
+                                                    <div class="col-sm-7">
+                                                    
+                                                                <div class="input-group">
+                                                                    <label class="cbr-inline">
+                                                                        <input checked="" class="cbr cbr-primary" name="employment" type="radio">
+                                                                        Yes
+                                                                    </label>
+                                                                    <label class="cbr-inline">
+                                                                        <input class="cbr cbr-primary" name="employment" type="radio">
+                                                                        No
+                                                                    </label>
+                                                                </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">        
+                                                    <label class="col-sm-5 form-control-static" for="field-33">
+                                                        Other Accident? 
+                                                    </label>
+                                                    <div class="col-sm-7">
+                                                        <div class="input-group">
+                                                            <label class="cbr-inline">
+                                                                <input checked="" class="cbr cbr-primary" name="employment" type="radio">
+                                                                Yes
+
+                                                            </label>
+                                                            <label class="cbr-inline">
+                                                                <input class="cbr cbr-primary" name="employment" type="radio">
+                                                                No
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>    
+                                                </div>
+                                                <div class="col-md-5 element-align">
+                                                    <select class="form-control" id="state" name="state">
+                                                        <option value="">Select {{terminologyBank.state}}</option>
+                                                    </select>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        
+
+                                        <div class="form-group-separator">
+                                        </div>
+                                         <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="field-28">
+                                                Claim Codes 
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input class="form-control" id="claimCodes" name="claimCodes" type="text" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group-separator"></div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <button class="btn btn-info green_bt pull-right" style="width:auto;" type="submit">
+                                                    Next »
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        cbr_replace();
+    });
+</script>

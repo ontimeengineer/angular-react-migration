@@ -1,0 +1,100 @@
+<div class="page-body" ng-init="addEmployee.pageInitCall()">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">
+                {{addEmployee.editMode?'Update Employee':'Add Employee'}}
+            </h1>
+            <p class="description">
+                {{addEmployee.editMode?'Update An Employee Record By Entering Employee Information':'Create An Employee Record By Entering Employee Information'}}
+            </p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <!-- FORM WIZARD WITH VALIDATION START HERE-->
+    <script type="text/javascript">
+        jQuery(document).ready(function($)
+        {
+            $(".multi-select").multiSelect({
+                afterInit: function()
+                {
+                    // Add alternative scrollbar to list
+                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                },
+                afterSelect: function()
+                {
+                    // Update scrollbar size
+                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                }
+            });
+
+            $(".selectboxit").selectBoxIt().on('open', function()
+            {
+                // Adding Custom Scrollbar
+                $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+            });
+        });
+    </script>
+    <form class="form-wizard" dirty="addEmployee.formDirty" selectedtab="tabNo" novalidate="" role="form">
+        <ul class="tabs">
+            <li class="{{tabNo==1?'active':''}}">
+                <a data-toggle="tab" href="" ng-click="addEmployee.navigateToTab($event,'tab1')" style="{{!addEmployee.editMode?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa-user"></i></div> 
+                    <div class="hidden-xs">Employee Details</div>
+                    <span>
+                        1
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==2?'active':''}}" ng-if="hasAccess('VIEW_EMPLOYEE_WAGES')">
+                <a data-toggle="tab" href="" ng-click="addEmployee.navigateToTab($event,'tab2')" 
+                   style="{{(!addEmployee.editMode || (!hasAccess('HR_EDIT_EMPLOYEE') && !hasAccess('CREATE_EMPLOYEE')))?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa fa-credit-card"></i></div> 
+                    <div class="hidden-xs">Compensation & Benefits</div>
+                    
+                    <span>
+                        2
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==3?'active':''}}">
+                <a data-toggle="tab" href=""  ng-click="addEmployee.navigateToTab($event,'tab3')" 
+                   style="{{(!addEmployee.editMode || (!hasAccess('HR_EDIT_EMPLOYEE') && !hasAccess('CREATE_EMPLOYEE')))?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa fa-location-arrow"></i></div> 
+                    <div class="hidden-xs">Location Information</div>
+                    <span>
+                        {{hasAccess('VIEW_EMPLOYEE_WAGES')?3:2}}
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==4?'active':''}}">
+                <a data-toggle="tab" href=""  ng-click="addEmployee.navigateToTab($event,'tab4')" 
+                   style="{{(!addEmployee.editMode || (!hasAccess('HR_EDIT_EMPLOYEE') && !hasAccess('CREATE_EMPLOYEE')))?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa fa-upload"></i></div> 
+                    <div class="hidden-xs">Upload Employee Documents</div>
+                    <span>
+                        {{hasAccess('VIEW_EMPLOYEE_WAGES')?4:3}}
+                    </span>
+                </a>
+            </li>
+        </ul>
+        <div class="progress-indicator">
+            <span>
+            </span>
+        </div>
+        <div ui-view></div>
+    </form>
+</div>
+<!-- FORM WIZARD WITH VALIDATION END HERE-->
+
+<script type="text/javascript">
+    // validate
+    customJqueryValidation();
+    jQuery(document).ready(function($) {
+        setTimeout(function() {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+
+
+    });// ready 
+</script>

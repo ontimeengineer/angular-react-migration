@@ -1,0 +1,255 @@
+
+<div class="page-body"> <!--TOP BAR MENU PANEL START -->
+
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">View Employee Information</h1>
+            <p class="description">View All Employee Information</p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li ui-sref="app.employee-list({status:'active'})" class="{{viewEmployee.viewType=='active'?'active':''}}">
+                    <a href="" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa-user">+</i></span> <span class="hidden-xs">Active Employee</span> 
+                    </a>
+                </li>
+                <li ui-sref="app.employee-list({status:'inactive'})" class="{{viewEmployee.viewType=='inactive'?'active':''}}">
+                    <a href="" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa-user">x</i></span> <span class="hidden-xs">Inactive Employees</span> 
+                    </a>
+                </li>
+                <li ui-sref="app.employee-list({status:'all'})" class="{{viewEmployee.viewType=='all'?'active':''}}">
+                    <a href="" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa fa-users"></i></span> <span class="hidden-xs">All Employees</span> 
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content" style="padding-bottom:0px;">
+                <div id="home" class="tab-pane active">
+
+                    <div class="panel-body">
+                        <div class="panel-body pad_top0 pad0">
+                            <div class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="table-responsive scroll" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
+
+
+                                    <script type="text/javascript">
+//                                        jQuery(document).ready(function($)
+//                                        {
+//                                            $("#example-1").dataTable({
+//                                                aLengthMenu: [
+//                                                    [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]
+//                                                ]
+//                                            });
+//                                        });
+                                    </script>
+
+                                    <table id="example-1" ng-if="viewEmployee.employeeList.length" datatable-setup class="table table-striped table-bordered  table table-small-font table-bordered table-striped" cellspacing="0" datatable-obj="viewEmployee.datatableObj">
+                                        <thead>
+                                            <tr>
+                                                <th width="30%" colspan="1" rowspan="1" tabindex="0">Name & Role</th>
+                                                <th width="20%" colspan="1" rowspan="1" tabindex="0" class='nosorting'>Phone</th>
+                                                <th width="20%" colspan="1" rowspan="1" tabindex="0" class='nosorting'>Address</th>
+                                                <th width="15%" colspan="1" rowspan="1" tabindex="0">Languages Spoken</th>
+                                                <th width="15%" data-priority="6" class='nosorting'>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="emp in viewEmployee.employeeList">
+                                                <th> 
+                                        <div class="user_panel" ng-click="viewEmployee.openEditModal(emp, 'modal-5')" style="cursor: pointer">
+                                            <div ng-if="emp.profileImage != null && emp.profileImage != ''" class="user_img"> 
+                                                <img alt="user" class="img-cirlce img-responsive" imageonload="hideDefaultImage" src="assets/images/user-5.png" ng-src="{{(emp.profileImage != null && emp.profileImage != '') ? (amazonPublicUrl + viewEmployee.companyCode + '/' + emp.profileImage) : ('assets/images/user-5.png')}}"> 
+                                                <img alt="user" class="img-cirlce img-responsive" ng-hide="hideDefaultImage" src="assets/images/loading.gif"/>
+                                            </div>
+                                            <div ng-if="emp.profileImage == null || emp.profileImage == ''" class="user_img"> 
+                                                <img alt="user" class="img-cirlce img-responsive" src="assets/images/user-5.png"> 
+                                            </div>
+                                            <div class="emp_user_hd">
+                                                <div class="emp_user_name">{{emp.lName}}, {{emp.fName}} {{emp.middleInitial}}</div>
+                                                <p>{{positions[emp.companyPositionId]}}</p>
+                                            </div>
+                                        </div>
+                                        </th>
+                                        <td>{{emp.phone| tel}}</td>
+                                        <td>
+                                            <div>{{emp.address1}}</div> <div ng-if="emp.address2 != null">{{emp.address2}}</div> {{emp.city}}, {{emp.state}}, {{emp.zipcode}}
+                                        </td>
+                                        <td>{{viewEmployee.getLanguagesFromCode(emp.languageSpoken)}}</td>
+                                        <td>
+                                            <div class="center">
+                                                <a class="btn icon-left fa fa-pencil edit_button" href="" ng-click="viewEmployee.edit(emp)" tooltip="Edit"><span class="ed_b"></span></a> 
+                                                <a class="btn icon-left fa fa-trash-o delete_button" href="" ng-click="viewEmployee.openDeleteModal(emp, 'deleteModel')" tooltip="Delete"><span class="ed_b"></span></a>
+                                                <a class="btn icon-left fa fa-ban deactivate_bt" href="" ng-if="emp.status == 'a'" ng-click="viewEmployee.openDeactivateModal(emp, 'deactivateModel')" tooltip="Deactivate"><span class="ed_b"></span></a>
+                                                <a class="btn icon-left fa fa-check edit_button" href="" ng-if="emp.status == 'i'" ng-click="viewEmployee.openActivateModal(emp, 'activateModel')" tooltip="Activate"><span class="ed_b"></span></a>
+                                            </div>
+                                        </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <script type="text/javascript">
+                                    // This JavaScript Will Replace Checkboxes in dropdown toggles
+                                    jQuery(document).ready(function($)
+                                    {
+                                        setTimeout(function()
+                                        {
+                                            $(".checkbox-row input").addClass('cbr');
+                                            cbr_replace();
+                                        }, 0);
+                                    });
+                                </script>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="modal-5">
+    <div class="modal-body">
+    <div class="row">
+    <div class="user_panel col-md-12">
+    <div class="user_img"> 
+        <img alt="user" class="img-cirlce img-responsive" src="assets/images/user-5.png" ng-src="{{(selectEmployeeModel.employee.profileImage!=null && selectEmployeeModel.employee.profileImage!='') ?(amazonPublicUrl+selectEmployeeModel.companyCode+'/'+selectEmployeeModel.employee.profileImage):('assets/images/user-5.png')}}"> </div>
+    <div class="emp_user_hd">
+    <div class="emp_user_name">{{selectEmployeeModel.employee.lName}}, {{selectEmployeeModel.employee.fName}} {{selectEmployeeModel.employee.middleInitial}}</div>
+    <p>{{positions[selectEmployeeModel.employee.companyPositionId]}}</p>
+    </div>
+    <button type="button" class="close" ng-click="selectEmployeeModel.close();" aria-hidden="true">&times;</button>
+    </div>
+
+    </div>
+    <hr/>
+    <div class="row">
+    <div class="col-md-12">
+
+    <div class="form-group">
+    <label for="field-1" class="control-label col-md-4"><strong>Position</strong></label>
+    <div class="col-md-8">
+    {{positions[selectEmployeeModel.employee.companyPositionId]}} 
+    </div>
+    </div>	
+
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+
+    <div class="form-group">
+    <label for="field-1" class="control-label col-md-4"><strong>Phone Number</strong></label>
+    <div class="col-md-8">
+    {{selectEmployeeModel.employee.phone | tel}} 
+    </div>
+    </div>	
+
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+
+    <div class="form-group">
+    <label for="field-1" class="control-label col-md-4"><strong>Address</strong></label>
+    <div class="col-md-8">
+    {{selectEmployeeModel.employee.address1}}<div ng-if="selectEmployeeModel.employee.address2 != null">{{selectEmployeeModel.employee.address2}}</div><div>  {{selectEmployeeModel.employee.city}}, {{selectEmployeeModel.employee.state}}, {{selectEmployeeModel.employee.zipcode}}</div>
+    </div>
+    </div>	
+
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+
+    <div class="form-group">
+    <label for="field-1" class="control-label col-md-4"><strong>Date Of Birth</strong></label>
+    <div class="col-md-8">
+    {{selectEmployeeModel.employee.dateOfBirth|date :dateFormat}} 
+    </div>
+    </div>	
+
+    </div>
+    </div>
+    <div class="row">
+    <div class="col-md-12">
+
+    <div class="form-group">
+    <label for="field-1" class="control-label col-md-4"><strong>{{terminologyBank.ssn}} Number</strong></label>
+    <div class="col-md-8">
+    {{selectEmployeeModel.employee.ssn | ssn}} 
+    </div>
+    </div>	
+
+    </div>
+    </div>
+    <div class="form-group">
+    <label for="field-1" class="control-label col-md-4"><strong>Languages Spoken</strong></label>
+    <div class="col-md-8">
+    <span ng-if="selectEmployeeModel.employee.languageSpoken== null || selectEmployeeModel.employee.languageSpoken.length==0">N/A</span>
+    <span ng-repeat="language in selectEmployeeModel.employee.languageSpoken">{{languages[language]}}
+    <label ng-if="$index<selectEmployeeModel.employee.languageSpoken.length-1">, </label>
+    </span>
+    </div>
+    </div>	
+
+    </div>
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="selectEmployeeModel.close();">Close</button>
+    </div>
+</script>
+<script type="text/ng-template" id="deleteModel">
+    <div class="modal-header">		
+    <h4 class="modal-title">{{deleteEmployeeModel.employee.lName}} {{deleteEmployeeModel.employee.fName}} {{deleteEmployeeModel.employee.middleInitial}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to delete this Employee?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="deleteEmployeeModel.delete(deleteEmployeeModel.employee);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="deleteEmployeeModel.dismiss();">No</button>
+    </div>
+</script>
+<script type="text/ng-template" id="deactivateModel">
+    <div class="modal-header">		
+    <h4 class="modal-title">{{deactivateEmployeeModel.employee.lName}} {{deactivateEmployeeModel.employee.fName}} {{deactivateEmployeeModel.employee.middleInitial}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to deactivate this Employee?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="deactivateEmployeeModel.deactivate(deactivateEmployeeModel.employee);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="deactivateEmployeeModel.dismiss();">No</button>
+    </div>
+</script>
+<script type="text/ng-template" id="activateModel">
+    <div class="modal-header">		
+    <h4 class="modal-title">{{activateEmployeeModel.employee.lName}} {{activateEmployeeModel.employee.fName}} {{activateEmployeeModel.employee.middleInitial}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to activate this Employee?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="activateEmployeeModel.activate(activateEmployeeModel.employee);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="activateEmployeeModel.dismiss();">No</button>
+    </div>
+</script>

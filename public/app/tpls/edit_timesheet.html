@@ -1,0 +1,155 @@
+<div class="page-body">
+ <!--PAGE TITLE START -->
+ <div class="page-title">
+  <div class="title-env">
+   <h1 class="title">
+    Edit Timesheet
+   </h1>
+   <p class="description">
+    Edit The Punch Record Of Employee In Case Of Errors
+   </p>
+  </div>
+ </div>
+ <!--PAGE TITLE END -->
+ <!-- FORM WIZARD WITH VALIDATION START HERE-->
+ <div class="row">
+  <div class="col-sm-12">
+   <div class="panel panel-default">
+    <div class="panel-body">
+     <form class="form-horizontal" id="edit_timesheet_form" name="edit_timesheet_form" role="form">
+      <div class="row">
+       <div class="col-sm-12">
+        <button class="btn btn-info green_bt pull-right" type="submit">
+         Save Changes
+        </button>
+        <button class="btn btn-info btn-single gray_bt pull-right" type="reset">
+         Reset To Default
+        </button>
+       </div>
+      </div>
+      <div class="form-group-separator">
+      </div>
+      <div class="form-group">
+       <label class="col-sm-3 control-label">
+        Patient Name
+       </label>
+       <div class="col-sm-9">
+        <script type="text/javascript">
+         // jQuery(document).ready(function($)
+         //            {
+         //              $("#sboxit-1").selectBoxIt().on('open', function()
+         //              {
+         //                // Adding Custom Scrollbar
+         //                $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+         //              });
+         //            });
+        </script>
+        <select class="form-control" id="sboxit-1" name="PatientName">
+         <option value="">
+          Select
+         </option>
+         <option value="1">
+          1
+         </option>
+        </select>
+       </div>
+      </div>
+      <div class="form-group-separator">
+      </div>
+      <div class="form-group">
+       <label class="col-sm-3 control-label" for="field-62">
+        Punch In Time
+       </label>
+       <div class="col-sm-9">
+        <div class="input-group input-group-minimal">
+         <input class="form-control timepicker" data-default-time="11:25 AM" data-minute-step="5" data-second-step="5" data-show-meridian="true" data-show-seconds="true" data-template="dropdown" id="field-62" name="PunchInTime" type="text"/>
+         <div class="input-group-addon">
+          <a href="#">
+           <i class="linecons-clock">
+           </i>
+          </a>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="form-group-separator">
+      </div>
+      <div class="form-group">
+       <label class="col-sm-3 control-label" for="field-63">
+        Punch Out Time
+       </label>
+       <div class="col-sm-9">
+        <div class="input-group input-group-minimal">
+         <input class="form-control timepicker" data-default-time="11:25 AM" data-minute-step="5" data-second-step="5" data-show-meridian="true" data-show-seconds="true" data-template="dropdown" id="field-63" name="PunchOutTime" type="text"/>
+         <div class="input-group-addon">
+          <a href="#">
+           <i class="linecons-clock">
+           </i>
+          </a>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="form-group-separator">
+      </div>
+      <div class="form-group">
+       <label class="col-sm-3 control-label" for="field-64">
+        Date
+       </label>
+       <div class="col-sm-9">
+        <div class="input-group">
+         <input class="form-control datepicker" data-format="mm/dd/yyyy" id="field-64" name="Date" type="text">
+          <div class="input-group-addon">
+           <a href="#">
+            <i class="linecons-calendar">
+            </i>
+           </a>
+          </div>
+         </input>
+        </div>
+       </div>
+      </div>
+      <div class="form-group-separator">
+      </div>
+     </form>
+    </div>
+   </div>
+  </div>
+ </div>
+ <!-- FORM WIZARD WITH VALIDATION END HERE-->
+</div>
+<script type="text/javascript">
+   // validate
+   customJqueryValidation();
+    jQuery(document).ready(function($) {
+        setTimeout(function() {
+            $(".fade-in-effect").addClass('in');
+         }, 1);
+
+
+        // Validation
+        $("#edit_timesheet_form").validate({
+rules: {Date: {required: true, ontimedate: true},
+PunchInTime: {required: true},
+PunchOutTime: {required: true},
+PatientName: {required: true},
+},
+
+messages: {Date: {required: 'Please enter Date.'},
+PunchInTime: {required: 'Please enter Punch In Time.'},
+PunchOutTime: {required: 'Please enter Punch Out Time.'},
+PatientName: {required: 'Please select Patient Name.'},
+},
+
+errorPlacement: function(error, element) {
+    if (element.attr("name") == "Date") {
+      error.insertAfter($(element).parent());
+    } else {
+      error.insertAfter(element);
+    }
+  },
+
+});// validate
+
+ });// ready 
+</script>

@@ -1,0 +1,1064 @@
+<div class="page-body" ng-init="addEmployee.pageInitCall()">
+    <!--PAGE TITLE START -->
+    <div class="page-title" style="background-color: black !important; color: white;
+         z-index: 100; position: sticky; top: 0px; width: 100%">
+        <div class="title-env">
+            <div class="row" style="background-color: black !important; color: white; padding: 5px;"> 
+                <div class="col-md-6 pull-right">
+                    <img src="assets/images/logo@2x.png" alt="" width="130" style="
+                         align-content: right;
+                         float: right;
+                         padding: 10px;
+                         ">
+                </div>
+                <div class="col-md-6 pull-left">
+                    <h3>
+                        Application Details
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <!-- FORM WIZARD WITH VALIDATION START HERE-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal validate" id="add_employee_form" name="add_employee_form" role="form" >
+                        <fieldset ng-disabled="addEmployee.viewOnly">
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div >
+                                        <div class="user_p">
+                                            <img alt="user" class="img-cirlce img-responsive" ng-show="addEmployee.hideLoadingImage && !addEmployee.disableProfileUploadButton" imageonload="addEmployee.hideLoadingImage" ng-src="{{(addEmployee.employee.profileImage != null && addEmployee.employee.profileImage != '') ? (amazonPublicUrl + addEmployee.companyCode + '/' + addEmployee.employee.profileImage) : ('assets/images/user-5.png')}}"/>
+                                            <img alt="user" class="img-cirlce img-responsive" ng-show="!addEmployee.hideLoadingImage || addEmployee.disableProfileUploadButton" src="assets/images/loading.gif"/>
+                                        </div>
+                                        <div class="user_p_hd">
+                                            <h1>
+                                                {{addEmployee.employee.fName}}
+                                            </h1>
+                                            <p>
+                                                {{addEmployee.employee.lName}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 pull-right"  ng-if="!addEmployee.viewOnly" >
+                                    <button class="btn btn-success mar_rg5 mar_lf5 mar_rg5 pull-right" type="submit" ng-click="addEmployee.submitForm('save')"
+                                            ng-disabled="addEmployee.disableSaveButton" ng-if="addEmployee.adminLogin">
+                                        Save
+                                    </button>
+                                    <button class="btn btn-black mar_rg5 pull-right" type="submit" ng-if="addEmployee.employee.status != null && addEmployee.employee.status !== 'submitted'" ng-click="addEmployee.submitForm('submit')"
+                                            ng-disabled="addEmployee.disableSaveButton">
+                                        Save & Submit
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-12 control-label">All fields marked with an asterisk (*) are mandatory</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Position Title
+                                </label>
+                                <div class="col-sm-9  form-control-static">
+                                    {{addEmployee.employee.positionTitle}}
+                                </div>
+                            </div>
+                            <div class="form-group-separator"  ng-if="addEmployee.employee.status != null && addEmployee.employee.status !== 'inprogress' && addEmployee.adminLogin">
+                            </div>
+                            <div class="form-group"  ng-if="addEmployee.employee.status != null && addEmployee.employee.status !== 'inprogress' && addEmployee.adminLogin">
+                                <label class="col-sm-3 control-label">
+                                    Application Date
+                                </label>
+                                <div class="col-sm-9  form-control-static">
+                                    {{addEmployee.employee.submittedDate}}
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    First Name *
+                                </label>
+                                <div class="col-sm-3">
+                                    <input charactersonly class="form-control" name="FirstName" type="text" maxlength="100" 
+                                           ng-model="addEmployee.employee.fName"
+                                           data-validate="required" data-message-required="Please enter First Name."/>
+                                </div>
+                                <label class="col-sm-3 control-label" for="field-29">
+                                    Middle Initial
+                                </label>
+                                <div class="col-sm-3">
+                                    <input charactersonly class="form-control" id="field-29" name="MiddleInitial" maxlength="50" 
+                                           type="text" ng-model="addEmployee.employee.middleInitial"/>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Last Name *
+                                </label>
+                                <div class="col-sm-9">
+                                    <input charactersonly class="form-control" name="LastName" type="text" maxlength="100" ng-model="addEmployee.employee.lName"
+                                           data-validate="required" data-message-required="Please enter Last Name."/>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+
+                            <div class="form-group" >
+                                <div flow-init="addEmployee.profileUploadFile" flow-file-added="addEmployee.profileFileAdded($file, $flow)" flow-file-success="addEmployee.profileFileUploaded($message,$file,$flow)" flow-files-submitted="addEmployee.profileFileSelected($file,$flow)" flow-file-error="addEmployee.profileFileError( $file, $message, $flow )"> 
+                                    <div class="modal fade" id="cropper-example-2-modal"  data-keyboard="false" >
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Crop Image</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-8" id="cropper-example-2">
+                                                            <img flow-img="$flow.files[0]" style="height: 403px;left: 0px;top: 0px;width: 537px;"/>
+                                                            <!--<img src="img/picture.jpg" alt="Picture">-->
+
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div>
+                                                                Preview:
+                                                            </div>
+                                                            <div class="img-preview preview-lg">
+                                                                <img flow-img="$flow.files[0]" style="height: 201px;left: 0px;top: 0px;width: 268px;"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-8">
+                                                            <div class="vertical-top  pull-right">
+                                                                <button class="btn btn-icon btn-primary" data-method="zoom" data-option="0.1" type="button" tooltip="Zoom In" ng-click="addEmployee.zoomIn()" >
+                                                                    <span class="docs-tooltip" >
+                                                                        <i class="fa fa-search-plus"></i>
+                                                                    </span>
+                                                                </button> 
+                                                                <button class="btn btn-icon btn-primary" data-method="zoom" data-option="-0.1" type="button" tooltip="Zoom Out" ng-click="addEmployee.zoomOut()">
+                                                                    <span class="docs-tooltip" >
+                                                                        <i class="fa fa-search-minus"></i>
+                                                                    </span>
+                                                                </button> 
+                                                                <button class="btn btn-icon btn-primary" data-method="zoom" data-option="-0.1" type="button" tooltip="Reset" ng-click="addEmployee.reset()">
+                                                                    <span class="docs-tooltip" >
+                                                                        <i class="fa fa-refresh"></i>
+                                                                    </span>
+                                                                </button> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info" ng-click="addEmployee.crop();">Crop</button>
+                                                    <button type="button" class="btn btn-white" ng-click="addEmployee.closeCropModal();">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-3 control-label">
+                                        Profile Image
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <button type='button' class='btn btn-single gray_bt' id="ProfileImage" style="margin-bottom:0px !important" ng-model="addEmployee.employee.profileImage" flow-btn name="ProfileImage" ng-disabled="addEmployee.disableProfileUploadButton">Choose File</button>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <label class="control-label" ng-show="addEmployee.employee.profileImage != null" >
+                                                    <a style="color: blue;text-decoration: underline" ng-href="{{amazonPublicUrl + addEmployee.companyCode}}/{{addEmployee.employee.profileImage}}">profile image{{addEmployee.employee.profileImage|extension}}</a>
+                                                    <a href=""><i class="fa fa-close" ng-click="addEmployee.clearProfileImage()"></i></a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div ng-show="addEmployee.profileFileObj.errorMsg != null && addEmployee.profileFileObj.errorMsg != ''">
+                                                <span class="red">{{addEmployee.profileFileObj.errorMsg}}</span>
+                                            </div> 
+                                        </div>
+                                        <div flow-transfers class="form-control-static" ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+                                            <div ng-repeat="file in transfers">
+                                                <div id="profileProgress" class="progress" ng-show="file.progress() < 1 && addEmployee.profileShowfileProgress">
+                                                    <div  class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{file.progress() * 100}}%;">
+                                                        <!--{{file.progress() * 100 | number : 0}} %-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    {{terminologyBank.ssn}} #
+                                </label>
+                                <div class="col-sm-9">
+                                    <input id="SocialSecurity" numbers-only="true"
+                                           class="form-control" ng-class="{'border-danger':addEmployee.ssn.exists}" name="SocialSecurity"
+                                           type="text" ng-model="addEmployee.employee.ssn"
+                                           maxlength="9" 
+                                           onblur="setValidationMessage(this)" itemid="value"
+                                           ng-blur="checkSsnNumber();" ng-change="addEmployee.ssn.exists = false;"/>
+                                    <span ng-if="addEmployee.ssn.exists" class="validate-has-error">{{terminologyBank.ssn}} number already exists.</span>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Date Of Birth
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input class="form-control datepicker" max-date="addEmployee.maxBirthDate" data-format="mm/dd/yyyy" name="DateOfBirth" type="text" ng-model="addEmployee.employee.dateOfBirth"
+                                               data-validate="date"/>
+                                        <div class="input-group-addon">
+                                            <a href="#">
+                                                <i class="linecons-calendar">
+                                                </i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Gender
+                                </label>
+                                <div class="col-sm-9 form-control-static">
+                                    <div>
+                                        <label>
+                                            <input value="M" name="Gender" type="radio" class="cbr cbr-primary" ng-model="addEmployee.employee.gender" />
+                                            Male
+                                        </label>
+                                        <label>
+                                            <input name="Gender" value="F" type="radio" class="cbr cbr-primary" ng-model="addEmployee.employee.gender"/>
+                                            Female
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Phone *
+                                </label>
+                                <div class="col-sm-3">
+                                    <input numbers-only="true" maxlength="10" class="form-control" name="Phone" type="text" data-validate="required,number,minlength[10],maxlength[10]" ng-model="addEmployee.employee.phone"
+                                           data-message-required="Please enter Phone Number." data-message-minlength="Phone Number must contain 10 digits" data-message-maxlength="Phone Number must contain 10 digits"/>
+                                </div>
+                                <label class="col-sm-3 control-label" for="phone2">
+                                    Phone 2
+                                </label>
+                                <div class="col-sm-3">
+                                    <input numbers-only="true" maxlength="10" class="form-control" id="phone2" name="phone2" type="text" ng-model="addEmployee.employee.phone2" 
+                                           data-validate="number,minlength[10],maxlength[10]"
+                                           data-message-minlength="Phone Number must contain 10 digits" data-message-maxlength="Phone Number must contain 10 digits"/>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="emergencyName">
+                                    Emergency Contact Name *
+                                </label>
+                                <div class="col-sm-3">
+                                    <input class="form-control" name="emergencyName" type="text" ng-model="addEmployee.employee.emergencyContactName" maxlength="200"
+                                           data-message-required="Please enter Emergency Contact Name." 
+                                           data-validate="required"/>              
+                                </div>
+                                <label class="col-sm-3 control-label" for="emergencyNumber">
+                                    Emergency Contact Number *
+                                </label>
+                                <div class="col-sm-3">
+                                    <input numbers-only="true" maxlength="10" class="form-control" id="emergencyNumber" name="emergencyNumber" type="text" ng-model="addEmployee.employee.emergencyContactNumber" 
+                                           data-message-required="Please enter Emergency Contact Number." 
+                                           data-validate="required,number,minlength[10],maxlength[10]"
+                                           data-message-minlength="Emergency Contact Number must contain 10 digits" data-message-maxlength="Emergency Contact Number must contain 10 digits"/>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Email *
+                                </label>
+                                <div class="col-sm-9">
+                                    <input class="form-control" name="Email" type="email" maxlength="100"
+                                           ng-model="addEmployee.employee.email"/>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Languages Spoken
+                                </label>
+                                <div class="col-sm-9">
+                                    <div>
+                                        <label class="no-padding-left checkbox col-sm-3" ng-repeat="language in addEmployee.languagesKeyValue">
+                                            <input class="cbr" id="language{{$index}}" name="language{{$index}}" type="checkbox" ng-model="language.value"/>
+                                            {{languages[language.key]}}
+                                        </label>
+                                        <label class="no-padding-left checkbox col-sm-3">
+                                            <input class="cbr" id="languageOther" name="languageOther" type="checkbox" ng-model="addEmployee.otherLanguageCheckbox" ng-change="addEmployee.refreshLanguages()" />
+                                            Others
+                                        </label>
+                                        <label class="no-padding-left col-sm-6 other-language" ng-if="addEmployee.otherLanguageCheckbox">
+                                            <input id="languageOtherText" name="languageOtherText" class="form-control" data-role="tagsinput" type="text" ng-model="addEmployee.employee.otherLanguages" tagsinput/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Are you legally eligible for employment in the United States?
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="UsCitizen" type="radio" ng-value="true" ng-model="addEmployee.employee.usCitizen">
+                                            Yes
+                                            </input>
+                                        </label>
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="UsCitizen" type="radio" ng-value="false" ng-model="addEmployee.employee.usCitizen">
+                                            No
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    How many hours a week are you available for work?
+                                </label>
+                                <div class="col-sm-3">
+                                    <div class="input-group">
+                                        <input class="form-control" name="WorkHours" maxlength="4" numbers-only="true" type="text" ng-model="addEmployee.employee.workHours"> 
+                                        <span class="input-group-addon">
+                                            <i>per week</i>
+                                        </span>
+                                        </input>
+                                    </div>
+                                </div>
+                                <label class="col-sm-3 control-label">
+                                    Are you willing to work
+                                </label>
+                                <div class="col-sm-3">
+                                    <div>
+                                        <label class="no-padding-left checkbox col-sm-6">
+                                            <input class="cbr" id="WorkOnEvening" name="WorkOnEvening" type="checkbox" ng-model="addEmployee.employee.workOnEvening"/>
+                                            Evening
+                                        </label>
+                                        <label class="no-padding-left checkbox col-sm-6">
+                                            <input class="cbr" id="WorkOnWeekend" name="WorkOnWeekend" type="checkbox" ng-model="addEmployee.employee.workOnWeekend"/>
+                                            Weekend
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Have you ever applied for employment with this agency?
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="AppliedEarlier" type="radio" ng-value="true" ng-model="addEmployee.employee.appliedEarlier">
+                                            Yes
+                                            </input>
+                                        </label>
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="AppliedEarlier" type="radio" ng-value="false" ng-model="addEmployee.employee.appliedEarlier">
+                                            No
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Are you currently employed?
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="CurrentlyEmployed" type="radio" ng-value="true" ng-model="addEmployee.employee.currentlyEmployed">
+                                            Yes
+                                            </input>
+                                        </label>
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="CurrentlyEmployed" type="radio" ng-value="false" ng-model="addEmployee.employee.currentlyEmployed">
+                                            No
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Do you have reliable transportation?
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="ReliableTransportation" type="radio" ng-value="true" ng-model="addEmployee.employee.reliableTransportation">
+                                            Yes
+                                            </input>
+                                        </label>
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="ReliableTransportation" type="radio" ng-value="false" ng-model="addEmployee.employee.reliableTransportation">
+                                            No
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Do you have driving license?
+                                </label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="DoesEmpDrive" type="radio" ng-value="true" ng-model="addEmployee.employee.doesEmpDrive">
+                                            Yes
+                                            </input>
+                                        </label>
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="DoesEmpDrive" type="radio" ng-value="false" ng-model="addEmployee.employee.doesEmpDrive">
+                                            No
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    <b>Resume *</b>
+                                </label>
+                                <div class="col-sm-9">
+                                    <div flow-init="addEmployee.resumeUploadFile" flow-file-added="addEmployee.resumeFileAdded($file, $flow)" flow-file-success="addEmployee.resumeFileUploaded($message,$file,$flow)" flow-files-submitted="addEmployee.resumeFileSelected($file,$flow)" flow-file-error="addEmployee.resumeFileError( $file, $message, $flow )">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <button type='button' class='btn btn-single gray_bt' style="margin-bottom:0px !important" id="resume_file" ng-model="addEmployee.employee.resume"
+                                                        flow-btn name="resume_file" ng-disabled="addEmployee.disableResumeUploadButton">Choose File</button>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <label class="control-label" ng-show="addEmployee.employee.resume != null" >
+                                                    <a style="color: blue;text-decoration: underline" ng-href="{{addEmployee.baseUrl}}file/download/{{addEmployee.companyCode}}/aed/{{addEmployee.employee.resume}}">
+                                                        resume{{addEmployee.employee.resume|extension}}</a>
+                                                    <a href=""><i class="fa fa-close" ng-click="addEmployee.clearResume()"></i></a>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div ng-show="addEmployee.resumeFileObj.errorMsg != null && addEmployee.resumeFileObj.errorMsg != ''">
+                                                <span class="red">{{addEmployee.resumeFileObj.errorMsg}}</span>
+                                            </div> 
+                                        </div>
+                                        <div flow-transfers class="form-control-static" ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+                                            <div ng-repeat="file in transfers">
+                                                <div id="resumeProgress" class="progress"  ng-show="file.progress() < 1 && addEmployee.resumeShowfileProgress">
+                                                    <div  class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{file.progress() * 100}}%;">
+                                                        <!--{{file.progress() * 100 | number : 0}} %-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group-separator" >
+                            </div>
+                            <div class="form-group" ng-if="addEmployee.adminLogin">
+                                <label class="col-sm-3 control-label">
+                                    Map
+                                </label>
+                                <div class="col-sm-9">
+                                    <div id="map-1" class="map_panel"></div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator"  ng-if="addEmployee.adminLogin">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="field-35">
+                                    Address Search *
+                                </label>
+                                <div class="col-sm-9" >
+                                    <input class="form-control" id="autocomplete" name="autocomplete" placeholder="Search for your location"
+                                           ng-model="addEmployee.autocomplete" type="text"/>
+                                    <div ng-if="!addEmployee.adminLogin && (addEmployee.employee.address1 || addEmployee.employee.city)" style="padding-top: 10px">
+                                        {{addEmployee.employee.address1}}
+                                        <br ng-if="addEmployee.employee.address1" />
+                                        {{addEmployee.employee.city}}
+                                        <br ng-if="addEmployee.employee.city" />
+                                        {{addEmployee.employee.state}}, {{addEmployee.employee.zipcode}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-if="!addEmployee.adminLogin">
+                                <div class="form-group-separator"  >
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="field-38">
+                                        House/ Apt No#
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" id="field-38" name="Address2" maxlength="255"
+                                               ng-model="addEmployee.employee.address2" type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-if="addEmployee.adminLogin">
+                                <div class="form-group-separator"  >
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="field-36">
+                                        GPS Location
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" readonly id="GPSLocation" name="GPSLocation" placeholder="GPS Location" type="text"
+                                               data-validate="required" data-message-required="Please search employee's address to establish GPS coordinates."/>
+                                    </div>
+                                </div>
+                                <div class="form-group-separator">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="field-37">
+                                        Address 1
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" id="field-37" name="Address1"  maxlength="255"
+                                               ng-model="addEmployee.employee.address1" type="text"
+                                               data-validate="required" data-message-required="Please enter Address 1."/>
+                                    </div>
+                                </div>
+                                <div class="form-group-separator">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="field-38">
+                                        Address 2
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" id="field-38" name="Address2" maxlength="255"
+                                               ng-model="addEmployee.employee.address2" type="text"/>
+                                    </div>
+                                </div>
+                                <div class="form-group-separator">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="field-39">
+                                        City
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" id="field-39" name="City" maxlength="50"
+                                               ng-model="addEmployee.employee.city" type="text"
+                                               data-validate="required" data-message-required="Please enter City."/>
+                                    </div>
+                                </div>
+                                <div class="form-group-separator">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        {{terminologyBank.state}}
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <script type="text/javascript">
+                                            // jQuery(document).ready(function($) {
+                                            //             $("#sboxit-1").selectBoxIt().on('open', function() {
+                                            //               // Adding Custom Scrollbar
+                                            //               $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+                                            //             });
+                                            //           });
+                                        </script>
+                                        <select class="form-control" id="sboxit-1" name="State" ng-model="addEmployee.employee.state"
+                                                data-validate="required" data-message-required="Please select the {{terminologyBank.state}}."
+                                                ng-options="state.abbreviation as state.name for state in states">
+                                            <option value="">
+                                                Select the {{terminologyBank.state}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-separator">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="field-40">
+                                        {{terminologyBank.zipCode}}
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control" id="field-40" name="ZipCode" ng-model="addEmployee.employee.zipcode" type="text" maxlength="10"
+                                               data-validate="required" data-message-required="Please enter Zip Code."/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group" >
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col col-xs-12">
+                                            <h3><a class="btn icon-left fa fa-plus"
+                                                   ng-click="addEmployee.addEducationLinePopup()" tooltip="Add Education"> Add Education </a></h3>
+                                        </div>
+                                    </div>
+                                    <div ng-if="addEmployee.educations.length > 0">
+                                        <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
+                                            <table class="table table-striped table-bordered table-list table-attachments">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center col-md-3"> School/ College </th>
+                                                        <th class="text-center col-md-2"> Year </th>
+                                                        <th class="text-center col-md-3"> Degree </th>
+                                                        <th class="text-center col-md-2"> Result </th>
+                                                        <th class="text-center col-md-1" ng-if="addEmployee.employee.status === 'inprogress'"> <em class="fa fa-cog"> </em></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="education in addEmployee.educations">
+                                                        <td> {{education.school}}</td>
+                                                        <td> {{education.year}} </td>
+                                                        <td> {{education.degree}}</td>
+                                                        <td> {{education.result}} </td>
+                                                        <td align="center" ng-if="addEmployee.employee.status === 'inprogress'">                                                    
+                                                            <a class="btn icon-left fa fa-trash-o delete_button"
+                                                               ng-click="addEmployee.removeEducationLine(education)" tooltip="Delete"><span class="ed_b"></span></a>                                                    
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group" >
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col col-xs-12">
+                                            <h3><a class="btn icon-left fa fa-plus"
+                                                   ng-click="addEmployee.addWorkExperienceLinePopup()" tooltip="Add Work Experience"> Add Work Experience </a></h3>
+                                        </div>
+                                    </div>
+                                    <div ng-if="addEmployee.workExperiences.length > 0">
+                                        <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
+                                            <table class="table table-striped table-bordered table-list table-attachments">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center col-md-2"> Employer Name </th>
+                                                        <th class="text-center col-md-2"> Job Title </th>
+                                                        <th class="text-center col-md-2"> Responsibilities </th>
+                                                        <th class="text-center col-md-2"> Reason For Leaving </th>
+                                                        <th class="text-center col-md-3"> Duration </th>
+                                                        <th class="text-center col-md-1" ng-if="addEmployee.employee.status === 'inprogress'"> <em class="fa fa-cog"> </em></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="workExperience in addEmployee.workExperiences">
+                                                        <td> {{workExperience.employerName}}</td>
+                                                        <td> {{workExperience.jobTitle}} </td>
+                                                        <td> {{workExperience.responsibilities}}</td>
+                                                        <td> {{workExperience.reasonForLeaving}} </td>
+                                                        <td> {{workExperience.startDate}} - {{workExperience.endDate}} </td>
+                                                        <td  align="center" ng-if="addEmployee.employee.status === 'inprogress'">                                                    
+                                                            <a class="btn icon-left fa fa-trash-o delete_button"
+                                                               ng-click="addEmployee.removeWorkExperienceLine(workExperience)" tooltip="Delete"><span class="ed_b"></span></a>                                                    
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group" >
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col col-xs-12">
+                                            <h3><a class="btn icon-left fa fa-plus"
+                                                   ng-click="addEmployee.addProfessionalReferenceLinePopup()" tooltip="Add Professional Reference"> Add Professional Reference </a></h3>
+                                            <p class="col-md-12 description">
+                                                * Please add 2 professional references before application submission
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body"  ng-if="addEmployee.professionalReferences.length > 0">
+                                        <div class="table-responsive" data-pattern="priority-columns" data-focus-btn-icon="fa-asterisk" data-sticky-table-header="true" data-add-display-all-btn="true" data-add-focus-btn="true">
+                                            <table class="table table-striped table-bordered table-list table-attachments">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center col-md-4"> Name </th>
+                                                        <th class="text-center col-md-2"> Telephone </th>
+                                                        <th class="text-center col-md-5"> Address </th>
+                                                        <th class="text-center col-md-1" ng-if="addEmployee.employee.status === 'inprogress'"> <em class="fa fa-cog"> </em></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="professionalReference in addEmployee.professionalReferences">
+                                                        <td> {{professionalReference.name}}</td>
+                                                        <td> {{professionalReference.telephone}} </td>
+                                                        <td> {{professionalReference.address}}</td>
+                                                        <td align="center" ng-if="addEmployee.employee.status === 'inprogress'">                                                    
+                                                            <a class="btn icon-left fa fa-trash-o delete_button"
+                                                               ng-click="addEmployee.removeProfessionalReferenceLine(professionalReference)" tooltip="Delete"><span class="ed_b"></span></a>                                                    
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <div class="input-group adjust-row-padding">
+                                        <label>
+                                            Have you ever been convicted of a crime in the past 5 years, barring employment on a Home Care and community Agency?
+                                        </label>
+                                        <label class="cbr-inline" style="padding-left: 20px">
+                                            <input class="cbr cbr-primary" name="ConvictedOnCrime" type="radio" ng-value="true" ng-model="addEmployee.employee.convictedOnCrime">
+                                            Yes
+                                            </input>
+                                        </label>
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="ConvictedOnCrime" type="radio" ng-value="false" ng-model="addEmployee.employee.convictedOnCrime">
+                                            No
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group adjust-row-padding"  ng-if="addEmployee.employee.convictedOnCrime === true">
+                                <div class="col-md-12 ">
+                                    <div>
+                                        <label class="pull-left col-md-12 pad0">Conviction will not necessarily disqualify an applicant from employment. If yes, describe in full:</label>
+                                        <div class="col-md-8 pad0">
+                                            <textarea class="form-control" ng-model="addEmployee.employee.convictionReason" cols="5"
+                                                      id="convictionReason" name="ConvictionReason" placeholder="Describe details of conviction."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <div class="input-group adjust-row-padding">
+                                        <label>
+                                            Are you capable of performing the job set forth in the job description?
+                                        </label>
+                                        <label class="cbr-inline" style="padding-left: 20px">
+                                            <input class="cbr cbr-primary" name="CapableForJob" type="radio" ng-value="true" ng-model="addEmployee.employee.capableForJob">
+                                            Yes
+                                            </input>
+                                        </label>
+                                        <label class="cbr-inline">
+                                            <input class="cbr cbr-primary" name="CapableForJob" type="radio" ng-value="false" ng-model="addEmployee.employee.capableForJob">
+                                            No
+                                            </input>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group adjust-row-padding"  ng-if="addEmployee.employee.capableForJob === false">
+                                <div class="col-md-12 ">
+                                    <div>
+                                        <label class="pull-left col-md-12 pad0">If you answered No, which job requirement you can not meet?</label>
+                                        <div class="col-md-8 pad0">
+                                            <textarea class="form-control" ng-model="addEmployee.employee.notCabalableOf" cols="5"
+                                                      id="note" name="note" placeholder="Describe which job requirement you can not meet."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                            <div class="form-group adjust-row-padding">
+                                <div class="col-md-12 ">
+                                    <div>
+                                        <label class="pull-left col-md-12 pad0">List all states in which licensed giving registration and expiration date. Summarize special job-related skills and qualification acquired from employment or other experience</label>
+                                        <div class="col-md-8 pad0">
+                                            <textarea class="form-control" ng-model="addEmployee.employee.registrationAndSkillSummary" cols="5"
+                                                      id="note" name="note"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-separator">
+                            </div>
+                        </fieldset>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                            </div>
+                            <div class="col-sm-6 pull-right"  ng-if="!addEmployee.viewOnly" >
+                                <button class="btn btn-success mar_rg5 mar_lf5 mar_rg5 pull-right" type="submit" ng-click="addEmployee.submitForm('tab1')"
+                                        ng-disabled="addEmployee.disableSaveButton"  ng-if="addEmployee.adminLogin">
+                                    Save
+                                </button>
+                                <button class="btn btn-black mar_rg5 pull-right" type="submit" ng-if="addEmployee.employee.status != null && addEmployee.employee.status !== 'submitted'" ng-click="addEmployee.submitForm('submit')"
+                                        ng-disabled="addEmployee.disableSaveButton">
+                                    Save & Submit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FORM WIZARD WITH VALIDATION END HERE-->
+
+<script type="text/javascript">
+    // validate
+    function setValidationMessage(element) {
+        var elementName = element.getAttribute("name") + "-error";
+        var itemId = element.getAttribute("itemid");
+        $("#" + elementName).text('Please enter ' + itemId + '.');
+    }
+    var form_clean;
+    customJqueryValidation();
+    jQuery(document).ready(function ($) {
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+    }); // ready 
+</script>
+
+<script type="text/ng-template" id="educationModel">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="educationModel.closePopup();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" >Add Education</h4>
+    </div>
+    <div class="modal-body">
+    <div class="row">
+    <div class="col-md-12">
+    <form role="form" class="form-horizontal validate col-md-12" id="education_form" name="educationModel.education_form" role="form"  ng-submit="educationModel.save()" >
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-1">School/ College</label>
+    <div class="col-sm-8">
+    <input class="form-control" name="school" id="school"
+    type="text" ng-model="educationModel.educationLine.school" ng-required='true' data-validate="required" data-message-required="Please enter School/ College."> 
+    </div>
+    </div>	
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-2">Year</label>
+    <div class="col-sm-8">
+    <input class="form-control" name="year" id="year"
+    type="text" ng-model="educationModel.educationLine.year" ng-required='true' data-validate="required" data-message-required="Please enter Year."> 
+    </div>
+    </div>	
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-3">Degree</label>
+    <div class="col-sm-8">
+    <input class="form-control" name="degree" id="degree"
+    type="text" ng-model="educationModel.educationLine.degree" ng-required='true' data-validate="required" data-message-required="Please enter Degree."> 
+    </div>
+    </div>	
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-4">Result</label>
+    <div class="col-sm-8">
+    <select class="form-control" id="sboxit-1" name="State" ng-model="educationModel.educationLine.result">
+    <option value="Completed">
+    Completed
+    </option>
+    <option value="Incomplete">
+    Incomplete
+    </option>
+    <option value="In Progress">
+    In Progress
+    </option>
+    </select>
+    </div>	
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="educationModel.closePopup();">Close</button>
+    <button class="btn btn-info" ng-submit="educationModel.save()" >Save changes</button>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="workExperienceModel">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="workExperienceModel.closePopup();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" >Add Education</h4>
+    </div>
+    <div class="modal-body">
+    <div class="row">
+    <div class="col-md-12">
+    <form role="form" class="form-horizontal validate col-md-12" id="work_experience_form" name="workExperienceModel.work_experience_form" role="form"  ng-submit="workExperienceModel.save()" >
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-1">Employer Name</label>
+    <div class="col-sm-8">
+    <input class="form-control" name="employerName" id="employerName"
+    type="text" ng-model="workExperienceModel.workExperienceLine.employerName" ng-required='true' data-validate="required" data-message-required="Please enter Employer Name."> 
+    </div>
+    </div>	
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-2">Job Title</label>
+    <div class="col-sm-8">
+    <input class="form-control" name="jobTitle" id="jobTitle"
+    type="text" ng-model="workExperienceModel.workExperienceLine.jobTitle" ng-required='true' data-validate="required" data-message-required="Please enter Job Title."> 
+    </div>
+    </div>	
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-3">Responsibilities</label>
+    <div class="col-sm-8">
+    <textarea class="form-control" ng-model="workExperienceModel.workExperienceLine.responsibilities" cols="5"
+    id="responsibilities" name="responsibilities"></textarea>
+    </div>
+    </div>	
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-4">Reason For Leaving</label>
+    <div class="col-sm-8">
+    <textarea class="form-control" ng-model="workExperienceModel.workExperienceLine.reasonForLeaving" cols="5"
+    id="reasonForLeaving" name="reasonForLeaving"></textarea>
+    </div>	
+    </div>
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-4">Start Date</label>
+    <div class="col-sm-8">
+    <div class="input-group">
+    <input type="text" id="fromdate" name="fromdate" class="form-control datepicker" enabled='M' data-format="mm/dd/yyyy" ng-model="workExperienceModel.workExperienceLine.startDate"
+    max-date="workExperienceModel.employmentMaxDate" placeholder="From"/>
+    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+    </div>
+    </div>	
+    </div>
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-4">End Date</label>
+    <div class="col-sm-8">
+    <div class="input-group">
+    <input type="text" id="todate" name="todate" class="form-control datepicker" enabled='S' data-format="mm/dd/yyyy" ng-model="workExperienceModel.workExperienceLine.endDate" min-date="workExperienceModel.workExperienceLine.startDate" max-date='workExperienceModel.todayDate'
+    ng-change="workExperienceModel.setEmploymentMaxDate()" placeholder="To"/> 
+    <div class="input-group-addon"> <a href="#"><i class="linecons-calendar"></i></a> </div>
+    </div>
+    </div>	
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="workExperienceModel.closePopup();">Close</button>
+    <button class="btn btn-info" ng-submit="workExperienceModel.save()" >Save changes</button>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="professionalReferenceModel">
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="professionalReferenceModel.closePopup();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" >Add Professional Reference</h4>
+    </div>
+    <div class="modal-body">
+    <div class="row">
+    <div class="col-md-12">
+    <form role="form" class="form-horizontal validate col-md-12" id="professional_reference_form" name="professionalReferenceModel.professional_reference_form" role="form"  ng-submit="professionalReferenceModel.save()" >
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-1">Name</label>
+    <div class="col-sm-8">
+    <input class="form-control" name="name" id="name"
+    type="text" ng-model="professionalReferenceModel.professionalReferenceLine.name" ng-required='true' data-validate="required" data-message-required="Please enter Name."> 
+    </div>
+    </div>	
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-2">Telephone</label>
+    <div class="col-sm-8">
+    <input class="form-control" name="telephone" id="telephone"
+    type="text" ng-model="professionalReferenceModel.professionalReferenceLine.telephone" ng-required='true' data-validate="required" data-message-required="Please enter Telephone."> 
+    </div>
+    </div>	
+    <div class="form-group-separator">
+    </div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label" for="field-3">Address</label>
+    <div class="col-sm-8">
+    <textarea class="form-control" name="address" id="address"  cols="5"
+    type="text" ng-model="professionalReferenceModel.professionalReferenceLine.address" ng-required='true' data-validate="required" data-message-required="Please enter Address."> 
+    </textarea>
+    </div>
+    </div>	
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="professionalReferenceModel.closePopup();">Close</button>
+    <button class="btn btn-info" ng-submit="professionalReferenceModel.save()" >Save changes</button>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+</script>

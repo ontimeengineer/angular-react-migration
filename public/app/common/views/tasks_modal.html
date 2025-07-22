@@ -1,0 +1,79 @@
+<style>
+  .day-btn+.day-btn {
+    margin-left: 1px;
+  }
+</style>
+
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="tasksModal.cancel();" aria-hidden="true">
+      &times;
+    </button>
+    <h4 class="modal-title">Task Schedule</h4>
+  </div>
+  <div>
+    <form class="validate form-horizontal" id="task_model_form" name="taskParametersForm" role="form">
+      <div class="modal-body">
+        <!-- Days selection as buttons -->
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label">Select Days:</label>
+          <div class="col-sm-8" class="form-control">
+            <button type="button" class="btn day-btn"
+              ng-class="{ 'btn-success': tasksModal.parameters.selectedDays.indexOf(day) !== -1 }"
+              ng-repeat="day in tasksModal.daysOfWeek" ng-click="tasksModal.toggleDay(day)" data-validate="required"
+              data-message-required="Please select at least one day." ng-required="true">
+              {{ day }}
+            </button>
+            <button type="button" class="btn"
+              ng-class="{ 'btn-info': tasksModal.parameters.selectedDays.length === tasksModal.daysOfWeek.length, 'btn-white': tasksModal.parameters.selectedDays.length !== tasksModal.daysOfWeek.length }"
+              ng-click="tasksModal.selectAllDays()">
+              {{ tasksModal.parameters.selectedDays.length ===
+              tasksModal.daysOfWeek.length ? '&#10004' : 'All' }}
+            </button>
+
+            <span style="
+                color: #cc3f44;
+                display: block;
+                font-size: 12px;
+                padding-top: 5px;
+              " ng-show="tasksModal.parameters.selectedDays.length === 0 && tasksModal.daysErrorMsg !== null">
+              Please select at least one day.
+            </span>
+          </div>
+        </div>
+        <!-- Frequency input -->
+        <div class="form-group">
+          <label class="col-sm-4 control-label" for="frequency">Frequency:</label>
+          <div class="col-sm-8">
+            <input class="form-control" id="frequency" name="frequency" maxlength="25" type="text"
+              ng-model="tasksModal.parameters.frequency" />
+          </div>
+        </div>
+        <!-- Additional Instructions input -->
+        <div class="form-group">
+          <label class="col-sm-4 control-label" for="additionalInstructions">Additional Instructions:</label>
+          <div class="col-sm-8">
+            <textarea class="form-control" id="additionalInstructions" name="additionalInstructions" maxlength="160"
+              rows="3" ng-model="tasksModal.parameters.additionalInstructions">
+            </textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="tasksModal.cancel();">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-info" ng-click="tasksModal.reset();">
+          Reset
+        </button>
+        <button type="button" class="btn btn-red" ng-show="tasksModal.editMode" ng-click="tasksModal.remove();">
+          Remove
+        </button>
+        <button type="submit" class="btn btn-success" ng-click="tasksModal.save();">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

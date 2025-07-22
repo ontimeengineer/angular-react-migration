@@ -1,0 +1,175 @@
+<!--================== HEADER ====================-->
+<div class="row">
+    <div class="col-sm-12">
+        <patient-breadcrumb patient="patientRecUploadCtrl.patient"
+            record-name="Patient Record - Patient Record Upload"></patient-breadcrumb>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <form name="myForm" class="form-horizontal validate" id="pdf_record_form"
+                    ng-submit="patientRecUploadCtrl.submitForm()" role="form" novalidate="">
+                    <div class="row hidden-print">
+                        <div class="col-sm-12">
+
+                            <button class="btn btn-info btn-single gray_bt pull-right"
+                                ng-click="patientRecUploadCtrl.resetForm()" type="reset"
+                                ng-disabled="patientRecUploadCtrl.disableSaveButton">
+                                Reset To Default
+                            </button>
+                            <button class="btn btn-info btn-single gray_bt pull-right"
+                                ng-click="patientRecUploadCtrl.submitDraft()"
+                                ng-if="patientRecUploadCtrl.pdfRecordForm.isDraft" type="button"
+                                ng-disabled="patientRecUploadCtrl.disableSaveButton">
+                                Save to Draft
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="row adjust-row-padding">
+                        <div class="col-sm-4 element-align sm-flex-align">
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="">
+
+                                    <div class="form-group {{patientRecUploadCtrl.recordNameError ? 'validate-has-error':''}}">
+                                        <label for="field-1" class="control-label col-sm-3">Record Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control "
+                                                ng-change="patientRecUploadCtrl.checkValidation()"
+                                                ng-model="patientRecUploadCtrl.recordName" required>
+                                            <span class="validate-has-error"
+                                                ng-if="patientRecUploadCtrl.recordNameError">Record name is
+                                                required<span />
+                                        </div>
+                                    </div>
+
+
+                                    <div flow-init="patientRecUploadCtrl.patientRecordUpload"
+                                    flow-file-added="patientRecUploadCtrl.fileAdded($file, $flow)"
+                                    flow-file-success="patientRecUploadCtrl.fileUploaded($message, $file, $flow)"
+                                    flow-files-submitted="patientRecUploadCtrl.fileSelected($file, $flow)"
+                                    flow-file-error="patientRecUploadCtrl.fileError($file, $message, $flow)">
+            
+                                    <div class="form-group">
+                                        <label for="field-1" class="control-label col-sm-3">Upload</label>
+                                        <div class="col-sm-9">
+                                            <button type="button" class="btn btn-single gray_bt" id="recordFile"
+                                                style="margin-bottom:0px !important"
+                                                ng-model="patientRecUploadCtrl.pdfRecordForm.file" flow-btn name="recordFile"
+                                                ng-disabled="patientRecUploadCtrl.disableUploadFileButton">Choose
+                                                File</button>
+            
+                                            <label class="control-label" ng-show="patientRecUploadCtrl.pdfRecordForm.file != null">
+                                                <a style="color: blue;text-decoration: underline"
+                                                    ng-href="{{patientRecUploadCtrl.baseUrl}}file/download/{{patientRecUploadCtrl.companyCode}}/p/{{patientRecUploadCtrl.pdfRecordForm.file}}">
+                                                    patient record{{patientRecUploadCtrl.pdfRecordForm.file | extension}}</a>
+                                                <a href=""><i class="fa fa-close"
+                                                        ng-click="patientRecUploadCtrl.clearRecordFile()"></i></a>
+                                            </label>
+            
+                                            <div>
+                                                <div
+                                                    ng-show="patientRecUploadCtrl.recordFileObj.errorMsg != null && patientRecUploadCtrl.recordFileObj.errorMsg != ''">
+                                                    <span class="red">{{patientRecUploadCtrl.recordFileObj.errorMsg}}</span>
+                                                </div>
+                                            </div>
+                                            <div flow-transfers class="form-control-static"
+                                                ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+                                                <div ng-repeat="file in transfers">
+                                                    <div id="docFileprogress" class="progress"
+                                                        ng-show="file.progress() < 1 && patientRecUploadCtrl.showfileProgress">
+                                                        <div class="progress-bar" role="progressbar" aria-valuenow="100"
+                                                            aria-valuemin="0" aria-valuemax="100"
+                                                            style="width: {{file.progress() * 100}}%;">
+                                                            <!--{{file.progress() * 100 | number : 0}} %-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                </div>
+                                <!-- FILE UPLOAD USING FLOW.JS -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="form-group {{patientRecUploadCtrl.recordNameError ? 'validate-has-error':''}}">
+                <label for="field-1" class="control-label col-sm-3">Record Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control " ng-change="patientRecUploadCtrl.checkValidation()"
+                        ng-model="patientRecUploadCtrl.recordName" required>
+                    <span class="validate-has-error" ng-if="patientRecUploadCtrl.recordNameError">Record name is
+                        required<span />
+                </div>
+            </div> -->
+
+                    <div class="form-group-separator"></div>
+
+
+                    <!-- <div flow-init="patientRecUploadCtrl.patientRecordUpload"
+                        flow-file-added="patientRecUploadCtrl.fileAdded($file, $flow)"
+                        flow-file-success="patientRecUploadCtrl.fileUploaded($message, $file, $flow)"
+                        flow-files-submitted="patientRecUploadCtrl.fileSelected($file, $flow)"
+                        flow-file-error="patientRecUploadCtrl.fileError($file, $message, $flow)">
+
+                        <div class="form-group">
+                            <label for="field-1" class="control-label col-sm-3">Upload</label>
+                            <div class="col-sm-9">
+                                <button type="button" class="btn btn-single gray_bt" id="recordFile"
+                                    style="margin-bottom:0px !important"
+                                    ng-model="patientRecUploadCtrl.pdfRecordForm.file" flow-btn name="recordFile"
+                                    ng-disabled="patientRecUploadCtrl.disableUploadFileButton">Choose
+                                    File</button>
+
+                                <label class="control-label" ng-show="patientRecUploadCtrl.pdfRecordForm.file != null">
+                                    <a style="color: blue;text-decoration: underline"
+                                        ng-href="{{patientRecUploadCtrl.baseUrl}}file/download/{{patientRecUploadCtrl.companyCode}}/p/{{patientRecUploadCtrl.pdfRecordForm.file}}">
+                                        patient record{{patientRecUploadCtrl.pdfRecordForm.file | extension}}</a>
+                                    <a href=""><i class="fa fa-close"
+                                            ng-click="patientRecUploadCtrl.clearRecordFile()"></i></a>
+                                </label>
+
+                                <div>
+                                    <div
+                                        ng-show="patientRecUploadCtrl.recordFileObj.errorMsg != null && patientRecUploadCtrl.recordFileObj.errorMsg != ''">
+                                        <span class="red">{{patientRecUploadCtrl.recordFileObj.errorMsg}}</span>
+                                    </div>
+                                </div>
+                                <div flow-transfers class="form-control-static"
+                                    ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+                                    <div ng-repeat="file in transfers">
+                                        <div id="docFileprogress" class="progress"
+                                            ng-show="file.progress() < 1 && patientRecUploadCtrl.showfileProgress">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="100"
+                                                aria-valuemin="0" aria-valuemax="100"
+                                                style="width: {{file.progress() * 100}}%;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> -->
+                    <!-- FILE UPLOAD USING FLOW.JS -->
+
+                </form>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button class="btn btn-info green_bt pull-right" ng-click="patientRecUploadCtrl.submitForm()"
+                            type="button" ng-disabled="patientRecUploadCtrl.disableSaveButton">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

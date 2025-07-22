@@ -1,0 +1,174 @@
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">
+                {{addPatient.editMode?'Update Patient':'Add Patient'}}
+            </h1>
+            <p class="description">
+                {{addPatient.editMode?'Edit A Patient Record By Entering Patient Information':'Create A Patient Record By Entering Patient Information'}}
+
+            </p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <!-- FORM WIZARD WITH VALIDATION START HERE-->
+    <script type="text/javascript">
+        jQuery(document).ready(function($)
+        {
+            $(".multi-select").multiSelect({
+                afterInit: function()
+                {
+                    // Add alternative scrollbar to list
+                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                },
+                afterSelect: function()
+                {
+                    // Update scrollbar size
+                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                }
+            });
+
+            $(".selectboxit").selectBoxIt().on('open', function()
+            {
+                // Adding Custom Scrollbar
+                $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+            });
+        });
+
+    </script>
+    <form class="form-wizard custom-form" dirty="addPatient.formDirty" selectedtab="tabNo" novalidate="" role="form">
+        <ul class="tabs">
+            <li class="{{tabNo==1?'active':''}}">
+                <a data-toggle="tab" href="" ng-click="addPatient.navigateToTab($event, 'tab1')" style="{{!addPatient.editMode?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa fa-user"></i></div> 
+                    <div class="hidden-xs">Patient Information</div>
+                    <span>
+                        1
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==2?'active':''}}">
+                <a data-toggle="tab" href="" ng-click="addPatient.navigateToTab($event, 'tab2')" style="{{!addPatient.editMode?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa fa-location-arrow"></i></div> 
+                    <div class="hidden-xs">Location Information</div>
+                    <span>
+                        2
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==3?'active':''}}">
+                <a data-toggle="tab" href="" ng-click="addPatient.navigateToTab($event, 'tab3')" style="{{!addPatient.editMode?'pointer-events: none':''}}">
+
+                    <div class="visible-xs"><i class="fa  fa-edit"></i></div> 
+                    <div class="hidden-xs">Insurance Information</div>
+                    <span>
+                        3
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==4?'active':''}}">
+                <a data-toggle="tab" href="" ng-click="addPatient.navigateToTab($event, 'tab4')" style="{{!addPatient.editMode?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa fa-key"></i></div> 
+                    <div class="hidden-xs">Authorization Info</div>
+                    <span>
+                        4
+                    </span>
+                </a>
+            </li>
+            <li class="{{tabNo==5?'active':''}}">
+                <a data-toggle="tab" href="" ng-click="addPatient.navigateToTab($event, 'tab5')" style="{{(!addPatient.editMode)?'pointer-events: none':''}}">
+                    <div class="visible-xs"><i class="fa fa-info-circle"></i></div> 
+                    <div class="hidden-xs">Insurance Subscriber Information</div>
+                    <span>
+                        5
+                    </span>
+                </a>
+            </li>
+        </ul>
+        <div class="progress-indicator">
+            <span>
+            </span>
+        </div>
+        <div ui-view></div>
+    </form>
+</div>
+<!-- FORM WIZARD WITH VALIDATION END HERE-->
+<script type="text/ng-template" id="exist-schedule-modal">
+    <form class="validate form-horizontal" name="existingForm" id="care_type_form" >
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="existingModel.cancel();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Change in Schedule</h4>
+    </div>
+
+    <div class="modal-body">
+
+    <div class="text-justify">
+    <p> 
+    This member has an existing schedule that contains a repeat schedule through auth expiration date.
+    </p>
+    <p>
+    Please select '{{existingModel.extend?'Extend':'Remove'}} Sequence' to {{existingModel.extend?'extend':'remove'}} sequence of schedule, select 'Update' to update record only and select 'Cancel' to cancel change.
+    </p>
+    </div>
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="existingModel.cancel();">Cancel</button>
+    <button type="button" class="btn btn-red" ng-click="existingModel.updateOnly();">Update Only</button>
+    <button type="submit" class="btn btn-success" ng-click="existingModel.extendSequence();">{{existingModel.extend?'Extend':'Remove'}} Sequence</button>
+    </div>
+    </form>
+</script>
+
+<script type="text/javascript">
+    customJqueryValidation();
+
+    jQuery(document).ready(function($) {
+        setTimeout(function() {
+            $(".fade-in-effect").addClass('in');
+        }, 1);
+
+//        // Validation
+//        $("#add_patient_tab_1_form").validate({
+//            rules: {FirstName: {required: true},
+//                DateofBirth: {required: true, ontimedate: true},
+//// NameSuffix: {required: true},
+//                LastName: {required: true},
+//// MiddleInitial: {required: true},
+//                Phone: {required: true, digits: true, rangelength: [10, 10]},
+//                StaffingCoordinator: {required: true},
+//                Care4CoordinatorContact: {required: true},
+//                NurseCaseManager: {required: true},
+//                CareCoordinator: {required: true},
+//            },
+//            messages: {FirstName: {required: 'Please enter First Name.'},
+//                DateofBirth: {required: 'Please enter Date of Birth.'},
+//                NameSuffix: {required: 'Please enter Name Suffix.'},
+//                LastName: {required: 'Please enter Last Name.'},
+//                MiddleInitial: {required: 'Please enter Middle Initial.'},
+//                Phone: {required: 'Please enter Phone Number.', rangelength: 'Phone Number must contain 10 digits'},
+//                StaffingCoordinator: {required: 'Please select Staffing Coordinator.'},
+//                CareCoordinator: {required: 'Please enter Care Coordinator or Emergency Contact Name.'},
+//                Care4CoordinatorContact: {required: 'Please enter Care Coordinator or Emergency Contact Phone Number or Email Address.'},
+//                NurseCaseManager: {required: 'Please select Nurse Case Manager.'},
+//            },
+//            errorPlacement: function(error, element) {
+//                element['0'].setCustomValidity(error);
+//                if (element.attr("name") == "DateofBirth") {
+//                    error.insertAfter($(element).parent());
+//                } else {
+//                    error.insertAfter(element);
+//                }
+//            },
+//            highlight: function(element) {
+//                $(element).closest('.form-group').addClass('validate-has-error');
+//            },
+//            unhighlight: function(element) {
+//                element.setCustomValidity('');
+//                $(element).closest('.form-group').removeClass('validate-has-error');
+//            },
+//        }); // validate
+
+    }); // ready
+</script>

@@ -1,0 +1,512 @@
+<style>
+    .rates-dv {
+        display: flex;
+        gap: 1em;
+        flex-wrap: wrap;
+    }
+
+    .rates-dv label {
+        flex-grow: 1;
+        flex-basis: 200px;
+    }
+</style>
+
+<!--================== HEADER ====================-->
+<div class="row">
+    <div class="col-sm-12">
+        <patient-breadcrumb patient="homeCarePlan.patient" record-name="Patient Record - In Home Care Plan"></patient-breadcrumb>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+
+                <form class="form-horizontal validate" id="home_care_plan_form" name="home_care_plan_form" role="form"
+                    ng-submit="homeCarePlan.submitForm()">
+                    <div class="row">
+                        <div class="col-sm-12 pull-right">
+                            <button class="btn btn-info btn-single gray_bt pull-right" type="reset"
+                                ng-click="homeCarePlan.resetForm()">
+                                Reset To Default
+                            </button>
+                            <button class="btn btn-info gray_bt pull-right" type="button"
+                                ng-click="homeCarePlan.submitDraft()" ng-if="homeCarePlan.homeCarePlanForm.isDraft">
+                                Save to Draft
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Position Selection -->
+                    <div class="form-group">
+                        <label for="position" class="control-label col-sm-3">Select Position:</label>
+                        <div class="col-sm-9">
+                            <select id="position" name="position" class="form-control"
+                                ng-model="homeCarePlan.homeCarePlanForm.positionId"
+                                ng-options="position.id as position.position for position in homeCarePlan.positionList"
+                                data-validate="required" data-message-required="Please select Position."
+                                ng-change="homeCarePlan.setPositionTaskDataCall(homeCarePlan.homeCarePlanForm.positionId)">
+                                <option value="" disabled selected>Select Position</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="evacuationLevel">
+                            Evacuation Level
+                        </label>
+                        <div class="col-sm-9 form-control-static">
+                            <label class="">
+                                <input value="red" name="evacuationLevel" id="evacuationLevel" type="radio" class="cbr cbr-primary"
+                                ng-model="homeCarePlan.homeCarePlanForm.evacuationLevel"/>
+                                RED - Tal 1 - Hospital/Skilled Nursing Facility
+                            </label>
+                            <label class="mar_lf5">
+                                <input value="yellow" name="evacuationLevel" type="radio" class="cbr cbr-primary"
+                                ng-model="homeCarePlan.homeCarePlanForm.evacuationLevel"/>
+                                YELLOW - Tal 2 - Special Care Facility
+                            </label>
+                            <label class="mar_lf5">
+                                <input value="green" name="evacuationLevel" type="radio" class="cbr cbr-primary"
+                                ng-model="homeCarePlan.homeCarePlanForm.evacuationLevel"/>
+                                GREEN - Tal 3 - Public Shelter
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Tasks Swipe Right Box -->
+                    <div class="swipe-right-box">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="tasks">
+                                Tasks
+                            </label>
+                            <div class="col-sm-9">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($) {
+                                        $("#tasks").multiSelect({
+                                            afterInit: function () {
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                            },
+                                            afterSelect: function () {
+                                                this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <select class="form-control" id="tasks" multiple="multiple" name="tasks"
+                                    ng-model="homeCarePlan.selectedTasks"
+                                    ng-options="ct.id as ct.task for ct in homeCarePlan.positionTasksList| orderBy:'task'"
+                                    ng-change="homeCarePlan.homeCarePlanForm.taskScheduleSet.length">
+
+                                </select>
+
+                                <!-- <div
+                                    ng-show="homeCarePlan.homeCarePlanForm.taskScheduleSet.length == 0 && homeCarePlan.isTasksSelected">
+                                    <span style=" color: #cc3f44; display: block; font-size: 12px; padding-top: 5px; ">
+                                        Please select at least one task.
+                                    </span>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Goals Swipe Right Box -->
+                    <div class="swipe-right-box">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="goals">Goals</label>
+
+                            <div class="col-sm-9">
+                                <script type="text/javascript">
+                                    jQuery(document).ready(function ($) {
+                                        setTimeout(function () {
+                                            $("#goals").multiSelect({
+                                                afterInit: function () {
+                                                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+                                                },
+                                                afterSelect: function () {
+                                                    this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+                                                }
+                                            });
+                                        }, 100);
+                                    });
+                                </script>
+                                <select class="form-control" multiple="multiple" id="goals" name="goals"
+                                    ng-model="homeCarePlan.homeCarePlanForm.goals"
+                                    ng-options="goal.id as goal.label for goal in homeCarePlan.goals">
+                                </select>
+                                <!-- Example for Goals -->
+                                <!-- <div
+                                    ng-show="homeCarePlan.homeCarePlanForm.goals.length == 0 && homeCarePlan.isGoalsSelected ">
+                                    <span style=" color: #cc3f44; display: block; font-size: 12px; padding-top: 5px; ">
+                                        Please select at least one goal.
+                                    </span>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Services In The Home
+                        </label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class="checkbox col-sm-3"
+                                    ng-repeat="service in homeCarePlan.servicesInTheHomeOptionsKeyValue">
+                                    <input class="d-check" id="service{{$index}}"
+                                        name="service{{$index}}" type="checkbox"
+                                        ng-model="service.value" value="true" />
+                                    {{service.label}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Nutritional Requirements
+                        </label>
+                        <div class="col-sm-9">
+                            <div>
+                                <label class="checkbox col-sm-3 pad_lf20"
+                                       ng-repeat="options in homeCarePlan.nutritionalRequirementsKeyValue">
+                                    <input class="d-check" id="options{{$index}}" name="options{{$index}}"
+                                           type="checkbox" ng-model="options.value"
+                                           ng-change="homeCarePlan.onChange(options.name, options.value)" /> 
+                                    {{options.title}} 
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- Show this input on click of "Other" -->
+                        <div class="form-group" ng-if="homeCarePlan.showOtherInput" >
+                            <label for="otherDietField" class="control-label col-sm-3"></label>
+                            <div class="col-sm-9">
+                                <input type="text" name="otherDietField" id="otherDietField" class="form-control"
+                                ng-model="homeCarePlan.homeCarePlanForm.otherDiet"
+                                    placeholder="Type here ..."
+                                    data-validate="required"
+                                data-message-required="other Diet required.">
+                                </div>
+                        </div>
+
+
+                     <div class="form-group-separator"></div>
+                    <div class="form-group" >
+                        <label class="col-sm-3 control-label">
+                            Advanced Directives -DNR
+                        </label>
+                        <div class="col-sm-9">
+                            <div>
+                                <label class="{{$index != 0 ? 'mar_lf10':''}} pad_top7"
+                                       ng-repeat="options in homeCarePlan.advancedDirectivesDNR">
+                                    <input class="cbr cbr-radio cbr-primary" value="{{options.value}}" id="options{{$index}}" name="advancedDirectivesDNR"
+                                           type="radio" ng-model="homeCarePlan.homeCarePlanForm.advancedDirectivesDNR"  /> 
+                                    {{options.title}} 
+                                </label>
+                            </div>
+                            <div>
+                                <label class="checkbox col-sm-3 pad_lf20">
+                                    <input class="d-check" id="dnrPatientEducated" name="dnrPatientEducated" type="checkbox" ng-model="homeCarePlan.homeCarePlanForm.dnrPatientEducated"
+                                       />Patient Educated</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">
+                        Activities Permitted
+                    </label>
+                    <div class="col-sm-9 pad_top7">
+                        <div>
+                            <label class="">
+                                <input type="radio" value="all" class="cbr cbr-primary cbr-radio" id="activitiesPermittedField" name="activitiesPermittedField" value="All"
+                                    ng-model="homeCarePlan.homeCarePlanForm.activitiesPermitted" ng-change="homeCarePlan.onChangeActivePermitted()"/>
+                                All
+                            </label>
+                            <label class="mar_lf10">
+                                <input type="radio" value="other" class="cbr cbr-primary cbr-radio" id="activitiesPermittedField" name="activitiesPermittedField"
+                                ng-model="homeCarePlan.homeCarePlanForm.activitiesPermitted" ng-change="homeCarePlan.onChangeActivePermitted()"/>
+                                Other
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="homeCarePlan.homeCarePlanForm.activitiesPermitted === 'other'">
+                    <label for="administeredBy" class="control-label col-sm-3"></label>
+                    <div class="col-sm-9">
+                        <input type="text" name="administeredBy" id="administeredBy" class="form-control"
+                            ng-model="homeCarePlan.homeCarePlanForm.otherActivities"
+                            placeholder="Please enter value" maxlength="35" required>
+                        </div>
+                        <!-- ng-keydown="homeCarePlan.preventFromEnter($event)" -->
+                    <p class="length-message hidden-print" style="text-align: end; margin-top: 3px; padding-right: 12px;">
+                        {{homeCarePlan.homeCarePlanForm.otherActivities.length || 0}}/35
+                    </p>
+                </div>
+                
+                
+                
+                    
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="serviceFrequency" class="control-label col-sm-3">Service Frequency:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="serviceFrequency" name="serviceFrequency" class="form-control"
+                                ng-model="homeCarePlan.homeCarePlanForm.serviceFrequency"
+                                placeholder="Enter service frequency" data-validate="required"
+                                data-message-required="Service frequency required." />
+                        </div>
+                    </div>
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="caregiverStatus" class="control-label col-sm-3">Caregiver Status:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="caregiverStatus" name="caregiverStatus" class="form-control"
+                                ng-model="homeCarePlan.homeCarePlanForm.caregiverStatus"
+                                placeholder="Enter caregiver status" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="culturalBeliefs" class="control-label col-sm-3">Cultural Beliefs:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="culturalBeliefs" name="culturalBeliefs" class="form-control"
+                                ng-model="homeCarePlan.homeCarePlanForm.culturalBeliefs"
+                                placeholder="Enter cultural beliefs" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="infectionControl" class="control-label col-sm-3">Infection Control:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="infectionControl" name="infectionControl" class="form-control"
+                                ng-model="homeCarePlan.homeCarePlanForm.infectionControl"
+                                placeholder="Enter infection control details" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="psychosocialStatus" class="control-label col-sm-3">Psychosocial Status:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="psychosocialStatus" name="psychosocialStatus" class="form-control"
+                                ng-model="homeCarePlan.homeCarePlanForm.psychosocialStatus"
+                                placeholder="Enter psychosocial status" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Things to Report
+                        </label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class="checkbox col-sm-3"
+                                    ng-repeat="thingToReport in homeCarePlan.thingsToReportOptionsKeyValue">
+                                    <input class="d-check" id="thingToReport{{$index}}" name="thingToReport{{$index}}"
+                                        type="checkbox" ng-model="thingToReport.value" value="true" />
+                                    {{thingToReport.label}}
+                                </label>
+                                <label class="checkbox col-sm-3">
+                                    <input class="d-check" id="thingToReportOther" name="thingToReportOther"
+                                        type="checkbox" ng-model="homeCarePlan.otherThingToReportCheckbox"
+                                        ng-change="homeCarePlan.refreshThingsToReport()" />
+                                    Other
+
+                                    <input ng-if="homeCarePlan.otherThingToReportCheckbox" id="thingsToReportOtherText"
+                                        name="thingsToReportOtherText" class="form-control mt-2" data-role="tagsinput"
+                                        type="text" ng-model="homeCarePlan.homeCarePlanForm.otherThingsToReport"
+                                        tagsinput />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-center">Vital Sign Parameters</h3>
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group" ng-repeat="parameter in homeCarePlan.vitalSignParametersList">
+                        <!-- <div class="form-group-separator"></div> -->
+                        <label class="col-sm-3 control-label">
+                            {{ parameter.title }}
+                        </label>
+                        <div class="col-sm-9">
+                            <div class="rates-dv">
+                                <label class="">
+                                    <input class="form-control" placeholder="Low value" type="number" step="any"
+                                        id="{{ parameter.name }}" name="{{ parameter.name }}"
+                                        ng-model="homeCarePlan.homeCarePlanForm[parameter.name].lowValue" />
+                                </label>
+                                <label class="">
+                                    <input class="form-control" placeholder="High value" type="number" step="any"
+                                        id="{{ parameter.name }}" name="{{ parameter.name }}"
+                                        ng-model="homeCarePlan.homeCarePlanForm[parameter.name].highValue" />
+                                </label>
+                            </div>
+                            <!-- Error message container -->
+                            <!-- <div
+                                ng-show="parameter.validationError && (!homeCarePlan.homeCarePlanForm[parameter.name].lowValue || !homeCarePlan.homeCarePlanForm[parameter.name].highValue) && false">
+                                <div style=" color: #cc3f44; display: block; font-size: 12px; padding-top: 5px; ">
+                                    Both low and high values are required.
+                                </div>
+                            </div> -->
+                        </div>
+
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="specialConsiderations" class="control-label col-sm-3">Special
+                            Considerations:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="specialConsiderations" name="specialConsiderations"
+                                class="form-control" ng-model="homeCarePlan.homeCarePlanForm.specialConsiderations"
+                                placeholder="Enter special considerations" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+
+
+                    <!-- Can patient be left alone -->
+                    <div class="form-group">
+                        <label for="canBeLeftAlone" class="control-label col-sm-3">Can patient be left alone?</label>
+                        <div class="col-sm-9">
+                            <select id="canBeLeftAlone" name="canBeLeftAlone" class="form-control"
+                                ng-model="homeCarePlan.homeCarePlanForm.canBeLeftAlone" data-validate="required">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Emergency Contact -->
+                    <div class="form-group">
+                        <label for="emergencyContactName" class="control-label col-sm-3">Emergency Contact Name:</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="emergencyContactName" name="emergencyContactName"
+                                class="form-control" ng-model="homeCarePlan.homeCarePlanForm.name"
+                                placeholder="Enter name" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="emergencyContactPhone" class="control-label col-sm-3">Emergency Contact Phone
+                            number:</label>
+                        <div class="col-sm-9">
+                            <input class="form-control" name="emergencyContactPhone"
+                                ng-model="homeCarePlan.homeCarePlanForm.phoneNumber" id="emergencyContactPhone"
+                                placeholder="Enter phone" numbers-only="true" maxlength="10" type="text"
+                                data-validate="number,minlength[10],maxlength[10]"
+                                data-message-minlength="Phone Number must contain 10 digits"
+                                data-message-maxlength="Phone Number must contain 10 digits" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="patientProblems" class="control-label col-sm-3">Patient Problems:</label>
+                        <div class="col-sm-9">
+                            <textarea name="patientProblems" id="patientProblems" class="form-control" cols="30"
+                                rows="3" placeholder="Enter the patients problems" rows="10"
+                                ng-model="homeCarePlan.homeCarePlanForm.patientProblems">
+                    </textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="patientAllergies" class="control-label col-sm-3">Patient Allergies:</label>
+                        <div class="col-sm-9">
+                            <textarea name="patientAllergies" id="patientAllergies" class="form-control" cols="30"
+                                rows="3"
+                                placeholder="Enter the patients allergies to medication / food / environmental triggers etc"
+                                rows="10" ng-model="homeCarePlan.homeCarePlanForm.patientAllergies">
+                    </textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+
+                    <!-- Patient/Proxy Signature -->
+                    <div class="form-group">
+                        <label for="patientProxySignature" class="col-sm-3 control-label">Patient/Proxy
+                            Signature</label>
+                        <div class="col-sm-9">
+                            <signature-pad width="550" height="175" style="border: 1px solid #B0B0B0"
+                                dataurl="homeCarePlan.homeCarePlanForm.patientProxySignature"
+                                accept="homeCarePlan.acceptPatientProxySignature"
+                                clear="homeCarePlan.clearPatientProxySignature"
+                                ng-model="homeCarePlan.homeCarePlanForm.patientProxySignature" class="form-control"
+                                data-validate="required"
+                                data-message-required="Patient/Proxy Signature required."></signature-pad>
+                            <button type="button" class="btn btn-default mar_top7 btn-default-bootstrap"
+                                ng-click="homeCarePlan.clearPatientProxySignature(); homeCarePlan.clearPatientProxySignatureCall()">Clear
+                                signature</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Nurse Signature -->
+                    <div class="form-group">
+                        <label for="nurseSignature" class="col-sm-3 control-label">Nurse Signature</label>
+                        <div class="col-sm-9">
+                            <signature-pad width="550" height="175" style="border: 1px solid #B0B0B0"
+                                dataurl="homeCarePlan.homeCarePlanForm.nurseSignature"
+                                accept="homeCarePlan.acceptNurseSignature" clear="homeCarePlan.clearNurseSignature"
+                                ng-model="homeCarePlan.homeCarePlanForm.nurseSignature" class="form-control"
+                                data-validate="required"
+                                data-message-required="Nurse Signature required."></signature-pad>
+                            <button type="button" class="btn btn-default mar_top7 btn-default-bootstrap"
+                                ng-click="homeCarePlan.clearNurseSignature(); homeCarePlan.clearNurseSignatureCall()">Clear
+                                signature</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+
+                    <!-- Save Button -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" type="submit">Save</button>
+                            <button class="btn btn-info gray_bt pull-right" type="button"
+                                ng-click="homeCarePlan.submitDraft()" ng-if="homeCarePlan.homeCarePlanForm.isDraft">
+                                Save to Draft
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,387 @@
+<!--================== HEADER ====================-->
+<div class="row" ng-init="medOrder.dataInit()">
+    <div class="col-sm-12">
+        <patient-breadcrumb patient="medOrder.patient" record-name="Patient Record - Medical Order"></patient-breadcrumb>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel">
+                <form class="form-horizontal validate" id="med_Order_form" novalidate="" name="med_Order_form"
+                    role="form" ng-submit="medOrder.submitForm()">
+                    <div class="row hidden-print">
+                        <div class="col-sm-12">
+                            
+                            <button class="btn btn-info btn-single gray_bt pull-right" ng-click="medOrder.resetForm()"
+                                type="button">
+                                Reset To Default
+                            </button>
+                            <button ng-if="medOrder.medicalOrderForm.isDraft"
+                                class="btn btn-info btn-single gray_bt pull-right" ng-click="medOrder.submitDraft()"
+                                type="button">Save in Draft</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Certification Period -->
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">Certification Period</label>
+                        <div class="col-sm-9">
+                            <!-- From Date -->
+                            <label for="certificationPeriodFrom" class="col-sm-6" style="padding-left: 0px;">From Date:
+                                <div class="input-group">
+                                    <input class="form-control datepicker" placeholder="mm/dd/yyyy"
+                                        data-format="mm/dd/yyyy" id="certificationPeriodFrom"
+                                        name="certificationPeriodFrom" type="text"
+                                        ng-model="medOrder.medicalOrderForm.certificationPeriodFrom"
+                                        data-validate="required" data-message-required="Please Enter Date From"
+                                        ng-change="medOrder.updateValidationState('certificationPeriodFrom')" />
+                                    <div class="input-group-addon">
+                                        <a href="#">
+                                            <i class="linecons-calendar">
+                                            </i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <!-- To Date -->
+                            <label for="certificationPeriodTo" class="col-sm-6" style="padding-right: 0px;">To Date:
+                                <div class="input-group">
+                                    <input class="form-control datepicker" placeholder="mm/dd/yyyy"
+                                        data-format="mm/dd/yyyy" id="certificationPeriodTo" name="certificationPeriodTo"
+                                        type="text" ng-model="medOrder.medicalOrderForm.certificationPeriodTo"
+                                        data-validate="required" data-message-required="Please Enter Date To"
+                                        ng-change="medOrder.updateValidationState('certificationPeriodTo')"
+                                        ng-disabled="medOrder.medicalOrderForm.certificationPeriodFrom == '' "
+                                        min-date="medOrder.medicalOrderForm.certificationPeriodFrom" />
+                                    <div class="input-group-addon">
+                                        <a href="#">
+                                            <i class="linecons-calendar">
+                                            </i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Functional Limitations -->
+                    <div class="form-group">
+                        <label for="functionalLimitations" class="control-label col-sm-3">Functional Limitations</label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class="checkbox col-sm-3"
+                                    ng-repeat="limit in medOrder.functionalLimitationKeyValue">
+                                    <input class="d-check" id="functionalLimitations{{$index}}"
+                                        name="functionalLimitations{{$index}}" type="checkbox" ng-model="limit.value"
+                                        value="true" />
+                                    {{limit.title}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Others Functional Limitations input field -->
+                    <div class="form-group"
+                        ng-if="medOrder.functionalLimitationKeyValue[medOrder.functionalLimitationKeyValue.length - 1].value == true">
+                        <label for="otherFunctionalLimitations" class="control-label col-sm-3">Other Functional
+                            Limitations</label>
+                        <div class="col-sm-9">
+                            <input id="" name="otherFunctionalLimitations" type="text" class="form-control"
+                                ng-model="medOrder.medicalOrderForm.otherFunctionalLimitations"
+                                ng-required="medOrder.functionalLimitationKeyValue[medOrder.functionalLimitationKeyValue.length - 1].value" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Activities Permitted
+                        </label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class=" checkbox col-sm-3"
+                                    ng-repeat="activity in medOrder.activityOptionsKeyValue">
+                                    <input class="d-check" id="activity{{$index}}" name="activity{{$index}}" type="checkbox"
+                                        ng-model="activity.value" value="true" />
+                                    {{activity.key}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Others Activities Permitted input field -->
+                    <div class="form-group"
+                        ng-if="medOrder.activityOptionsKeyValue[medOrder.activityOptionsKeyValue.length - 1].value == true">
+                        <label for="otherActivitiesPermitted" class="control-label col-sm-3">Other Activities
+                            Permitted</label>
+                        <div class="col-sm-9">
+                            <input id="" name="otherActivitiesPermitted" type="text" class="form-control"
+                                ng-model="medOrder.medicalOrderForm.otheractivitys"
+                                ng-required="medOrder.activityOptionsKeyValue[medOrder.activityOptionsKeyValue.length - 1].value" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Mental Status -->
+                    <div class="form-group">
+                        <label for="mentalStatus" class="control-label col-sm-3">Mental Status</label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class="checkbox col-sm-3" ng-repeat="status in medOrder.mentalStatusKeyValue">
+                                    <input class="d-check" id="mentalStatus{{$index}}" name="mentalStatus{{$index}}"
+                                        type="checkbox" ng-model="status.value" value="true" />
+                                    {{status.title}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Others Mental Status input field -->
+                    <div class="form-group"
+                        ng-if="medOrder.mentalStatusKeyValue[medOrder.mentalStatusKeyValue.length - 1].value == true">
+                        <label for="otherMentalStatus" class="control-label col-sm-3">Other Mental Status</label>
+                        <div class="col-sm-9">
+                            <input id="" name="otherMentalStatus" type="text" class="form-control"
+                                ng-model="medOrder.medicalOrderForm.otherMentalStatus"
+                                ng-required="medOrder.mentalStatusKeyValue[medOrder.mentalStatusKeyValue.length - 1].value" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- DME & Supplies -->
+                    <div class="form-group">
+                        <label for="dmeSupplies" class="control-label col-sm-3">DME & Supplies</label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class="checkbox col-sm-3" ng-repeat="status in medOrder.dmeSuppliesKeyValue">
+                                    <input class="d-check" id="dmeSupplies{{$index}}" name="dmeSupplies{{$index}}"
+                                        type="checkbox" ng-model="status.value" value="true" />
+                                    {{status.title}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Others DME & Supplies input field -->
+                    <div class="form-group"
+                        ng-if="medOrder.dmeSuppliesKeyValue[medOrder.dmeSuppliesKeyValue.length - 1].value == true">
+                        <label for="otherDmeSupplies" class="control-label col-sm-3">Other DME & Supplies</label>
+                        <div class="col-sm-9">
+                            <input id="" name="otherDmeSupplies" type="text" class="form-control"
+                                ng-model="medOrder.medicalOrderForm.otherDmeSupplies"
+                                ng-required="medOrder.dmeSuppliesKeyValue[medOrder.dmeSuppliesKeyValue.length - 1].value" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Safety Measures / Special Precautions -->
+                    <div class="form-group">
+                        <label for="safetyMeasures" class="control-label col-sm-3">Safety Measures</label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class="checkbox col-sm-3"
+                                    ng-repeat="safetyMeasures in medOrder.safetyMeasuresKeyValue">
+                                    <input class="d-check" id="safetyMeasures{{$index}}" name="safetyMeasures{{$index}}"
+                                        type="checkbox" ng-model="safetyMeasures.value" value="true" />
+                                    {{safetyMeasures.title}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Nutritionals -->
+                    <div class="form-group">
+                        <label for="nutritionals" class="control-label col-sm-3">Nutritionals</label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class="checkbox col-sm-3"
+                                    ng-repeat="nutritionals in medOrder.nutritionalsKeyValue">
+                                    <input class="d-check" id="nutritionals{{$index}}" name="nutritionals{{$index}}"
+                                        type="checkbox" ng-model="nutritionals.value" value="true" />
+                                    {{nutritionals.title}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Others Nutritional input field -->
+                    <div class="form-group"
+                        ng-if="medOrder.nutritionalsKeyValue[medOrder.nutritionalsKeyValue.length - 1].value == true">
+                        <label for="otherNutritionals" class="control-label col-sm-3">Other Nutritionals</label>
+                        <div class="col-sm-9">
+                            <input id="" name="otherNutritionals" type="text" class="form-control"
+                                ng-model="medOrder.medicalOrderForm.otherNutritionals"
+                                ng-required="medOrder.nutritionalsKeyValue[medOrder.nutritionalsKeyValue.length - 1].value" />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Allergies -->
+                    <div class="form-group">
+                        <label for="dmeSupplies" class="control-label col-sm-3">Allergies</label>
+                        <div class="col-sm-9">
+                            <div style="padding-left: 5px;">
+                                <label class="radio col-sm-3" ng-repeat="status in medOrder.allergiesKeyValue">
+                                    <input class="d-radio" id="allergies{{$index}}" name="allergies" type="radio"
+                                        ng-model="medOrder.medicalOrderForm.allergies" value="{{status.value}}" />
+                                    {{status.title}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Others Allergies input field -->
+                    <div class="form-group" ng-show="medOrder.medicalOrderForm.allergies == 'Enter Allergies'">
+                        <label for="otherAllergies" class="control-label col-sm-3">Other Allergies</label>
+                        <div class="col-sm-9">
+                            <input id="otherAllergies" name="otherAllergies" type="text" class="form-control"
+                                ng-model="medOrder.medicalOrderForm.otherAllergies" data-role="tagsinput" tagsinput />
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Prognosis -->
+                    <div class="form-group">
+                        <label for="prognosis" class="control-label col-sm-3">Prognosis</label>
+                        <div class="col-sm-9">
+                            <select name="prognosis" id="prognosis" class="form-control"
+                                ng-model="medOrder.medicalOrderForm.prognosis" data-validate="required">
+                                <option value="" selected disabled>-- Select One --</option>
+                                <option value="Poor">Poor</option>
+                                <option value="Guarded">Guarded</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Good">Good</option>
+                                <option value="Excellent">Excellent</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Orders for Discipline and Treatments -->
+                    <div ng-repeat="order in medOrder.medicalOrderForm.orders track by $index" ng-form="orderForm"
+                        name="orderForm" class="order-form" id="orderForm">
+                        <div class="form-group">
+                            <label for="discipline" class="control-label col-sm-3">Discipline and Treatment</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" ng-model="order.discipline"
+                                    name="discipline{{$index}}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="frequency" class="control-label col-sm-3 mar_top0">Specify Frequency</label>
+                            <div class="col-sm-9 mar_top0">
+                                <input type="text" class="form-control" ng-model="order.frequency"
+                                    name="frequency{{$index}}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="duration" class="control-label col-sm-3 mar_top0">Duration</label>
+                            <div class="col-sm-9 mar_top0">
+                                <input type="text" class="form-control" ng-model="order.duration"
+                                    name="duration{{$index}}" required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-9 col-sm-offset-3 mar_top0" ng-if="medOrder.medicalOrderForm.orders.length > 1">
+                            <input type="button" style="color: #fff;" value="Remove" class="btn btn-info green_bt"
+                                ng-click="medOrder.removeOrder($index)">
+                        </div>
+                        <div class="row" ng-if="$last">
+                            <div class="col-sm-12">
+                                <input type="button" value="Add More" class="btn btn-info green_bt pull-right mar_top0"
+                                    ng-click="medOrder.addMoreOrders(orderForm)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Goals/Rehabilitation/Discharge Plans (Textarea) -->
+                    <div class="form-group">
+                        <label for="goals" class="control-label col-sm-3">Goals/Rehabilitation/Discharge Plans</label>
+                        <div class="col-sm-9">
+                            <textarea name="goals" id="goals" class="form-control" rows="5" maxlength="300"
+                                ng-model="medOrder.medicalOrderForm.goals" data-validate="required,maxlength[1000]"
+                                data-message-required="Please enter Goals." enter-prevent 
+                                data-message-maxlength="Not More Then 300 character"></textarea>
+                                <p class="length-message hidden-print" style="text-align: end; margin-top: 3px;">
+                                    {{medOrder.medicalOrderForm.goals.length || 0}}/300
+                                </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-3 control-label">Signature</label>
+                        <div class="col-sm-9">
+                            <signature-pad width="550" height="175" style="border:1px solid #B0B0B0"
+                                dataurl="medOrder.medicalOrderForm.signature" accept="medOrder.accept"
+                                clear="clear"></signature-pad>
+                            <button type="button" class="btn btn-default mar_top7 btn-default-bootstrap"
+                                ng-click="clear(); medOrder.clearSignatureCall()">Clear signature</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Date</label>
+                        <div class="col-sm-9">
+                            <input type="text" ng-model="medOrder.currentDateWithFormat" disabled class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Physician Name and Address -->
+                    <div class="form-group">
+                        <label for="physicianName" class="control-label col-sm-3">Physician Name</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="physicianName" id="physicianName"
+                                ng-model="medOrder.medicalOrderForm.physicianName" ng-required="true">
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <div class="form-group">
+                        <label for="physicianAddress" class="control-label col-sm-3">Physician Address</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="physicianAddress" id="physicianAddress"
+                                ng-model="medOrder.medicalOrderForm.physicianAddress" ng-required="true">
+                        </div>
+                    </div>
+
+                    <div class="form-group-separator"></div>
+
+                    <!-- Save Button -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-info green_bt pull-right" type="submit">Save</button>
+                            <button ng-if="medOrder.medicalOrderForm.isDraft"
+                                class="btn btn-info btn-single gray_bt pull-right" ng-click="medOrder.submitDraft()"
+                                type="button">Save in Draft</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

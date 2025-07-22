@@ -1,0 +1,163 @@
+<div class="page-body">
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">
+                Billing Settings
+            </h1>
+            <p class="description">
+                Set Billing Conditions
+            </p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal validate" id="billing_settings_form" name="billing_settings_form" role="form">
+                        <div class="row">
+                            <div class="col-sm-12 pull-right">
+                                <button class="btn btn-info green_bt pull-right" type="submit" ng-click="billingSetting.saveSettings()">
+                                    Save Changes
+                                </button>
+                                <button class="btn btn-info btn-single gray_bt pull-right" type="button" ng-click="billingSetting.resetPayroll()">
+                                    Reset To Default
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label " for="billingClearnceHouse">
+                                Billing Clearance House
+                            </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" ng-model="billingSetting.billingObj.billingClearanceHouse" ng-options="clearingHouses.id as clearingHouses.text for clearingHouses in billingSetting.billingClearanceHouse" 
+                                        id="billingClearnceHouse" name="billingClearnceHouse" 
+                                        data-validate="required" data-message-required="Please enter Billing clearnace house." required>
+                                    <option value="">
+                                        Select
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-name">
+                                Name
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-name" name="field-name"  maxlength="250"
+                                       ng-model="billingSetting.billingObj.name" type="text"
+                                       data-validate="required" data-message-required="Please enter Name." required/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-37">
+                                Address 1
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-37" name="Address1"  maxlength="255"
+                                       ng-model="billingSetting.billingObj.address1" type="text"
+                                       data-validate="required" data-message-required="Please enter Address 1." required/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-38">
+                                Address 2
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-38" name="Address2" maxlength="255"
+                                       ng-model="billingSetting.billingObj.address2" type="text"/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-39">
+                                City
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-39" name="City" maxlength="50"
+                                       ng-model="billingSetting.billingObj.city" type="text"
+                                       data-validate="required" data-message-required="Please enter City." required/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="sboxit-1">
+                                {{terminologyBank.state}}
+                            </label>
+                            <div class="col-sm-9">
+                                <select class="form-control" id="sboxit-1" name="State" ng-model="billingSetting.billingObj.state"
+                                        data-validate="required" data-message-required="Please select the state."
+                                        ng-options="state.abbreviation as state.name for state in states" required>
+                                    <option value="">
+                                        Select the {{terminologyBank.state}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-40">
+                                {{terminologyBank.zipCode}}
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" id="field-40" name="ZipCode" ng-model="billingSetting.billingObj.zipCode" type="text" maxlength="10"
+                                       data-validate="required" data-message-required="Please enter Zip Code." required/>
+                            </div>
+                        </div>
+
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-33">
+                                Phone
+                            </label>
+                            <div class="col-sm-9">
+                                <input numbers-only="true" minlength="10" maxlength="10" class="form-control" id="field-33" name="Phone" type="text" ng-model="billingSetting.billingObj.phone" 
+                                       data-validate="required,number,minlength[10],maxlength[10]"
+                                       data-message-required="Please enter Phone Number." data-message-minlength="Phone Number must contain 10 digits" data-message-maxlength="Phone Number must contain 10 digits" required/>
+                            </div>
+                        </div>
+
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="field-36">
+                                Fax
+                            </label>
+                            <div class="col-sm-9">
+                                <input numbers-only="true" minlength="10" maxlength="10" class="form-control" id="field-36" name="Fax" type="text" ng-model="billingSetting.billingObj.fax" 
+                                       data-validate="number,minlength[10],maxlength[10]"
+                                       data-message-minlength="Fax must contain 10 digits" data-message-maxlength="Fax must contain 10 digits"/>
+                            </div>
+                        </div>
+                        <div class="form-group-separator">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Email
+                            </label>
+                            <div class="col-sm-9">
+                                <input class="form-control" name="CareCoordinatorEmail" type="email" maxlength="100"
+                                       data-validate="required" data-message-required="Please enter an email id."
+                                       ng-model="billingSetting.billingObj.email" required/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,229 @@
+<div class="page-body"> 
+
+
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">View Payer Information</h1>
+            <p class="description">View All Payer Information</p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+
+    <!-- TABLE START HERE-->
+    <form class="form-horizontal">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">                            
+                    <div class="col-sm-12">
+                        <div class="page-count-selector col-md-3 pull-left pad-rg-xs-15">
+                            <label class="control-label nowrap"><span>Show Entries</span></label>
+                            <div style="width:70px;">
+                                <select class="form-control input-sm" ng-model="viewInsurer.searchParams.limit">
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6 col-xs-12 pull-right">
+                            <input type="search" class="form-control input-sm" ng-model="viewInsurer.searchParams.insuranceName" placeholder="Search by Name" ng-change="viewInsurer.applySearch()">
+                        </div> 
+
+                    </div>
+                </div>
+                <div class="row">  </div>
+                <div class="dataTables_wrapper form-inline dt-bootstrap">
+                    <div class="table-responsive">
+
+                        <table id="example-1" ng-if="viewInsurer.insurerList.length > 0" class="table table-striped table-bordered table-small-font" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th width="25%" ng-class="viewInsurer.applySortingClass('insuranceName')" ng-click="viewInsurer.applySorting('insuranceName')" >Payer</th>
+                                    <th width="15%" ng-class="viewInsurer.applySortingClass('billingId')" ng-click="viewInsurer.applySorting('billingId')" >Billing ID</th>
+                                    <th width="22%" ng-class="viewInsurer.applySortingClass('contactName')" ng-click="viewInsurer.applySorting('contactName')" >Contact Name</th>
+                                    <th width="18%" ng-class="viewInsurer.applySortingClass('contractEndDate')" ng-click="viewInsurer.applySorting('contractEndDate')" >Expires</th>
+                                    <th width="20%">Actions</th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+                                <tr pagination-id="viewInsurerPagination" dir-paginate="insurer in viewInsurer.insurerList| itemsPerPage: viewInsurer.searchParams.limit" 
+                                    total-items="totalRecords"
+                                    current-page="viewInsurer.searchParams.pageNo">
+                                    <th ng-click="viewInsurer.openEditModal(insurer, 'modal-5')" style="cursor: pointer">{{insurer.insuranceName}}</th>
+                                    <td>{{insurer.billingId}}</td>
+                                    <td>{{insurer.contactName}}</td>
+                                    <td>{{insurer.contractEndDate|date :dateFormat}}</td>
+                                    <td>
+                                        <div class="center">
+                                            <a href="" class="btn icon-left fa fa-pencil edit_button" ng-if="hasAccess('EDIT_INSURANCE_PROVIDER')" ui-sref="app.insurer({id: insurer.id})" tooltip="Edit"><span class="ed_b"></span></a> 
+                                            <a href="" class="btn icon-left fa fa-trash-o delete_button" ng-if="hasAccess('DELETE_INSURANCE_PROVIDER')" ng-click="viewInsurer.openModal(insurer, 'modal-3')" tooltip="Delete"><span class="ed_b"></span></a> 
+                                            <a ng-if="insurer.contractFile" class="btn icon-left fa fa-download download_bt" ng-href="{{viewInsurer.baseUrl}}file/download/{{viewInsurer.companyCode}}/i/{{insurer.contractFile}}?viewDownload=true" target="_blank" tooltip="Download Contract"><span class="ed_b"></span></a> 
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div ng-show="viewInsurer.insurerList.length">
+                    <div id="paginationButtons" class="text-right">
+                        <dir-pagination-controls boundary-links="true" 
+                                                 max-size="9"
+                                                 template-url="app/tpls/dirPagination.tpl.html" pagination-id="viewInsurerPagination" on-page-change="viewInsurer.pageChanged(newPageNumber)"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<script type="text/ng-template" id="modal-3">
+    <div class="modal-header">
+    <h4 class="modal-title">{{deleteInsurerModel.insurer.insuranceName}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to delete this Insurer?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="deleteInsurerModel.delete(deleteInsurerModel.insurer);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="deleteInsurerModel.dismiss();">No</button>
+    </div>
+</script>
+<script type="text/ng-template" id="modal-5">
+    <div class="modal-body">
+    <div class="row">
+        <div class="user_panel col-md-12">
+            <div class="emp_user_hd">
+                <div class="emp_user_name">{{selectInsurerModel.insurer.insuranceName}}</div>
+            </div>
+            <button type="button" class="close" ng-click="selectInsurerModel.close();" aria-hidden="true">&times;</button>
+        </div>
+
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Billing Id</strong></label>
+                <div class="col-md-8">
+                    {{selectInsurerModel.insurer.billingId}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Contact Number</strong></label>
+                <div class="col-md-8">
+                    {{selectInsurerModel.insurer.contactNumber|tel}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Contact Name</strong></label>
+                <div class="col-md-8">
+                    {{selectInsurerModel.insurer.contactName}} 
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Address</strong></label>
+                <div class="col-md-8">
+                    {{selectInsurerModel.insurer.address1}}<div ng-if="selectInsurerModel.insurer.address2 != null">{{selectInsurerModel.insurer.address2}}</div><div ng-if="selectInsurerModel.insurer.city || selectInsurerModel.insurer.state || selectInsurerModel.insurer.zipcode">  {{selectInsurerModel.insurer.city}}, {{selectInsurerModel.insurer.state}}, {{selectInsurerModel.insurer.zipcode}}</div>
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Expires</strong></label>
+                <div class="col-md-8">
+                    {{selectInsurerModel.insurer.contractEndDate|date :dateFormat}}
+                </div>
+            </div>	
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>Plan Type</strong></label>
+                <div class="col-md-8">
+                    {{selectInsurerModel.planTypeMap[selectInsurerModel.insurer.planType]}} 
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="selectInsurerModel.insurer.mdol">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>EDI Processor</strong></label>
+                <div class="col-md-8">
+                    {{selectInsurerModel.insurer.mdol === 'MD Online' ?'MD Online':'Emdeon – Change'}} 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="selectInsurerModel.insurer.mdol && selectInsurerModel.insurer.mdol === 'MD Online' && selectInsurerModel.insurer.mdolAccountNumber">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label for="field-1" class="control-label col-md-4"><strong>MDOL Acct #</strong></label>
+                <div class="col-md-8">
+                    {{selectInsurerModel.insurer.mdolAccountNumber}} 
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="selectInsurerModel.close();">Close</button>
+    </div>
+</script>
+<script type="text/ng-template" id="deleteModel">
+    <div class="modal-header">		
+    <h4 class="modal-title">{{deleteEmployeeModel.employee.lName}} {{deleteEmployeeModel.employee.fName}} {{deleteEmployeeModel.employee.middleInitial}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to delete this Employee?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="deleteEmployeeModel.delete(deleteEmployeeModel.employee);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="deleteEmployeeModel.dismiss();">No</button>
+    </div>
+</script>

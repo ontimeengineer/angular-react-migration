@@ -1,0 +1,33 @@
+<div class="cal-context" ng-switch="view">
+    <div class="alert alert-danger" ng-switch-default>The value passed to the view attribute of the calendar is not set</div>
+
+    <div class="alert alert-danger" ng-hide="currentDay">The value passed to current-day attribute of the calendar is not set</div>
+
+    <mwl-calendar-month
+        events="events"
+        current-day="currentDay"
+        on-event-click="onEventClick"
+        cell-template-url="{{ monthCellTemplateUrl}}"
+        cell-events-template-url="{{ monthCellEventsTemplateUrl}}"
+        ng-switch-when="month"
+        type-id="typeId"
+        type="type"
+        show-time="showTime"
+        event-click-callback='eventClickCallback'
+        ></mwl-calendar-month>
+
+    <mwl-calendar-week
+        events="events"
+        current-day="currentDay"
+        on-event-click="onEventClick"
+        on-link-click="onLinkClick"
+        on-view-info-click="onViewInfoClick"
+        on-list-click="onListClick"
+        ng-switch-when="week"
+        list="list"
+        type="type"
+        show-time="showTime"
+        event-click-callback='eventClickCallback'
+        >
+    </mwl-calendar-week>
+</div>

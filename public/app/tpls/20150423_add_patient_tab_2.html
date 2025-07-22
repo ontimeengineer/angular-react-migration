@@ -1,0 +1,237 @@
+
+<div class="page-body"> 
+  
+  <div> 
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+      <div class="title-env">
+        <h1 class="title">Add Patient</h1>
+        <p class="description">Create A Patient Record By Entering Patient Information</p>
+      </div>
+    </div>
+    <!--PAGE TITLE END --> 
+    
+    <!-- FORM WIZARD WITH VALIDATION STARTS HERE--> 
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+          $(".multi-select").multiSelect({
+            afterInit: function() {
+              // Add alternative scrollbar to list
+              this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar();
+            },
+            afterSelect: function() {
+              // Update scrollbar size
+              this.$selectableContainer.add(this.$selectionContainer).find('.ms-list').perfectScrollbar('update');
+            }
+          });
+
+          $(".selectboxit").selectBoxIt().on('open', function() {
+            // Adding Custom Scrollbar
+            $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+          });
+        });
+
+        // validate
+   customJqueryValidation();
+        jQuery(document).ready(function($) {
+          setTimeout(function() {
+            $(".fade-in-effect").addClass('in');
+          }, 1);
+
+          // Validation
+          $("#addPatientTab2CtrlForm-E").validate({
+            rules: {
+              address1: {
+                required: true
+              },
+              city: {
+                required: true
+              },
+              state: {
+                required: true
+              },
+              zipcode: {
+                required: true
+              },
+            },
+
+            messages: {
+              address1: {
+                required: 'Please enter Address 1.'
+              },
+              city: {
+                required: 'Please enter City.'
+              },
+              state: {
+                required: 'Please select the state.'
+              },
+              zipcode: {
+                required: 'Please enter Zip Code.'
+              },
+            },
+
+          });
+
+          // Set Form focus
+          $("#addPatientTab2CtrlForm-E .form-group:has(.form-control):first .form-control").focus();
+        });
+	</script>
+    <form role="forl" id="rootwizard" class="form-wizard validate" >
+      <ul class="tabs">
+        <li> <a href="#/app/add_patient_tab_1" data-toggle="tab"> Patient Information <span>1</span> </a> </li>
+        <li class="active"> <a href="#/app/add_patient_tab_2" data-toggle="tab"> Location Information <span>2</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_3" data-toggle="tab"> Insurance Information <span>3</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_4" data-toggle="tab"> Authorization Info <span>4</span> </a> </li>
+        <li> <a href="#/app/add_patient_tab_5" data-toggle="tab"> Insurance Subscriber Information <span>5</span> </a> </li>
+      </ul>
+      <div class="progress-indicator"> <span></span> </div>
+    </form>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <!--<form class="form-horizontal validate" role="form" name='addPatientTab2CtrlForm' id='addPatientTab2CtrlForm'  ng-controller='addPatientTab2Ctrl' ng-submit='submitHandler();'>-->
+            <form class="form-horizontal validate" role="form" name='addPatientTab2CtrlForm' id='addPatientTab2CtrlForm' ng-controller='addPatientTab2Ctrl' ng-submit='submitHandler();'>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button class="btn btn-info green_bt pull-right" type="submit">Save Changes</button>
+                  <button class="btn btn-info btn-single gray_bt pull-right" type="button">Reset To Default</button>
+                  
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Map</label>
+                <div class="col-sm-9">
+                  <div class="map_panel"> <img src="assets/images/map.jpg" class="img-responsive" alt="map"> </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="field-35" class="col-sm-3 control-label">Search</label>
+                <div class="col-sm-9">
+                  <div class="input-group">
+                    <input type="text" id="field-35" name="patient_address_gps" class="form-control no-right-border form-focus-info" data-validate="required" data-message-required="Please enter patient's address to establish GPS coordinates" />
+                    <span class="input-group-btn">
+                    <button class="btn btn-info" type="button">Go!</button>
+                    </span> </div>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-36" class="col-sm-3 control-label">GPS Location</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-36" disabled="" placeholder="Placeholder" class="form-control">
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-37" class="col-sm-3 control-label">Address 1</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-37" class="form-control" name="address1"  ng-model='patient.patientInfo.address1' data-validate="required" data-message-required="Please enter Address 1." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-38" class="col-sm-3 control-label">Address 2</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-38" class="form-control" name="address2"  ng-model='patient.patientInfo.address2'>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-39" class="col-sm-3 control-label">City</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-39" class="form-control" name="city"  ng-model='patient.patientInfo.city' data-validate="required" data-message-required="Please enter City." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{terminologyBank.state}}</label>
+                <div class="col-sm-9"> 
+                  <!--<script type="text/javascript">
+                    jQuery(document).ready(function($) {
+                      $("#sboxit-1").selectBoxIt().on('open', function() {
+                        // Adding Custom Scrollbar
+                        $(this).data('selectBoxSelectBoxIt').list.perfectScrollbar();
+                      });
+                    });
+					</script>-->
+                  <select class="form-control" id="sboxit-1" name="state" data-validate="required" data-message-required="Please select State.">
+                    <option value="">Select</option>
+                    <option value="1">1</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="form-group">
+                <label for="field-40" class="col-sm-3 control-label">{{terminologyBank.zipCode}}</label>
+                <div class="col-sm-9">
+                  <input type="text" id="field-40" class="form-control" name="zipcode" inputmask data-mask="zip"  ng-model='patient.patientInfo.zipcode' data-validate="required" data-message-required="Please enter Zip Code." />
+                </div>
+              </div>
+              <div class="form-group-separator"></div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <button style="width:auto;" class="btn btn-info green_bt pull-right" type="submit">Next &raquo;</button>
+                  <a style="width:auto;" class="btn btn-info green_bt pull-right" href='#/app/add_patient_tab_1'>&laquo; Previous</a>
+                </div>
+              </div>
+              <input type="hidden" name="patientId" value="{{patient.patientInfo.id}}">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FORM WIZARD WITH VALIDATION END HERE-->         
+  </div>
+</div>
+
+<script>
+function addPatientTab2Ctrl($scope, $rootScope, $http) {
+
+  /* Satrt By Saurabh 20150417
+  // edit mode
+  if($rootScope.patient.patientInfo.mode == 'edit') {
+    //url: "/OnTime/api/patient/getPatientAddress",
+    $rootScope.patient = ontimedata.patients[0];
+  }
+  End By Saurabh 20150417 */
+
+  $scope.submitHandler = function() {
+    if ($('#addPatientTab2CtrlForm').valid()) {
+      showLoadingBar(70); // Fill progress bar to 70% (just a given value)
+
+      var jsonObject = $('#addPatientTab2CtrlForm').serializeObject();
+      var jsonStr = JSON.stringify(jsonObject);
+      $http({
+        url: "/OnTime/api/patient/savePatientAddress",
+        method: 'POST',
+        data: {},
+        headers: {
+          // 'Content-Type': 'application/json',
+          'payload': jsonStr,
+          'requestToken': appData.authResult.token,
+          'userName': appData.authResult.un,
+        },
+        // transformRequest: function(data) {
+        //   return $.param(data); // jquery util
+        // }
+      }).success(function(data, status, headers, config) {
+        showLoadingBar({
+          delay: .5,
+          pct: 100,
+          finish: function() {
+            if (data.id) {
+              $rootScope.patient.patientAddresses = data;
+
+              window.location.hash = '#/app/add_patient_tab_3';
+            }
+          }
+        }); // showLoadingBar
+
+      }).error(function(data, status, headers, config) {}); // http
+    } // isValid
+  }; // end of submitHandler
+
+}; // end of addPatientTab2Ctrl
+</script>

@@ -1,0 +1,197 @@
+<div>    
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="benefitModal.cancel();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{benefitModal.modalTitle}} Parameters</h4>
+    </div>
+    <div>
+        <form class="validate form-horizontal" name="benefitModelForm" id="benefit_model_form" role="form">
+            <div class="modal-body">
+                <div ng-if="benefitModal.parameters.lineType == 'SIT' || benefitModal.parameters.lineType == 'PRT' || benefitModal.parameters.lineType == 'VCT'">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal"  for="vestingPeriodInDays">
+                                Vesting period
+                            </label>
+                            <div class="col-sm-4 add-padding-modal">
+                                <input class="form-control" id="vestingPeriodInDays" name="vestingPeriodInDays" maxlength="10" numbers-only="true" type="text" ng-model="benefitModal.parameters.vestingPeriodInDays"
+                                       data-validate="required"  data-message-required="Please enter Vesting period." ng-required='true'>                         
+                            </div>                   
+                            <div class="col-sm-1 form-control-static">days</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal" >
+                                Accrual rate
+                            </label>
+                            <div class="col-sm-4 add-padding-modal">
+                                <input class="form-control" name="accuralRatePerHour" maxlength="10" numbers-only="true" decimalallowed type="text" ng-model="benefitModal.parameters.accuralRatePerHour"
+                                       data-validate="required"  data-message-required="Please enter Accrual rate." ng-required='true'> 
+                            </div>                   
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="benefitModal.parameters.expirationRequired === 'true'">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal" >
+                                Expiration
+                            </label>
+                            <div class="col-sm-2 pad_rg0">
+                                <select class="form-control" ng-model="benefitModal.parameters.expirationMonth"
+                                        name="expirationMonth" data-validate="required"  data-message-required="Please enter Expiration Month." ng-required='true' ng-change="benefitModal.changeDays()">
+                                    <option value="" class="">Month</option>
+                                    <option value="1" class="">JAN</option>
+                                    <option value="2" class="">FEB</option>
+                                    <option value="3" class="">MAR</option>
+                                    <option value="4" class="">APR</option>
+                                    <option value="5" class="">MAY</option>
+                                    <option value="6" class="">JUN</option>
+                                    <option value="7" class="">JUL</option>
+                                    <option value="8" class="">AUG</option>
+                                    <option value="9" class="">SEP</option>
+                                    <option value="10" class="">OCT</option>
+                                    <option value="11" class="">NOV</option>
+                                    <option value="12" class="">DEC</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2 add-padding-modal">
+                                <select class="form-control" ng-model="benefitModal.parameters.expirationDay" 
+                                        name="expirationDay" data-validate="required"  data-message-required="Please enter Expiration Date." ng-required='true'
+                                        ng-options="day for day in benefitModal.days">
+                                    <option value="" class="">Day</option>                            
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal" >
+                                Accrual days for salaried employees 
+                            </label>
+                            <div class="col-sm-4 add-padding-modal">
+                                <input class="form-control" name="accuralDaysForSalaried" maxlength="10" numbers-only="true" type="text" ng-model="benefitModal.parameters.accuralDaysForSalaried"
+                                       data-validate="required"  data-message-required="Please enter Accrual days." ng-required='true'> 
+                            </div>      
+                            <div class="col-sm-1 form-control-static">days</div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="benefitModal.parameters.lineType == 'HEC'">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal" >
+                                Plan Name
+                            </label>
+                            <div class="col-sm-4 add-padding-modal">
+                                <input class="form-control" name="planName" maxlength="50" type="text" ng-model="benefitModal.parameters.planName"
+                                       data-validate="required"  data-message-required="Please enter Plan Name." ng-required='true'>                         
+                            </div>                   
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal" >
+                                Employer Contribution
+                            </label>
+                            <div class="col-sm-4 add-padding-modal">
+                                <input class="form-control" name="employerContribution" maxlength="10" numbers-only="true" decimalallowed type="text" ng-model="benefitModal.parameters.employerContribution"
+                                       data-validate="required"  data-message-required="Please enter Employer Contribution." ng-required='true'> 
+                            </div> 
+                            <div class="col-sm-4 add-padding-modal">
+                                <div class="input-group">
+                                    <label class="cbr-inline">
+                                        <input class="cbr cbr-primary" value="F" name="radioRate" type="radio" ng-model="benefitModal.parameters.employerContributionType" >
+                                        Fixed per week
+                                    </label>
+                                    <label class="cbr-inline">
+                                        <input class="cbr cbr-primary" name="radioRate" value="P" type="radio" ng-model="benefitModal.parameters.employerContributionType">
+                                        %
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                <div ng-if="benefitModal.parameters.lineType == 'WFC'">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal" >
+                                NYC Accrual Rate
+                            </label>
+                            <div class="col-sm-4 add-padding-modal">
+                                <input class="form-control" name="nycAccrualRate" maxlength="10" numbers-only="true" decimalallowed type="text" ng-model="benefitModal.parameters.nycAccuralRate"
+                                       data-validate="required"  data-message-required="Please enter NYC Accrual Rate." ng-required='true'> 
+                            </div>                   
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal" >
+                                NYS Accrual Rate
+                            </label>
+                            <div class="col-sm-4 add-padding-modal">
+                                <input class="form-control" name="nysAccrualRate" maxlength="10" numbers-only="true" decimalallowed type="text" ng-model="benefitModal.parameters.nysAccuralRate"
+                                       data-validate="required"  data-message-required="Please enter NYS Accrual Rate." ng-required='true'> 
+                            </div>                   
+                        </div>
+                    </div> 
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal" >
+                                Fixed Employer Contribution
+                            </label>
+                            <div class="col-sm-4 add-padding-modal">
+                                <input class="form-control" name="fixedEmployerContribution" maxlength="10" numbers-only="true" decimalallowed type="text" ng-model="benefitModal.parameters.employerContribution"
+                                       data-validate="required"  data-message-required="Please enter Fixed Employer Contribution." ng-required='true'> 
+                            </div> 
+                            <div class="col-sm-4 add-padding-modal">
+                                <div class="input-group">
+                                    <label class="cbr-inline">
+                                        <input class="cbr cbr-primary" value="F" name="radioRate" type="radio" ng-model="benefitModal.parameters.employerContributionType" >
+                                        Fixed per week
+                                    </label>
+                                    <label class="cbr-inline">
+                                        <input class="cbr cbr-primary" name="radioRate" value="P" type="radio" ng-model="benefitModal.parameters.employerContributionType">
+                                        %
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                </div>
+                <div ng-if="benefitModal.parameters.lineType == '401'">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label add-padding-modal" >
+                                Employer Contribution
+                            </label>
+                            <div class="col-sm-4 add-padding-modal">
+                                <input class="form-control" name="employerContribution" maxlength="10" numbers-only="true" decimalallowed type="text" ng-model="benefitModal.parameters.employerContribution"
+                                       data-validate="required"  data-message-required="Please enter Employer Contribution." ng-required='true'> 
+                            </div>
+                            <div class="col-sm-4 add-padding-modal">
+                                <div class="input-group">
+                                    <label class="cbr-inline">
+                                        <input class="cbr cbr-primary" value="F" name="radioRate" type="radio" ng-model="benefitModal.parameters.employerContributionType" >
+                                        Fixed per week
+                                    </label>
+                                    <label class="cbr-inline">
+                                        <input class="cbr cbr-primary" name="radioRate" value="P" type="radio" ng-model="benefitModal.parameters.employerContributionType">
+                                        %
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" ng-click="benefitModal.cancel();">Close</button>
+                <button type="button" class="btn btn-red" ng-show="benefitModal.editMode" ng-click="benefitModal.remove();">Remove</button>
+                <button type="submit" class="btn btn-success" ng-click="benefitModal.save();">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>

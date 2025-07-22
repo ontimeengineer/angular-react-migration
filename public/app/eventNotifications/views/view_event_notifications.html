@@ -1,0 +1,102 @@
+<div class="page-title full-width" title="Native Elements" description="Plain text boxes, select dropdowns and other basic form elements">
+    <div class="title-env" style="width:80%">
+        <h1 class="title ng-binding">Event Notifications</h1>
+        <p class="description ng-binding">Listing of events</p>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body table-responsive">
+        <table class="table table-bordered table-striped" id="example-2">
+            <thead>
+                <tr>
+                    <th width="15%">Event Name</th>
+                    <th width="30%">Event Discription</th>
+                    <th width="30%">Emails</th>
+                    <th width="10%">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody class="middle-align">
+                <tr role="row" class="odd" ng-repeat="event in eventNotifications.eventList" total-items="totalRecords">
+                    <td>{{event.eventName}}</td>
+                    <td>
+                        {{event.eventDescription}}
+                    </td>
+                    <td>
+                        {{event.emails}}
+                    </td>
+                    <td>
+                        <div class="center">
+                            <a class="btn icon-left fa fa-pencil edit_button ng-scope" ng-if="hasAccess('EDIT_ROLE')" ng-click="eventNotifications.setEmails(event);"
+                                tooltip="notifications">
+                                <span class="ed_b"></span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/ng-template" id="eventModel">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="eventModel.closePopup();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Event Notifications</h4>
+    </div>
+    <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form class="form-horizontal validate col-md-12" id="event_form" name="eventModel.event_form" role="form" ng-submit="eventModel.save()">
+        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="field-1" class="control-label col-md-2">
+                                        <strong>Name</strong>
+                                    </label>
+                                    <div class="col-md-10" style="padding-top: 7px;">
+                                        {{eventModel.event.eventName}}
+                                    </div>
+                                </div>
+        
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="field-1" class="control-label col-md-2">
+                                        <strong>Description</strong>
+                                    </label>
+                                    <div class="col-md-10" style="padding-top: 7px;">
+                                        {{eventModel.event.eventDescription}}
+                                    </div>
+                                </div>
+        
+                            </div>
+                        </div>
+        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="field-1"><strong>Emails</strong></label>
+                                    <div class="col-sm-10">
+                                        <input id="Emails" name="Emails" class="form-control" data-role="tagsinput" type="text" ng-model="eventModel.event.emails"
+                                            tagsinput/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-white" ng-click="eventModel.closePopup();">Close</button>
+                            <button type="submit" class="btn btn-info" ng-click="eventModel.save">Save</button>
+                        </div>
+        
+                    </form>
+                </div>
+            </div>
+        </div>
+</script>
+

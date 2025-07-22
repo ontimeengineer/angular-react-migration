@@ -1,0 +1,188 @@
+<!--Patient modal-->
+<div >
+    <div class="modal-header" >
+        <button type="button" class="close" ng-click="caseModal.close();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">
+            <!--Display dispatch button for open cases-->
+            <span>{{caseModal.patient.lName}}, {{caseModal.patient.fName}}</span>
+        </h4>
+        <h6>DOB : {{caseModal.patient.dateOfBirth|date :dateFormat}}</h6>
+    </div>
+    <!-- schedule-->
+    <div>
+        <form class="form-horizontal validate" role="form" name="popuppatients" id="popuppatients" >
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Care</label>
+
+                    <div class="col-sm-10">
+                        <select class="form-control" id="care" name="care" ng-disabled="!caseModal.isNew && !caseModal.data.isEdited" ng-model="caseModal.data.companyCareTypeId" ng-options="care.id as care.careTypeTitle for care in caseModal.careTypes" ng-change="caseModal.retrieveEmployeeBasedOnCare()" data-validate="required" data-message-required="Please select care." ng-required="caseModal.data.eventType == 'S'">
+                            <option value="">Select the care</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group-separator"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Employee</label>
+
+                    <div class="col-sm-10">
+                        <select class="form-control" id="employee" name="employee" ng-disabled="!caseModal.isNew && !caseModal.data.isEdited" ng-model="caseModal.data.employeeId" data-message-required="Please select employee." ng-options="employee.id as (employee.lName+', '+employee.fName+' '+employee.middleInitial) for employee in caseModal.careEmployeeMap[caseModal.data.companyCareTypeId]" ng-change="caseModal.empChanged()">
+                            <option value="" selected hidden></option>
+                        </select>
+                        <div ng-show='caseModal.validEmployee==false'>
+                            <span style='color: #cc3f44;display: block;font-size: 12px;padding-top: 5px;'>Please select Employee Name.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group-separator"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="field-2">Date</label>
+                    <div class="col-sm-4">
+                        <div class="input-group" style="z-index:1060">
+                            <input type="text" class="form-control datepicker" ng-disabled="!caseModal.isNew" id="fromDate3" name="fromDate3" data-format="mm/dd/yyyy" ng-model="caseModal.data.startDate" min-date="caseModal.todayDate" max-date="caseModal.data.endDate" data-validate="required,date"  data-message-required="Please select From Date." required>
+
+                            <div class="input-group-addon">
+                                <a href=""><i class="linecons-calendar"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1"><label class="col-sm-3 control-label">To</label></div>
+                    <div class="col-sm-4">
+                        <div class="input-group" style="z-index:1060">
+                            <input type="text" class="form-control datepicker" ng-disabled="!caseModal.isNew" id="toDate3" name="toDate3" data-format="mm/dd/yyyy" ng-model="caseModal.data.endDate" min-date="caseModal.data.startDate" data-validate="required,date"  data-message-required="Please select To Date." required>
+
+                            <div class="input-group-addon">
+                                <a href=""><i class="linecons-calendar"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group-separator"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="field-2">Time</label>
+                    <div class="col-sm-3">
+                        <div class="input-group input-group-minimal">
+                            <input class="form-control punch-time-input" ng-model='caseModal.data.startTime' ng-disabled="!caseModal.isNew && !caseModal.data.isEdited"  id="startTime3" name="startTime3" type="text" data-validate='required,time' data-message-required='Please enter start Time.'/>
+
+                            <div class="input-group-addon">
+                                <a href=""><i class="linecons-clock"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1"><label class="col-sm-3 control-label">To</label></div>
+                    <div class="col-sm-3">
+                        <div class="input-group input-group-minimal">
+                            <input class="form-control punch-time-input" ng-model="caseModal.data.endTime" ng-disabled="!caseModal.isNew && !caseModal.data.isEdited"  id="endTime3" name="endTime3" type="text" data-validate='required,time' data-message-required='Please enter end Time.'/>
+
+                            <div class="input-group-addon">
+                                <a href=""><i class="linecons-clock"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <label class="col-sm-3 control-label" style="text-align:left;">
+                        {{caseModal.data.startTime| timecount : caseModal.data.endTime}}
+                    </label>
+                </div>
+
+                <div class="form-group-separator"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+
+                    <div class="col-sm-3">
+
+                        <div class="form-block">
+                            <label class="no-padding-left checkbox" style="padding-top:0px;">
+                                <input type="checkbox" ng-disabled="!caseModal.isNew && !caseModal.data.isEdited"  class="cbr" id="livein" name="livein" ng-model="caseModal.data.forLiveIn">
+                                Live In Care
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="form-block">
+                            <label class="checkbox" style="padding-top:0px;">
+                                <input type="checkbox" class="cbr" id="donotbill" name="donotbill" ng-disabled="!caseModal.isNew && !caseModal.data.isEdited" ng-model="caseModal.data.doNotBill">
+                                Do Not Bill
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group-separator"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="field-2">Note</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" ng-model="caseModal.data.note" ng-disabled="!caseModal.isNew && !caseModal.data.isEdited"  cols="5" id="note" name="note" placeholder="Enter note for this scheduled event."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group-separator"></div>
+
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="col-sm-2 control-label" for="field-1">Repeat</label>
+                    <div  ng-if="caseModal.isNew">
+                        <div class="col-sm-2">
+                            <label class="cbr-inline" ng-click="caseModal.repeatationChanged('repeat')">
+                                <input type="radio" name="radio-5" class="cbr cbr-primary" ng-model="caseModal.data.recurranceType" value="D">
+                                Daily
+                            </label>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="cbr-inline" ng-click="caseModal.repeatationChanged('repeat')">
+                                <input type="radio" name="radio-5" class="cbr cbr-primary" ng-model="caseModal.data.recurranceType" value="W">
+                                Weekly
+                            </label>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="cbr-inline" ng-click="caseModal.repeatationChanged('repeat')">
+                                <input type="radio" name="radio-5" class="cbr cbr-primary" ng-model="caseModal.data.recurranceType" value="N">
+                                None
+                            </label>
+                        </div>
+                    </div>
+                    <div  ng-if="!caseModal.isNew" style="margin-top:7px;">
+                        <div class="col-sm-2">
+                            {{caseModal.recurranceTypes[caseModal.data.recurranceType]}}
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            <div class="form-group-separator" ng-if="!(!caseModal.isNew && !caseModal.data.isEdited) && !caseModal.isNew"></div>
+
+            <div class="form-group" ng-if="!(!caseModal.isNew && !caseModal.data.isEdited) && !caseModal.isNew" style="margin-bottom:10px;">
+                <label class="col-sm-2 control-label" for="field-2" style="padding-top:7px;">Apply To</label>
+                <div class="col-sm-9">
+                    <div class="col-sm-3">
+                        <label class="cbr-inline" ng-click="caseModal.repeatationChanged('repeat')">
+                            <input type="radio" name="radio-8" class="cbr cbr-primary" ng-model="caseModal.data.applyTo" value="SINGLE">
+                            Single
+                        </label>
+                    </div>
+                    <div class="col-sm-3" ng-if="!caseModal.data.isEdited1">
+                        <label class="cbr-inline" ng-click="caseModal.repeatationChanged('repeat')">
+                            <input type="radio" name="radio-8" class="cbr cbr-primary" ng-model="caseModal.data.applyTo" value="DOW">
+                            Day Of Week
+                        </label>
+                    </div>
+                    <div class="col-sm-3" ng-if="!caseModal.data.isEdited1">
+                        <label class="cbr-inline" ng-click="caseModal.repeatationChanged('repeat')">
+                            <input type="radio" name="radio-8" class="cbr cbr-primary" ng-model="caseModal.data.applyTo" value="SEQ">
+                            Sequence
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" ng-click="caseModal.close();">Close</button>
+                <button type="submit" class="btn btn-success" ng-if="!(!caseModal.isNew && !caseModal.data.isEdited)" ng-click="caseModal.save();">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>

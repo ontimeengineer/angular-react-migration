@@ -1,0 +1,421 @@
+<div class="row" ng-init="addEmployee.tab4DataInit()">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form-horizontal validate" id="add_employee_form" name="add_employee_form" role="form"  ng-submit="addEmployee.saveEmployee()">
+                    <div class="row">
+                        <div class="col-sm-12 pull-right">
+                            <button class="btn btn-info green_bt pull-right" type="submit">
+                                Save Changes
+                            </button>
+                            <button class="btn btn-info btn-single gray_bt pull-right" type="reset" ng-click="addEmployee.resetEmployeeTab4()">
+                                Reset To Default
+                            </button>
+                        </div>
+                    </div>                    
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Start Date
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control datepicker" data-format="mm/dd/yyyy" name="StartDate" type="text"
+                                   ng-model="addEmployee.employee.startDate" disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Last Worked Date
+                        </label>
+                        <div class="col-sm-9">
+                            <input class="form-control datepicker" data-format="mm/dd/yyyy" name="LastWorkedDate" type="text"
+                                   ng-model="addEmployee.employee.lastWorkedDate" disabled="true">
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">
+                            Termination Date
+                        </label>
+                        <div class="col-sm-9">
+                            <div class="input-group">
+                                <input class="form-control datepicker" data-format="mm/dd/yyyy" name="EndDate" type="text"
+                                       data-validate="date" data-message-required="Please enter Termination Date" ng-model="addEmployee.employee.terminationDate"
+                                       min-date="addEmployee.employee.hireDate">
+                                <div class="input-group-addon">
+                                    <a href="#">
+                                        <i class="linecons-calendar">
+                                        </i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator">
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="pull-right xs-text-right">
+                                <button type="button" class="btn btn-info btn-create" ng-click="addEmployee.openAttachmentModal('aed', 'Create')">Add Application Attachment</button>
+                                <button type="button" class="btn btn-info btn-create" ng-click="addEmployee.openAttachmentModal('med', 'Create')">Add Medical Attachment</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-if="addEmployee.applicationEmployeeAttachments && addEmployee.applicationEmployeeAttachments.length > 0">
+                    </div>
+                    <div class="form-group" ng-if="addEmployee.applicationEmployeeAttachments && addEmployee.applicationEmployeeAttachments.length > 0">
+                        <div class="col-md-12">
+                            <div class="panel panel-default panel-table" style="padding: 0;" id="applicationEmployeeAttachments">
+                                <div class="panel-heading" style="border-bottom: none;">
+                                    <div class="row">
+                                        <div class="col col-xs-6">
+                                            <h3 class="panel-title">Employee Application Attachments</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="addEmployee.applicationEmployeeAttachments && addEmployee.applicationEmployeeAttachments.length > 0">
+                                    <table class="table table-striped table-bordered table-list table-attachments">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center col-md-4"> Type </th>
+                                                <!--<th class="text-center col-md-3"> Completion Date </th>-->
+                                                <th class="text-center col-md-2"> Expiration Date </th>
+                                                <th class="text-center col-md-2"> <em class="fa fa-cog"> </em></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr  pagination-id="applicationPagination" dir-paginate="attachment in addEmployee.applicationEmployeeAttachments | itemsPerPage: addEmployee.attachmentCount.AED">
+                                                <td align="center"> {{attachment.attachmentType}}</td>
+                                                <!--                                                <td align="center"> 
+                                                                                                    {{attachment.DateCompleted}}
+                                                                                                </td>-->
+                                                <td align="center"> {{attachment.expiryDate}} </td>
+                                                <td align="center">                                                    
+                                                    <a class="btn icon-left fa fa-download download_bt" ng-if="attachment.attachmentType !== 'Ontime Application Form'"                                                    
+                                                       ng-href="{{addEmployee.baseUrl}}file/download/{{addEmployee.companyCode}}/{{attachment.type}}/{{attachment.filePath}}?userFileName={{addEmployee.getAttachmentName(attachment)}}" 
+                                                       tooltip="{{addEmployee.getAttachmentName(attachment)}}"><em class="ed_b"></em></a>   
+                                                    <a class="btn icon-left fa fa-download download_bt" ng-if="attachment.attachmentType === 'Ontime Application Form'"                                                    
+                                                       ng-href="{{addEmployee.baseUrl}}applications/{{addEmployee.employee.applicationId}}/download?userFileName={{attachment.attachmentType}}" 
+                                                       tooltip="{{attachment.attachmentType}}"><em class="ed_b"></em></a>   
+                                                    <a class="btn icon-left fa fa-pencil edit_button" tooltip="Edit" ng-if="attachment.attachmentType !== 'Ontime Application Form'"
+                                                       ng-click="addEmployee.openAttachmentModal(attachment, 'Edit')"><span class="ed_b"></span></a>                                                  
+                                                    <a class="btn icon-left fa fa-trash-o delete_button"
+                                                       ng-if="attachment.modified !== true"
+                                                       ng-click="addEmployee.deleteAttachment(attachment)" tooltip="Delete"><span class="ed_b"></span></a>                                                    
+                                                    <a class="btn icon-left fa fa-external-link download_bt"  
+                                                       ng-if="attachment.filePath.substring(attachment.filePath.lastIndexOf('.') + 1).toLowerCase() === 'pdf'"
+                                                       ng-href="{{addEmployee.baseUrl}}file/download/{{addEmployee.companyCode}}/{{attachment.type}}/{{attachment.filePath}}?userFileName={{addEmployee.getAttachmentName(attachment)}}&viewDownload=true" 
+                                                       target="_blank" tooltip="{{addEmployee.getAttachmentName(attachment)}}">
+                                                        <span class="ed_b"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div id="applicationPagination" class="text-right">
+                                        <dir-pagination-controls boundary-links="true" 
+                                                                 max-size="9"
+                                                                 show-page-numbers="false"
+                                                                 template-url="app/tpls/dirPagination.tpl.html" pagination-id="applicationPagination"></dir-pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-separator" ng-if="addEmployee.medicalEmployeeAttachments && addEmployee.medicalEmployeeAttachments.length > 0">
+                    </div>
+                    <div class="form-group" ng-if="addEmployee.medicalEmployeeAttachments && addEmployee.medicalEmployeeAttachments.length > 0">
+                        <div class="col-md-12">
+                            <div class="panel panel-default panel-table" style="padding: 0;" id="medicalEmployeeAttachments">
+                                <div class="panel-heading" style="border-bottom: none;">
+                                    <div class="row">
+                                        <div class="col col-xs-6">
+                                            <h3 class="panel-title">Employee Medical Attachments</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-striped table-bordered table-list table-attachments">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center col-md-4"> Type </th>
+                                            <!--<th class="text-center col-md-3"> Completion Date </th>-->
+                                            <th class="text-center col-md-2"> Expiration Date </th>
+                                            <th class="text-center col-md-2"> <em class="fa fa-cog"> </em></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr pagination-id="medicalPagination" dir-paginate="attachment in addEmployee.medicalEmployeeAttachments | itemsPerPage: addEmployee.attachmentCount.MED">
+                                            <td align="center"> {{attachment.attachmentType}}</td>
+                                            <!--                                            <td align="center"> 
+                                                                                            {{attachment.DateCompleted}}
+                                                                                        </td>-->
+                                            <td align="center"> {{attachment.expiryDate}} </td>
+                                            <td align="center">
+                                                <a class="btn icon-left fa fa-download download_bt"                                                    
+                                                   ng-href="{{addEmployee.baseUrl}}file/download/{{addEmployee.companyCode}}/{{attachment.type}}/{{attachment.filePath}}?userFileName={{addEmployee.getAttachmentName(attachment)}}" 
+                                                   tooltip="{{addEmployee.getAttachmentName(attachment)}}"><em class="ed_b"></em></a>                                                    
+                                                <a class="btn icon-left fa fa-pencil edit_button" tooltip="Edit" 
+                                                   ng-click="addEmployee.openAttachmentModal(attachment, 'Edit')"><span class="ed_b"></span></a>
+                                                <a class="btn icon-left fa fa-trash-o delete_button"
+                                                   ng-if="attachment.modified !== true"
+                                                   ng-click="addEmployee.deleteAttachment(attachment)" tooltip="Delete"><span class="ed_b"></span></a>
+                                                <a class="btn icon-left fa fa-external-link download_bt"  
+                                                   ng-if="attachment.filePath.substring(attachment.filePath.lastIndexOf('.') + 1).toLowerCase() === 'pdf'"
+                                                   ng-href="{{addEmployee.baseUrl}}file/download/{{addEmployee.companyCode}}/{{attachment.type}}/{{attachment.filePath}}?userFileName={{addEmployee.getAttachmentName(attachment)}}&viewDownload=true" 
+                                                   target="_blank" tooltip="{{addEmployee.getAttachmentName(attachment)}}">
+                                                    <span class="ed_b"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div id="paginationButtonsMedical" class="text-right">
+                                    <dir-pagination-controls boundary-links="true" 
+                                                             max-size="9"
+                                                             show-page-numbers="false"
+                                                             template-url="app/tpls/dirPagination.tpl.html" pagination-id="medicalPagination"></dir-pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal 7 (Ajax Modal)-->
+<div class="modal fade" id="modal-7"  data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" class="close" data-dismiss="modal" type="button">
+                    ×
+                </button>
+                <h4 class="modal-title">
+                    View Document
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="add_employee_tab_3_form" name="add_employee_tab_3_form" role="form">
+                    <div class="row">
+                        <div style="width:100%; float:left;">
+                            <div class="col-sm-12">
+                                <strong>
+                                    You Have Uploaded 2 Rates. Click below to review.
+                                </strong>
+                                <br>
+                                </br>
+                            </div>
+                            <div class="col-sm-12 ">
+                                <table cellspacing="0" class="table table-small-font table-bordered table-striped" style="margin-top:15px;" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="left">
+                                                References.Zip
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="left">
+                                                References.Zip
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--</form>-->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-white" data-dismiss="modal" type="button">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function showAjaxModal()
+    {
+        jQuery('#modal-7').modal('show', {backdrop: 'static'});
+
+        setTimeout(function ()
+        {
+
+            jQuery.ajax({
+                url: "data/ajax-content.txt",
+                success: function (response)
+                {
+                    jQuery('#modal-7 .modal-body').html(response);
+                }
+            });
+        }, 800); // just an example
+    }
+</script>
+<script type="text/javascript">
+    function setValidationMessage(element) {
+        var elementName = element.getAttribute("name") + "-error";
+        var itemId = element.getAttribute("itemid");
+        $("#" + elementName).text('Please enter ' + itemId + '.');
+    }
+    // validate
+    var form_clean;
+    customJqueryValidation();
+    jQuery(document).ready(function ($) {
+        setTimeout(function () {
+            $(".fade-in-effect").addClass('in');
+//            cbr_replace();
+        }, 1);
+        //to set an variable to check dirtiness of form.
+//        setTimeout(function() {
+//        // serialize clean form
+//            $(function() {
+//                form_clean=$("form").serialize();
+//            });
+//        }, 500);
+    });
+</script>
+<script type="text/ng-template" id="upload-modal">
+    <form class="validate form-horizontal" name="uploadpopup" id="uploadpopup" >
+    <div class="modal-header">
+    <button type="button" class="close" ng-click="uploadPopup.closePopup();" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Add Attachment</h4>
+    </div>
+
+    <div class="modal-body">
+
+    <div class="form-group">
+    <label class="col-sm-4 control-label">Type</label>
+    <div class="col-sm-8">
+    <select class="form-control" name ="type" id="type" ng-model="uploadPopup.data.type" ng-options='type.id as type.label for type in uploadPopup.typeList' data-message-required="Please select type." data-validate="required" ng-change="uploadPopup.setUploadFile()">
+    <option value="" selected hidden />
+    </select>
+    </div>
+    </div>
+
+    <div class="form-group-separator"></div>
+    <div class="form-group">
+    <label class="col-sm-4 control-label add-padding-modal" for="password">
+    {{uploadPopup.data.type == 'b'?'Background Check Date':'Expiration Date'}}
+    </label>
+    <div class="col-sm-8 add-padding-modal">
+    <div class="input-group" style="z-index:1060">
+    <input type="text" class="form-control datepicker" name="fromDate2" data-format="mm/dd/yyyy" ng-model="uploadPopup.data.expiryDate" data-validate="required,date"  data-message-required="Please select Expiration Date.">
+    <div class="input-group-addon">
+    <a href=""><i class="linecons-calendar"></i></a>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="form-group-separator" ng-show="uploadPopup.data.type && uploadPopup.data.type == 't'"></div>
+    <div class="form-group" ng-show="uploadPopup.data.type && uploadPopup.data.type == 't'">
+    <label class="col-sm-4 control-label add-padding-modal" for="password">
+    Tb Testing
+    </label>
+    <div class="col-sm-8 add-padding-modal">
+    <div class="input-group" style="z-index:1060">
+    <label class="cbr-inline">
+    <input value="PPD" name="TBTesting" type="radio" class="cbr cbr-primary" ng-model="uploadPopup.data.value"/>
+    PPD
+    </label>
+    <label class="cbr-inline">
+    <input name="TBTesting" value="CXR" type="radio" class="cbr cbr-primary" ng-model="uploadPopup.data.value"/>
+    CXR
+    </label>
+    <label class="cbr-inline">
+    <input name="TBTesting" value="Screening" type="radio" class="cbr cbr-primary" ng-model="uploadPopup.data.value"/>
+    Screening
+    </label>
+    <div>
+    <div ng-show="uploadPopup.errorMsg != null && uploadPopup.errorMsg != ''">
+    <span class="red">{{uploadPopup.errorMsg}}</span>
+    </div> 
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="form-group-separator" ng-show="uploadPopup.data.type && uploadPopup.data.type == 'b'"></div>
+    <div class="form-group" ng-show="uploadPopup.data.type && uploadPopup.data.type == 'b'">
+    <label class="col-sm-4 control-label add-padding-modal" for="password">
+    Background Check
+    </label>
+    <div class="col-sm-8 add-padding-modal">
+    <div class="input-group" style="z-index:1060">
+    <label class="cbr-inline">
+    <input value="Passed" name="BackgroundCheck" type="radio" class="cbr cbr-primary" ng-model="uploadPopup.data.value"/>
+    Passed
+    </label>
+    <label class="cbr-inline">
+    <input name="BackgroundCheck" value="Failed" type="radio" class="cbr cbr-primary" ng-model="uploadPopup.data.value"/>
+    Failed
+    </label>
+    <div>
+    <div ng-show="uploadPopup.errorMsg != null && uploadPopup.errorMsg != ''">
+    <span class="red">{{uploadPopup.errorMsg}}</span>
+    </div> 
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="form-group-separator" ng-if="uploadPopup.data.type"></div>
+    <div class="form-group" ng-if="uploadPopup.data.type">
+    <label class="col-sm-4 control-label add-padding-modal">
+    Upload
+    </label>
+    <div class="col-sm-8 add-padding-modal">
+    <div flow-init="uploadPopup.uploadFile" flow-file-added="uploadPopup.fileAdded($file, $flow)" flow-file-success="uploadPopup.fileUploaded($message,$file,$flow)" flow-files-submitted="uploadPopup.fileSelected($file,$flow)" flow-file-error="uploadPopup.fileError( $file, $message, $flow )">
+    <div class="row">
+    <div class="col-sm-12">
+    <button type='button' class='btn btn-single gray_bt' id="upload" ng-model="uploadPopup.data.filePath" style="margin-bottom:0px !important" flow-btn name="upload"  ng-disabled="uploadPopup.disableUploadButton">Choose File</button>
+    </div>
+    <div class="col-sm-12" ng-show="uploadPopup.data.filePath" >
+    <label class="control-label">
+    <a style="color: blue;text-decoration: underline" ng-href="{{uploadPopup.baseUrl}}file/download/{{uploadPopup.companyCode}}/a/{{uploadPopup.data.filePath}}?userFileName={{uploadPopup.data.name}}">
+    {{uploadPopup.data.name}}.{{uploadPopup.data.filePath.substring(uploadPopup.data.filePath.lastIndexOf('.') + 1)}}
+    </a>
+    </label>
+    </div>
+    </div>
+    <div>
+    <div ng-show="uploadPopup.fileObj.errorMsg != null && uploadPopup.fileObj.errorMsg != ''">
+    <span class="red">{{uploadPopup.fileObj.errorMsg}}</span>
+    </div> 
+    </div>
+    <div flow-transfers class="form-control-static" ng-show="transfers != null && transfers.length > 0 && transfers[0].progress() < 1">
+    <div ng-repeat="file in transfers">
+    <div id="docFileprogress" class="progress" ng-show="file.progress() < 1 && uploadPopup.showfileProgress">
+    <div  class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{file.progress() * 100}}%;">
+    <!--{{file.progress() * 100 | number : 0}} %-->
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="form-group-separator" ng-show="uploadPopup.data.type"></div>
+    <div class="form-group" ng-show="uploadPopup.data.type">
+    <label class="col-sm-4 control-label add-padding-modal" for="password">
+    Document Name
+    </label>
+    <div class="col-sm-8 add-padding-modal">
+    <input type="text" class="form-control" name="name" ng-model="uploadPopup.data.name">
+    </div>
+    </div>
+
+    </div>      
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-white" ng-click="uploadPopup.closePopup();">Close</button>
+    <button type="submit" class="btn btn-success" ng-click="uploadPopup.save();">Save changes</button>
+    </div>
+    </form>
+</script>

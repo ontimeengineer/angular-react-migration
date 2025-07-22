@@ -1,0 +1,184 @@
+<div class="page-body"> <!--TOP BAR MENU PANEL START -->
+
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">View Application Information</h1>
+            <p class="description">View All Application Information</p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li ui-sref="app.application-list({status:'in-progress'})" class="{{viewApplication.viewType=='in-progress'?'active':''}}">
+                    <a href="" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa-user">+</i></span> <span class="hidden-xs">In Progress</span> 
+                    </a>
+                </li>
+                <li ui-sref="app.application-list({status:'need-more-info'})" class="{{viewApplication.viewType=='need-more-info'?'active':''}}">
+                    <a href="" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa-user">x</i></span> <span class="hidden-xs">Need More Info</span> 
+                    </a>
+                </li>
+                <li ui-sref="app.application-list({status:'ready-for-orientation'})" class="{{viewApplication.viewType=='ready-for-orientation'?'active':''}}">
+                    <a href="" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa-user">x</i></span> <span class="hidden-xs">Ready For Orientation</span> 
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content" style="padding-bottom:0px;">
+                <div id="home" class="tab-pane active">
+                    <form class="form-horizontal">
+
+                        <div class="panel-body">                        
+                            <div class="panel-body pad_top0 pad0">
+                                <div class="row">                            
+                                    <div class="col-sm-12">
+                                        <div class="page-count-selector col-md-4 pull-left">
+                                            <label class="control-label nowrap"><span>Show Entries</span></label>
+                                            <div style="width:70px;">
+                                                <select class="form-control input-sm" ng-model="viewApplication.searchParams.limit">
+                                                    <option value="10">10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group col-md-4 col-sm-4 col-xs-12 pull-right">
+                                            <input type="search" class="form-control" ng-model="viewApplication.searchParams.name" placeholder="Search by [Name,SSN,City,Language,Phone number]" ng-change="viewApplication.applySearch()">
+                                        </div> 
+                                        <div class="col-md-4 pull-right pad-rg-xs-0 mar_bt10">
+                                                <select class="form-control" name ="postTitle" id="positionList" ng-model="viewApplication.searchParams.positionId"
+                                                        ng-options='o.id as o.position for o in viewApplication.positionList' ng-change="viewApplication.applySearch()">
+                                                    <option value="" selected >All Positions</option>
+                                                    <!--<option value="Nursing Director" >Nursing Director</option>-->
+                                                </select>
+                                            </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">  </div>
+                                <div class="dataTables_wrapper form-inline dt-bootstrap">
+                                    <div class="table-responsive">
+
+                                        <table id="example-1" ng-if="viewApplication.applicationList.length" class="table table-striped table-bordered  table table-small-font" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th width="24%" ng-class="viewApplication.applySortingClass('lName')" ng-click="viewApplication.applySorting('lName')" >Name & Role
+                                                        <!--                                            <div ng-click="$event.stopPropagation();" id="yadcf-filter-wrapper--example-3-1" class="yadcf-filter-wrapper">
+                                                                                                        <input type="text" id="yadcf-filter--example-3-1" class="yadcf-filter"
+                                                                                                               ng-model="viewApplication.searchParams.name" placeholder="Search by Name" ng-change="viewApplication.applySearch()"/>
+                                                                                                        <input value="x" type="button" id="yadcf-filter--example-3-1-reset" ng-click="viewApplication.searchParams.name = null;
+                                                                                                            viewApplication.retrieveApplications()" class="yadcf-filter-reset-button">
+                                                                                                    </div>-->
+                                                    </th>
+                                                    <th width="12%" ng-class="viewApplication.applySortingClass('dateInserted')" ng-click="viewApplication.applySorting('dateInserted')">Application Date</th>
+                                                    <th width="13%" >Phone
+                                                        <!--                                            <div ng-click="$event.stopPropagation();" id="yadcf-filter-wrapper--example-3-2" class="yadcf-filter-wrapper">
+                                                                                                        <input type="text" id="yadcf-filter--example-3-1" class="yadcf-filter" numbers-only="true"
+                                                                                                               ng-model="viewApplication.searchParams.phone" placeholder="phone number" ng-change="viewApplication.applySearch()"/>
+                                                                                                        <input value="x" type="button" id="yadcf-filter--example-3-2-reset" ng-click="viewApplication.searchParams.phone = null;
+                                                                                                            viewApplication.retrieveApplications()" class="yadcf-filter-reset-button">
+                                                                                                    </div>-->
+                                                    </th>
+                                                    <th width="23%">Address</th>
+                                                    <th width="13%">Languages Spoken</th>
+                                                    <th width="15%">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr pagination-id="drinksPagination" dir-paginate="application in viewApplication.applicationList| itemsPerPage: viewApplication.searchParams.limit" 
+                                                    total-items="totalRecords"
+                                                    current-page="viewApplication.searchParams.pageNo">
+                                                    <th> 
+                                                        <div class="user_panel">
+                                                            <div ng-if="application.profileImage != null && application.profileImage != ''" class="user_img"> 
+                                                                <img alt="user" class="img-cirlce img-responsive" imageonload="hideDefaultImage" src="assets/images/user-5.png" ng-src="{{(application.profileImage != null && application.profileImage != '') ? (amazonPublicUrl + viewApplication.companyCode + '/' + application.profileImage) : ('assets/images/user-5.png')}}"> 
+                                                                <img alt="user" class="img-cirlce img-responsive" ng-hide="hideDefaultImage" src="assets/images/loading.gif"/>
+                                                            </div>
+                                                            <div ng-if="application.profileImage == null || application.profileImage == ''" class="user_img"> 
+                                                                <img alt="user" class="img-cirlce img-responsive" src="assets/images/user-5.png"> 
+                                                            </div>
+                                                            <div class="emp_user_hd">
+                                                                <div class="emp_user_name">{{application.lName}}, {{application.fName}} {{application.middleInitial}}</div>
+                                                                <!--<p>{{positions[application.companyPositionId]}}</p>-->
+                                                                <p>{{application.positionTitle}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                    <td>{{application.dateInserted|date:dateFormat}}</td>
+                                                    <td>{{application.phone| tel}}</td>
+                                                    <td>
+                                                        <div>{{application.address1}}</div> <div ng-if="application.address2 != null">{{application.address2}}</div> {{application.city}}, {{application.state}}, {{application.zipcode}}
+                                                    </td>
+                                                    <td>{{viewApplication.getLanguagesFromCode(application.languageSpoken)}}</td>
+                                                    <td>
+                                                        <div class="center">
+                                                            <a class="btn fa fa-search view_task_button" href="" ng-click="viewApplication.openApplicationViewOnly(application.applicationId)" tooltip="View Application"><span class="ed_b"></span></a> 
+                                                            <a class="btn icon-left fa fa-trash-o delete_button" ng-if="hasAccess('DELETE_APPLICATION')" 
+                                                               href="" ng-click="viewApplication.openDeleteModal(application, 'deleteModel')" tooltip="Delete"><span class="ed_b"></span></a>
+                                                            <a class="btn icon-left fa fa-book deactivate_bt" href="" ng-click="application.newNotification = false;viewApplication.openNotesModal(application.id)" tooltip="Notes" ng-class="{'has-newNotification':application.newNotification}"><span class="ed_b"></span></a>
+                                                            <a ng-if="viewApplication.viewType == 'ready-for-orientation'" class="btn icon-left fa fa-check edit_button" href="" ng-click="viewApplication.openApproveApplicationModal(application)"
+                                                               tooltip="Hire as employee"><span class="ed_b"></span></a>
+                                                            <a ng-if="viewApplication.viewType == 'in-progress'" class="btn icon-left fa fa-check edit_button" href="" ng-click="viewApplication.openReviewApplicationModal(application)"
+                                                               tooltip="Review Application"><span class="ed_b"></span></a>
+                                                            <a ng-if="viewApplication.viewType !== 'in-progress'" class="btn icon-left fa fa-times delete_button" href="" ng-click="viewApplication.openReviewApplicationModal(application, 'rejected')"
+                                                               tooltip="Review Application"><span class="ed_b"></span></a>
+                                                            <a ng-if="viewApplication.viewType == 'need-more-info'" class="btn icon-left fa fa-check edit_button" href="" ng-click="viewApplication.openReviewApplicationModal(application, 'rfo')"
+                                                               tooltip="Ready For Orientation"><span class="ed_b"></span></a>
+                                                            <a class="btn icon-left fa fa-download download_bt"  ng-href="{{viewApplication.baseUrl}}applications/{{application.applicationId}}/download" tooltip="Export as PDF"><em class="ed_b"></em></a>
+                                                            <!--<a class="btn icon-left fa fa-cog edit_button" href="" ng-click="viewApplication.openSettingsModal(application.id)" tooltip="Application Benefit Adjustment" ng-if="hasAccess('EMPLOYEE_BENEFIT_ADJUSTMENT') && application.benefitPackageId"><span class="ed_b"></span></a>-->
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <script type="text/javascript">
+                                        // This JavaScript Will Replace Checkboxes in dropdown toggles
+                                        jQuery(document).ready(function ($)
+                                        {
+                                            setTimeout(function ()
+                                            {
+                                                $(".checkbox-row input").addClass('cbr');
+                                                cbr_replace();
+                                            }, 0);
+                                        });
+                                    </script>
+
+                                </div>
+                                <div ng-show="viewApplication.applicationList.length">
+                                    <div id="paginationButtons" class="text-right">
+                                        <dir-pagination-controls boundary-links="true" 
+                                                                 max-size="9"
+                                                                 template-url="app/tpls/dirPagination.tpl.html" pagination-id="drinksPagination" on-page-change="viewApplication.pageChanged(newPageNumber)"></dir-pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="deleteModel">
+    <div class="modal-header">		
+    <h4 class="modal-title">{{deleteApplicationModel.application.lName}} {{deleteApplicationModel.application.fName}} {{deleteApplicationModel.application.middleInitial}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to delete this Application?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="deleteApplicationModel.delete(deleteApplicationModel.application);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="deleteApplicationModel.dismiss();">No</button>
+    </div>
+</script>

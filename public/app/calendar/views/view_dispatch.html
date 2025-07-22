@@ -1,0 +1,169 @@
+
+<div class="page-body"> <!--TOP BAR MENU PANEL START -->
+
+    <!--PAGE TITLE START -->
+    <div class="page-title">
+        <div class="title-env">
+            <h1 class="title">View Dispatch List</h1>
+            <p class="description">View All Dispatches</p>
+        </div>
+    </div>
+    <!--PAGE TITLE END -->
+
+    <div class="row">
+        <div class="col-md-12">  
+            <ul class="nav nav-tabs">
+                <li ui-sref="app.dispatch-list({status:'active'})" class="{{viewDispatch.viewType=='active'?'active':''}}">
+                    <a href="" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa fa-cube">+</i></span> <span class="hidden-xs">Active Dispatches</span> 
+                    </a>
+                </li>
+                <li ui-sref="app.dispatch-list({status:'inactive'})" class="{{viewDispatch.viewType=='inactive'?'active':''}}">
+                    <a href="" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa-cube">x</i></span> <span class="hidden-xs">Inactive Dispatches</span> 
+                    </a>
+                </li>
+                <li ui-sref="app.dispatch-list({status:'all'})" class="{{viewDispatch.viewType=='all'?'active':''}}">
+                    <a href="" data-toggle="tab">
+                        <span class="visible-xs"><i class="fa fa-cubes"></i></span> <span class="hidden-xs">All Dispatches</span> 
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content" style="padding-bottom:0px;">
+                <div id="home" class="tab-pane active">
+                    <form class="form-horizontal">                                            
+                        <div class="panel-body pad_top0 pad0">
+                            <div class="row">                            
+                                <div class="col-sm-12">
+                                    <div class="page-count-selector col-md-3 pull-left pad-rg-xs-15 mar_bt10">
+                                        <label class="control-label nowrap"><span>Show Entries</span></label>
+                                        <div style="width:70px;">
+                                            <select class="form-control input-sm" ng-model="viewDispatch.searchParams.limit">
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--                                    <div class="form-group col-md-4 col-sm-12 col-xs-12 pad0" style="padding-right: 30px!important">
+                                                                            <div class="col-md-5 col-xs-6  pad0  pull-right" >
+                                                                                <div class="form-group" >
+                                                                                    <label for='toDate' class="col-md-1 col-xs-2 control-label form-control-static"><i class="linecons-calendar"></i></label>
+                                                                                    <div class="col-md-7 col-xs-8 pad_rg0 pad_lf0">
+                                                                                        <input readonly style="border:none;pointer-events: none;width:100px" type="text" placeholder='End Date' id="toDate" class="form-control datepicker readonly-datepicker" data-format="mm/dd/yyyy" ng-model="viewDispatch.searchParams.toDate" max-date="viewDispatch.searchParams.endDate" name='toDate' ng-change="viewDispatch.applySearch()">
+                                                                                    </div>
+                                                                                    <span class="col-md-1 col-xs-2 form-control-static pad_rg0 pad_lf0" ng-show="viewDispatch.searchParams.toDate" ><i class="fa fa-remove" ng-click="viewDispatch.searchParams.toDate = undefined;viewDispatch.applySearch()"></i></span>
+                                                                                </div>
+                                                                            </div>    
+                                                                            <div class="col-md-1 col-xs-1 center pad0  pull-right">
+                                                                                <label class="control-label form-control-static" style="color:#7F7B77">
+                                                                                    To
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-md-5 col-xs-5 pad0  pull-right">
+                                                                                <div class="form-group" >
+                                                                                    <label for='fromDate' class="col-md-1 col-xs-2 control-label form-control-static"><i class="linecons-calendar"></i></label>
+                                                                                    <div class="col-md-7 col-xs-8  pad_rg0 pad_lf0">
+                                                                                        <input readonly style="border:none;pointer-events: none;width:100px;" type="text" placeholder='Start Date' id="fromDate" class="form-control datepicker readonly-datepicker" data-format="mm/dd/yyyy" ng-model="viewDispatch.searchParams.fromDate" max-date="viewDispatch.searchParams.endDate" name='fromDate' ng-change="viewDispatch.applySearch()">
+                                                                                    </div>
+                                                                                    <span class="col-md-1 col-xs-1 form-control-static pad_rg0 pad_lf0" ng-show="viewDispatch.searchParams.fromDate" ><i class="fa fa-remove" ng-click="viewDispatch.searchParams.fromDate = undefined;viewDispatch.applySearch()"></i></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>-->
+
+                                    <div class="form-group col-md-6 col-sm-12 pad-rg-sm-0 pad-rg-xs-15 pull-right">
+
+                                        <div class='form-group col-sm-5 col-sm-12 col-xs-12 pad0' ng-if='viewDispatch.viewType != "active"'>
+                                            <select class="form-control input-sm" ng-model="viewDispatch.searchParams.status"  ng-change="viewDispatch.applySearch()">
+                                                <option ng-if='viewDispatch.viewType != "inactive"' value="">ALL</option>
+                                                <option ng-if='viewDispatch.viewType != "inactive"' value="active">Active</option>
+                                                <option value="inactive">Inactive</option>
+                                                <option value="expired">Expired</option>
+                                                <option value="completed">Completed</option>
+                                            </select>                                            
+                                        </div>
+                                        <div class="col-sm-7 col-sm-12 col-xs-12 pad-rg-sm-0 pad-lf-sm-0 pull-right pad-rg-xs-15">
+                                            <input type="search" class="form-control input-sm" ng-model="viewDispatch.searchParams.searchString" placeholder="Search by Patient Name" ng-change="viewDispatch.applySearch()">
+                                        </div>
+                                    </div>                                     
+                                </div>   
+                            </div>
+
+                            <div class="row">  </div>
+                            <div class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="table-responsive row">
+
+                                    <table id="example-1" ng-if="viewDispatch.dispatchList.length" class="table table-bordered table-hover table table-small-font" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th width="23%" ng-class="viewDispatch.applySortingClass('patientName')" ng-click="viewDispatch.applySorting('patientName')" >Patient
+                                                </th>
+                                                <th width="10%" ng-class="viewDispatch.applySortingClass('dispatchCreatedOn')" ng-click="viewDispatch.applySorting('dispatchCreatedOn')" >Date
+                                                </th>
+                                                <th width="10%">Total Recipients</th>
+                                                <th width="23%">Assigned employee</th>
+                                                <th width="10%">Status</th>
+                                                <th width="12%">Responses</th>
+                                                <th width="12%">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr pagination-id="drinksPagination" dir-paginate="dispatch in viewDispatch.dispatchList| itemsPerPage: viewDispatch.searchParams.limit" 
+                                                total-items="totalRecords"
+                                                current-page="viewDispatch.searchParams.pageNo">
+                                                <td ng-click="viewDispatch.navigateToDispatchDetails(dispatch.id)" style="cursor: pointer"> 
+
+                                                    <b>{{dispatch.patientName}}</b>{{dispatch.careType?" - "+dispatch.careType:""}}
+                                                </td>
+                                                <td ng-click="viewDispatch.navigateToDispatchDetails(dispatch.id)" style="cursor: pointer">{{dispatch.dispatchCreatedOn}}</td>
+                                                <td ng-click="viewDispatch.navigateToDispatchDetails(dispatch.id)" style="cursor: pointer; text-align: center">
+                                                    {{dispatch.totalRecipient}}
+                                                </td>
+                                                <td ng-click="viewDispatch.navigateToDispatchDetails(dispatch.id)" style="cursor: pointer">{{dispatch.assignedEmployeeName}}</td>
+                                                <td ng-click="viewDispatch.navigateToDispatchDetails(dispatch.id)" style="cursor: pointer; text-transform: capitalize;">{{dispatch.status}}</td>
+                                                <td ng-click="viewDispatch.navigateToDispatchDetails(dispatch.id)" style="cursor: pointer; text-align: center">      
+                                                    <span ng-show="dispatch.interestedCount" tooltip="Interested" class="badge badge-green">{{dispatch.interestedCount}}</span>
+                                                    <span ng-show="dispatch.notInterestedCount" tooltip="Not Interested" class="badge badge-red">{{dispatch.notInterestedCount}}</span>
+                                                </td>
+                                                <td>
+                                                    <div class="center">
+                                                        <!--<a class="btn icon-left fa fa-edit deactivate_bt" ng-if="hasAccess('EDIT_DISPATCH')" ng-href="{{'#/app/dispatch-info/' + dispatch.id}}" tooltip="Edit"><span class="ed_b"></span></a>-->
+                                                        <a class="btn icon-left fa fa-ban deactivate_bt" href="" ng-if="hasAccess('DEACTIVATE_DISPATCH') && dispatch.status === 'active'" ng-click="viewDispatch.openStatusModal(dispatch, 'inactive')" tooltip="Deactivate"><span class="ed_b"></span></a>
+                                                        <a class="btn icon-left fa fa-check edit_button" href="" ng-if="hasAccess('DEACTIVATE_DISPATCH') && dispatch.status === 'inactive'" ng-click="viewDispatch.openStatusModal(dispatch, 'active')" tooltip="Activate"><span class="ed_b"></span></a>
+                                                        <a class="btn icon-left fa fa-trash-o delete_button" ng-if="hasAccess('DELETE_DISPATCH')" href="" ng-click="viewDispatch.openDeleteModal(dispatch)" tooltip="Delete"><span class="ed_b"></span></a>                                                    
+                                                        <a class="btn icon-left fa fa-calendar edit_button" href="" ui-sref='app.patient-calendar({id:dispatch.patientId})' ng-if="hasAccess('VIEW_PATIENT_SCHEDULE')" tooltip="Calendar"><span class="ed_b"></span></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <script type="text/javascript">
+                                    // This JavaScript Will Replace Checkboxes in dropdown toggles
+                                    jQuery(document).ready(function ($)
+                                    {
+                                        setTimeout(function ()
+                                        {
+                                            $(".checkbox-row input").addClass('cbr');
+                                            cbr_replace();
+                                        }, 0);
+                                    });
+                                </script>
+
+                            </div>
+                            <div ng-show="viewDispatch.dispatchList.length">
+                                <div id="paginationButtons" class="text-right">
+                                    <dir-pagination-controls boundary-links="true" 
+                                                             max-size="9"
+                                                             template-url="app/tpls/dirPagination.tpl.html" pagination-id="drinksPagination" on-page-change="viewDispatch.pageChanged(newPageNumber)"></dir-pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>           
+        </div>
+    </div>
+</div>

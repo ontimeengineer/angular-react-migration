@@ -1,0 +1,230 @@
+
+<div class="page-body"> 
+
+    <div> 
+        <!--PAGE TITLE START -->
+        <div class="page-title">
+            <div class="title-env">
+                <h1 class="title">View Patient Information</h1>
+                <p class="description">View All Patient Information</p>
+            </div>
+        </div>
+        <!--PAGE TITLE END --> 
+
+        <!--TABLE START -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li ui-sref="app.patient-list({status:'active'})" class="{{viewPatient.viewType=='active'?'active':''}}">
+                        <a href="" data-toggle="tab"> 
+                            <span class="visible-xs"><i class="fa-user">+</i></span> <span class="hidden-xs">Active Patients</span>
+                        </a> 
+                    </li>
+                    <li ui-sref="app.patient-list({status:'onhold'})" class="{{viewPatient.viewType=='onhold'?'active':''}}">
+                        <a href="" data-toggle="tab">
+                            <span class="visible-xs"><i class="fa-user">x</i></span> <span class="hidden-xs">On Hold Patients</span> 
+                        </a>
+                    </li>
+                    <li ui-sref="app.patient-list({status:'discharged'})" class="{{viewPatient.viewType=='discharged'?'active':''}}">
+                        <a href="" data-toggle="tab">
+                            <span class="visible-xs"><i class="fa-user">x</i></span> <span class="hidden-xs">Discharged Patients</span> 
+                        </a> 
+                    </li>
+                    <li ui-sref="app.patient-list({status:'all'})" class="{{viewPatient.viewType=='all'?'active':''}}">
+                        <a href="" data-toggle="tab"> 
+                            <span class="visible-xs"><i class="fa fa-users"></i></span> <span class="hidden-xs">All Patients</span> 
+                        </a> 
+                    </li>
+                </ul>
+                <div class="tab-content" style="padding-bottom:0px;">
+                    <div id="home" class="tab-pane active">
+                        <form class="form-horizontal">
+
+                            <div class="panel-body">
+                                <div class="panel-body pad_top0 pad0">
+                                    <div class="row">                            
+                                        <div class="col-sm-12">
+                                            <div class="page-count-selector col-md-4 pull-left">
+                                                <label class="control-label nowrap"><span>Show Entries</span></label>
+                                                <div style="width:70px;">
+                                                    <select class="form-control input-sm" ng-model="viewPatient.searchParams.limit">
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select>
+                                                </div>
+                                            </div> 
+                                            <div class="form-group col-md-6 col-sm-6 col-xs-12 pull-right">
+                                                <input type="search" class="form-control input-sm" ng-model="viewPatient.searchParams.name" placeholder="Search by [Name,City,Language,Phone number]" ng-change="viewPatient.applySearch()">
+                                            </div> 
+
+                                        </div>
+                                    </div>
+                                    <div class="row">  </div>
+
+                                    <div id="example-1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                        <div class="table-responsive">
+                                            <table id="example-4" ng-if="viewPatient.patientList.length" class="table table-striped table-bordered  table-small-font" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="23%" ng-class="viewPatient.applySortingClass('lName')" ng-click="viewPatient.applySorting('lName')" >Name & Payer</th>
+                                                        <th width="12%" ng-class="viewPatient.applySortingClass('dateOfBirth')" ng-click="viewPatient.applySorting('dateOfBirth')" >Date Of Birth</th>
+                                                        <th width="15%" >Phone</th>
+                                                        <th width="18%" >Address</th>
+                                                        <th width="12%" >Languages Spoken</th>
+                                                        <th width="30%" >Actions</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr pagination-id="viewPatientPagination" dir-paginate="patient in viewPatient.patientList| itemsPerPage: viewPatient.searchParams.limit" 
+                                                        total-items="totalRecords"
+                                                        current-page="viewPatient.searchParams.pageNo">
+                                                        <td> <div ng-click="viewPatient.openEditModal(patient, 'modal-5')" style="cursor: pointer">
+                                                                <!--<div class="user_img"> <img alt="user" class="img-cirlce img-responsive" src="assets/images/user-5.png"> </div>-->
+                                                                <div class="emp_user_hd">
+                                                                    <div class="emp_user_name">{{patient.lName}}, {{patient.fName}} {{patient.middleInitial}}</div>
+                                                                    <p>{{viewPatient.insuranceProviderMap[patient.insuranceProviderId]}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{patient.dateOfBirth|date :dateFormat}}</td>
+                                                        <td>{{patient.phone| tel }}</td>
+
+                                                        <td>
+                                                            <div ng-show="patient.patientAddress">
+                                                                <div>{{patient.patientAddress.address1}}</div>
+                                                                <div ng-if="patient.patientAddress.address2 !== null">{{patient.patientAddress.address2}}</div>
+                                                                {{patient.patientAddress.city}}, {{patient.patientAddress.state}}, {{patient.patientAddress.zipcode}}
+                                                            </div>
+                                                        </td>
+                                                        <td>{{viewPatient.getLanguagesFromCode(patient.languagesSpoken)}}</td>
+                                                        <td>
+                                                            <div class="center">
+                                                                <a class="btn icon-left fa fa-pencil edit_button" href="" ui-sref="app.patient.tab1({id:patient.id})" ng-if="hasAccess('EDIT_PATIENT')" tooltip="Edit"><span class="ed_b"></span></a> 
+                                                                <a class="btn icon-left fa fa-trash-o delete_button" ng-if="hasAccess('DELETE_PATIENT')" ng-click="viewPatient.openDeleteModal(patient, 'deleteModel');" tooltip="Delete"><span class="ed_b" ></span></a>
+                                                                <a class="btn icon-left fa fa-ban deactivate_bt" ng-if="patient.status == 'a' && hasAccess('DISCHARGE_PATIENT')" ng-click="viewPatient.openDischargeModal(patient, 'dischargeModel');" tooltip="Discharge"><span class="ed_b"></span></a>
+                                                                <a class="btn icon-left fa fa-check edit_button" ng-if="patient.status == 'd' && hasAccess('READMIT_PATIENT')" ng-click="viewPatient.openReadmitModal(patient, 'readmitModal');" tooltip="Readmit"><span class="ed_b"></span></a>
+                                                                <a ng-if="patient.authorization" class="btn icon-left fa fa-download download_bt"  ng-href="{{viewPatient.baseUrl}}file/download/{{viewPatient.companyCode}}/p/{{patient.authorization}}?viewDownload=true" target="_blank" tooltip="Download Authorization"><span class="ed_b"></span></a>
+                                                                <a ng-if="(viewPatient.validAuthorizationDate(patient.authorizationEndDate) || viewPatient.viewType === 'discharged') && hasAccess('VIEW_PATIENT_SCHEDULE')" class="btn icon-left fa fa-calendar edit_button" href="" ui-sref="app.patient-calendar({id:patient.id})" tooltip="Calendar"><span class="ed_b"></span></a> 
+                                                                <a class="btn icon-left fa fa-book deactivate_bt" href="" ng-click="patient.newNotification = false;viewPatient.openNotesModal(patient.id)" tooltip="Notes" ng-class="{'has-newNotification':patient.newNotification}"><span class="ed_b"></span></a>
+                                                                <a class="btn icon-left fa fa-user-times delete_button" 
+                                                                   ng-click="viewPatient.openRejectEmployeesModal(patient.id);" 
+                                                                   tooltip="Rejected Caregivers"><span class="ed_b"></span></a>
+                                                                <a class="btn fa fa-calendar edit_button" href="" ui-sref="app.patient-calendar({id: patient.id})" ng-if="hasAccess('VIEW_PATIENT_SCHEDULE')" tooltip="Calendar"><span class="ed_b"></span></a> 
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table> 
+                                        </div>
+
+                                    </div>
+                                    <div ng-show="viewPatient.patientList.length">
+                                        <div id="paginationButtons" class="text-right">
+                                            <dir-pagination-controls boundary-links="true" 
+                                                                     max-size="9"
+                                                                     template-url="app/tpls/dirPagination.tpl.html" pagination-id="viewPatientPagination" on-page-change="viewPatient.pageChanged(newPageNumber)"></dir-pagination-controls>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--TABLE END --> 
+    </div>
+</div>
+<script type="text/ng-template" id="deleteModel">
+    <div class="modal-header">
+    <h4 class="modal-title">{{deletePatientModel.patient.lName}}, {{deletePatientModel.patient.fName}} {{deletePatientModel.patient.middleInitial}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to delete this Patient?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="deletePatientModel.delete(deletePatientModel.patient);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="deletePatientModel.dismiss();">No</button>
+    </div>
+</script>
+<script type="text/ng-template" id="dischargeModel">
+
+    <form class="form-horizontal validate" role="form" name="popuppatient" id="popup_dis_patient" >     
+    <div class="modal-header">
+    <h4 class="modal-title">Discharge {{dischargePatientModel.patient.lName}}, {{dischargePatientModel.patient.fName}} {{dischargePatientModel.patient.middleInitial}}</h4>
+    </div>
+
+    <div class="modal-body">
+    <div class="form-group">
+    <label class="col-sm-3 control-label">Discharge Reason</label>
+    <div class="col-sm-8">
+    <select class="form-control" name ="reason" id="disReason" ng-model="dischargePatientModel.reason" ng-init="dischargePatientModel.reason='death'">
+    <option value="Admitted To LTC Facility">Admitted To LTC Facility</option>
+    <option value="Dis-enrolled" >Dis-enrolled</option>
+    <option value="Expired" >Expired</option>
+    <option value="Extended Vacation" >Extended Vacation</option>
+    <option value="Patient Switched Providers">Patient Switched Providers</option>
+    <option value="Other">Other</option>
+    </select>
+    </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-3 control-label">Discharged To</div>
+        <div class="col-sm-8">
+            <select name="dischargedTo" class="form-control" ng-model="dischargePatientModel.dischargedTo" id="" ng-options="el.id as (el.label) for el in dischargePatientModel.patientDischargedToOptions" ng-init="dischargePatientModel.dischargedTo=''">
+                <option value="" hidden>
+                    Select dischaged to
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group-separator"></div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label">Discharge Date</label>
+    <div class="col-sm-8">
+    <div class="input-group" style="z-index:1060">
+    <input class="form-control datepicker" data-format="mm/dd/yyyy" max-date="dischargePatientModel.currentDate" id="disDate" name="dischargeDate" type="text" ng-model="dischargePatientModel.dischargeDate" 
+    data-validate="required,date" data-message-required="Please enter Date of Discharge." required/>
+    <div class="input-group-addon">
+    <a href="#">
+    <i class="linecons-calendar">
+    </i>
+    </a>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="modal-footer">
+    <button type="submit" class="btn btn-success" ng-click="dischargePatientModel.discharge(dischargePatientModel.patient);">Discharge</button>
+    <button type="button" class="btn btn-red" ng-click="dischargePatientModel.dismiss();">Cancel</button>
+    </div>
+    </form>
+
+</script>
+<script type="text/ng-template" id="readmitModal">
+    <div class="modal-header">
+    <h4 class="modal-title">{{readmitPatientModal.patient.lName}}, {{readmitPatientModal.patient.fName}} {{readmitPatientModal.patient.middleInitial}}</h4>
+    </div>
+
+    <div class="modal-body">
+
+    Are you sure you want to readmit this Patient?
+
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" class="btn btn-success" ng-click="readmitPatientModal.readmit(readmitPatientModal.patient);">Yes</button>
+    <button type="button" class="btn btn-red" ng-click="readmitPatientModal.dismiss();">No</button>
+    </div>
+</script>

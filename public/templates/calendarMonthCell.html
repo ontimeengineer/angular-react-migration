@@ -1,0 +1,23 @@
+<div class="cal-month-day {{ day.cssClass }}"
+  ng-class="{
+      'cal-day-box': showTime,
+            'cal-day-outmonth': !day.inMonth,
+            'cal-day-inmonth': day.inMonth,
+            'cal-day-past': day.isPast,
+            'cal-day-future': day.isFuture
+          }"
+                  ng-style="{'height':type == 'coordinator'?130:100 +'px !important'}">
+  <span
+    class="pull-right"
+    data-cal-date
+    ng-click="calendarCtrl.drillDown(day.date)"
+    ng-bind="day.label">
+  </span>
+
+  <div class="cal-day-tick" ng-show="dayIndex === openDayIndex && view[openDayIndex].events.length > 0">
+    <i class="glyphicon glyphicon-chevron-up"></i>
+    <i class="fa fa-chevron-up"></i>
+  </div>
+
+  <ng-include src="'templates/calendarMonthCellEvents.html'"></ng-include>
+</div>

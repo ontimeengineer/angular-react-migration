@@ -1,0 +1,148 @@
+<!--<div>
+    Welcome {{currentUser.userName}}
+</div>-->
+<div class="row">
+
+    <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3">
+        <!--<a ng-href="{{serverPath}}reports/employeecensus/download?format=xls&companyCode={{dashboard.companyCode}}">-->
+            <div class="xe-widget xe-counter" data-count=".num" id="complianceCount" data-from="0" data-to="dashboard.complianceTracker| number:2" data-suffix="%" data-duration="2">
+                <div class="xe-icon">
+                    <i><img alt="compliance tracker" class="img-cirlce img-responsive" src="assets/images/dashboard/compliance tracker.png" style="padding: 5px 5px 5px 5px;"></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">0.0%</strong>
+                    <span>Compliance Tracker</span>
+                </div>
+            </div>
+        <!--</a>-->
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3">
+        <a ng-href="#/app/patient-list/active">
+            <div class="xe-widget xe-counter xe-counter-blue" data-count=".num" data-from="1" data-to="dashboard.activePatientCount" data-duration="3" data-easing="false">
+                <div class="xe-icon">
+                    <i><img alt="patients" class="img-cirlce img-responsive" src="assets/images/dashboard/patients.png"></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">0</strong>
+                    <span>Total Active Patients</span>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3">
+        <a ng-href="{{serverPath}}dashboard/dischargedpatients/download?currentDate={{dashboard.currentDate}}&companyCode={{dashboard.companyCode}}">
+            <div class="xe-widget xe-counter xe-counter-info"  data-count=".num" data-from="0" data-to="dashboard.dischargedPatientsCount" data-duration="5" data-easing="true" data-delay="1">
+                <div class="xe-icon">
+                    <i><img alt="patient discharge" class="img-cirlce img-responsive" src="assets/images/dashboard/patient discharge.png"></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">0</strong>
+                    <span>Discharged Patients</span>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3">
+        <a ng-href="#/app/patient-calendar/?lastPage=dashboard">
+            <div class="xe-widget xe-counter xe-counter-red" data-count=".num" data-from="1" data-to="dashboard.openCasesCount" data-duration="3" data-easing="false">
+                <div class="xe-icon">
+                    <i><img alt="open case" class="img-cirlce img-responsive" src="assets/images/dashboard/open case.png"></i>
+                </div>
+                <div class="xe-label">
+                    <strong class="num">0</strong>
+                    <span>Open Cases</span>
+                </div>
+            </div>
+        </a> 
+    </div>
+
+</div>
+<!--<div class="row">
+
+    <div class="col-sm-3">
+
+        <div class="xe-widget xe-todo-list xe-todo-list-turquoise">
+            <div class="xe-header">
+                <div class="xe-icon">
+                    <i class="fa-file-text-o"></i>
+                </div>
+                <div class="xe-label">
+                    <span>TO DO LIST</span>
+                    <strong>Tasks</strong>
+                </div>
+                <div class="pull-right">
+                    <i class="fa fa-trash" style="font-size: 15px;cursor: pointer" tooltip="Remove all completed tasks" ng-click="dashboard.removeAllMarkedTasks()"></i>
+                </div>
+            </div>
+            <div class="xe-body">
+                <ul class="list-unstyled" id="taskList" style="height:9.8em;position:relative" >
+                    <li ng-class="{'done':task.taskMarked}" ng-hide="dashboard.inProgress" ng-repeat="task in dashboard.taskList track by $index">
+                        <label>
+                            <input type="checkbox" ng-model="task.taskMarked" class="cbr cbr-turquoise" ng-change="dashboard.taskMarked($index);"/>
+                            <span>{{task.taskValue}}</span>
+                        </label>
+                    </li>                    
+                </ul>
+            </div>
+            <div class="xe-footer">
+                <input type="text" ng-model="dashboard.taskName" ng-keyup="$event.keyCode == 13 ? dashboard.addTask() : null" class="form-control" placeholder="Add task..." />
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-sm-9">
+
+        <div class="xe-widget xe-weather" style="height:23em;position:relative">
+            <div class="xe-background xe-background-animated">
+                <img src="assets/images/clouds.png" />
+            </div>
+
+            <div class="xe-current-day">
+                <div class="xe-now">
+                    <div class="xe-temperature">
+                        <div class="xe-icon">
+                            <i class="{{dashboard.weatherIcons[dashboard.weatherObj.currentIcon]!=null?dashboard.weatherIcons[dashboard.weatherObj.currentIcon]:'meteocons-na'}}"></i>
+                        </div>
+                        <div class="xe-label">
+                            Now
+                            <strong ng-if="dashboard.weatherObj.currentTemperature != null">{{dashboard.weatherObj.currentTemperature|number:0}}&deg;</strong>
+                        </div>
+                    </div>
+                    <div class="xe-location">
+                        <h4>{{dashboard.weatherObj.location}}</h4>
+                        <time>Today, {{dashboard.weatherObj.currentTime * 1000|date:'dd MMMM'}}</time>
+                    </div>
+                </div>
+
+                <div class="xe-forecast">
+                    <ul>
+                        <li ng-repeat="hourlyTemprature in dashboard.weatherObj.hourlyDataPoints">
+                            <div class="xe-forecast-entry">
+                                <time>{{hourlyTemprature.time * 1000|date:'HH:mm'|ampmshort}}</time>
+                                <div class="xe-icon">
+                                    <i class="{{dashboard.weatherIcons[hourlyTemprature.icon]!=null?dashboard.weatherIcons[hourlyTemprature.icon]:'meteocons-na'}}"></i>
+                                </div>
+                                <strong class="xe-temp">{{hourlyTemprature.temperature|number:0}}&deg;</strong>
+                            </div>
+                        </li>                        
+                    </ul>
+                </div>
+            </div>
+
+            <div class="xe-weekdays" style="height:23em">
+                <ul class="list-unstyled">
+                    <li ng-repeat="dailyTemprature in dashboard.weatherObj.dailyDataPoints">
+                        <div class="xe-weekday-forecast">
+                            <div class="xe-temp">{{dailyTemprature.minTemperature|number:0}}&deg;/{{dailyTemprature.maxTemperature|number:0}}&deg;</div>
+                            <div class="xe-day">{{dailyTemprature.time * 1000|date:'EEEE'}}</div>
+                            <div class="xe-icon">
+                                <i class="{{dashboard.weatherIcons[dailyTemprature.icon]!=null?dashboard.weatherIcons[dailyTemprature.icon]:'meteocons-na'}}"></i>
+                            </div>
+                        </div>
+                    </li>                  
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>-->

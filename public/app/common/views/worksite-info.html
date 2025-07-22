@@ -1,0 +1,91 @@
+<div class="">
+    <div class="modal-body">
+        <div class="row">
+            <div class="user_panel col-md-12">
+                <div class="emp_user_hd">
+                    <div class="emp_user_name">{{worksiteInfo.worksite.name}}</div>
+                    <p>{{worksiteInfo.worksite.phone | tel}}</p>
+                </div>
+                <button type="button" class="close" ng-click="worksiteInfo.close();" aria-hidden="true">&times;</button>
+            </div>
+
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label for="field-1" class="control-label col-md-4"><strong>Address</strong></label>
+                    <div class="col-md-8" >
+                        {{worksiteInfo.worksite.address1}}<div ng-if="worksiteInfo.worksite.address2 != null">{{worksiteInfo.worksite.address2}}</div><div ng-if="worksiteInfo.worksite.city">  {{worksiteInfo.worksite.city}}, {{worksiteInfo.worksite.state}}, {{worksiteInfo.worksite.zipcode}}</div>
+                    </div>
+                </div>	
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label for="field-1" class="control-label col-md-4"><strong>Supervisor</strong></label>
+                    <div class="col-md-8">
+                        {{worksiteInfo.worksite.supervisor}} 
+                    </div>
+                </div>	
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label for="field-1" class="control-label col-md-4"><strong>Supervisor phone</strong></label>
+                    <div class="col-md-8">
+                        {{worksiteInfo.worksite.supervisorPhone | tel}} 
+                    </div>
+                </div>	
+
+            </div>
+        </div>
+        <div class="row" ng-if="worksiteInfo.worksite.supervisorEmail">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label for="field-1" class="control-label col-md-4"><strong>Supervisor Email</strong></label>
+                    <div class="col-md-8">
+                        {{worksiteInfo.worksite.supervisorEmail}} 
+                    </div>
+                </div>	
+
+            </div>
+        </div>
+        <div class="row" ng-if="worksiteInfo.worksite.supervisorFax">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label for="field-1" class="control-label col-md-4"><strong>Supervisor Fax</strong></label>
+                    <div class="col-md-8">
+                        {{worksiteInfo.worksite.supervisorFax| tel}} 
+                    </div>
+                </div>	
+
+            </div>
+        </div>
+        <div class="row" ng-if="worksiteInfo.worksite.positions">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label for="field-1" class="control-label col-md-4"><strong>Position</strong></label>
+                    <div class="col-md-8">
+                        {{worksiteInfo.worksite.positions.toString()}} 
+                    </div>
+                </div>	
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="worksiteInfo.close();">Close</button>
+    </div>
+</div>

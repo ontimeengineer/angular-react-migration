@@ -1,0 +1,50 @@
+<style>
+    .no-error{
+        border-color: #B0B0B0!important;
+    }
+    .hide-error #FluShotDate-error{
+        display: none
+    }
+</style>
+<form class="validate form-horizontal" name="submit_employee_popup" id="submit_employee_popup" role="form"
+      ng-submit="applicationSubmit.submitApplication();">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="applicationSubmit.close();" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Submit Application</h4>
+    </div>
+
+    <div class="modal-body" ng-if="!applicationSubmit.alreadySubmitted">
+        <div class="form-group adjust-row-padding">
+            <div class="col-md-12 "  ng-if="applicationSubmit.canSubmitApplication === true">
+                <div>
+                    <label class="pull-left col-md-12 pad0">I certify that the facts contained in this application are true and complete to the best of my knowledge and understand, that, if employed, falsified statements on this application SHALL BE GROUNDS FOR DISMISSAL</label>
+                    <label class="pull-left col-md-12 pad0">I Authorize complete investigation of all statements contained herein and herby give my full permission for the Agency to contact and fully discuss my background and history with all persons and entities listed above to give the Agency any and all information concerning my previous employment and any information they may have, and release all former employees and others listed above from all liability for any damage that my result from furnishing the same to the Agency.</label>
+                    <label class="pull-left col-md-12 pad0">I understand and agree that, if hired, my employment is for no definite period arid may, regardless of the date of payment of my wages and salary, be terminated at any time for any lawful reason, without prior notice and with or without cause.</label>
+                    <label class="pull-left col-md-12 pad0">This application for employment shall be considered active for a period of time not to exceed 45 days.  Any applicant wishing to be considered for employment beyond this time period shall inquire as to whether or not applications are being accepted at that time.</label>
+                </div>
+                <div class="pull-left">
+                    Signature :
+                    <signature-pad width="550" height="175" dataurl="applicationSubmit.dataUrl" accept="applicationSubmit.accept" clear="clear"></signature-pad>
+                    <button type="button" class="btn btn-default btn-default-bootstrap" ng-click="clear()">Clear signature</button>
+                </div>
+            </div>
+            <div class="col-md-12 "  ng-if="applicationSubmit.canSubmitApplication === false">
+                <div>
+                    <label class="pull-left col-md-12 pad0" ng-show="applicationSubmit.resumePending">Please upload your resume on Personal Details tab</label>
+                    <label class="pull-left col-md-12 pad0" ng-show="applicationSubmit.professionalReferencesPending">Please add at least 2 professional references on Work Experience tab</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-body text-center" ng-if="applicationSubmit.alreadySubmitted">
+        <h1><span class="fa-check-circle-o" style="font-size: 2.6em; color: #72a230"></span></h1>
+        <h1>Thanks You!!</h1>
+        <h4>Your application is submitted for review.</h4>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-white" ng-click="applicationSubmit.close();">Close</button>
+        <button type="submit" class="btn btn-success" ng-if="applicationSubmit.canSubmitApplication === true && !applicationSubmit.alreadySubmitted">Submit Application</button>
+    </div>
+</form>
